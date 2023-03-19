@@ -1,0 +1,32 @@
+{
+  "name": "hard-work-api",
+  "version": "0.0.1",
+  "description": "This api was created for Hard Work ERP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VictorScoolExper/Hard-Work-API.git"
+  },
+  "author": "Victor Martinez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VictorScoolExper/Hard-Work-API/issues"
+  },
+  "homepage": "https://github.com/VictorScoolExper/Hard-Work-API#readme",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.21"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
