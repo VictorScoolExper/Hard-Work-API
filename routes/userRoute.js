@@ -1,14 +1,15 @@
 const express = require('express');
 
+const seguridad = require('../controllers/user/seguridad');
 const respuestas = require('../red/respuesta');
-const controlador = require('../controllers/employee/indexEmployee');
+const controlador = require('../controllers/user');
 
 const router = express.Router();
 
 router.get("/youtube", todos);
 router.get("/youtube/:id", uno);
-router.post("/youtube", agregar);
-router.put('/youtube', eliminar);
+router.post("/youtube", seguridad(),agregar);
+router.put('/youtube', seguridad(), eliminar);
 
  async function todos (req, res, next){
     try {
@@ -33,7 +34,8 @@ async function uno (req, res, next){
 async function agregar (req, res, next){
     try {
         const items = await controlador.agregar(req.body);
-        if(req.body.employee_id == 0){
+        // id has to be fixed in db
+        if(req.body.id == 0){
             mensaje = 'Item guardado con exito';
         } else {
             mensaje = 'Item actualizado con exito';

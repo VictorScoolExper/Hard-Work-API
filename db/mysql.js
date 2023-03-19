@@ -50,34 +50,27 @@ function uno(tabla, id){
     });
 }
 
-function insertar(tabla, data){
-    return new Promise((resolve, reject) => {
-        conexion.query(`INSERT INTO ${tabla} SET ?`, data, (error, result) => {
-            return error ? reject(error) : resolve(result);
-        })
-    });
-}
-
-function actualizar(tabla, data){
-    return new Promise((resolve, reject) => {
-        conexion.query(`UPDATE ${tabla} SET ? WHERE employee_id=?`, [data, data.employee_id], (error, result) => {
-            return error ? reject(error) : resolve(result);
-        })
-    });
-}
-
 function agregar(tabla, data){
-    if(data && data.employee_id == 0){
-        return insertar(tabla, data);
-    } else {
-        return actualizar(tabla, data);
-    }
+    return new Promise((resolve, reject) => {
+        conexion.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?`, [data, data], (error, result) => {
+            return error ? reject(error) : resolve(result);
+        })
+    });
 }
+
 
 function eliminar(tabla, data){
     return new Promise((resolve, reject) => {
-        conexion.query(`DELETE FROM ${tabla} WHERE employee_id=?`, data.employee_id, (error, result) => {
+        conexion.query(`DELETE FROM ${tabla} WHERE id=?`, data.id, (error, result) => {
             return error ? reject(error) : resolve(result);
+        })
+    });
+}
+
+function query(tabla, consulta){
+    return new Promise((resolve, reject) => {
+        conexion.query(`SELECT * FROM ${tabla} WHERE ?`, consulta, (error, result) => {
+            return error ? reject(error) : resolve(result[0]);
         })
     });
 }
@@ -87,4 +80,5 @@ module.exports = {
     uno,
     agregar,
     eliminar,
+    query
 }

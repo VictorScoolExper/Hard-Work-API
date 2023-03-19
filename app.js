@@ -13,8 +13,9 @@ app.set('port', config.app.port);
 
 
 // router
-// const authRouter = require('./routes/authRoutes');
+const authRoutes = require('./routes/auth');
 const employeeRoutes = require('./routes/employeeRoute');
+const userRoutes = require('./routes/userRoute');
 
 const error = require('./red/errors');
 
@@ -29,6 +30,9 @@ app.use(express.urlencoded({extended: true}));
 // });
 
 app.use('/api/v1/hr/employee', employeeRoutes);
+app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/auth', authRoutes);
+
 
 app.use(error);
 
