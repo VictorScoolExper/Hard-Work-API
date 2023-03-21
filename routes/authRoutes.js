@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { register, login, logout } = require('../controllers/authController');
+const { login, logout } = require('../controllers/authController');
 
 // Owner/Admin can only create users
-//router.post('/register', register);
-router.post('/login', login);
-router.get('/logout', logout);
+router.get('/login', login);
+
 
 module.exports = router;
