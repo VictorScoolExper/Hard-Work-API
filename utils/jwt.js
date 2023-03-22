@@ -18,9 +18,11 @@ const attachCookiesToResponse = ({res, user}) =>{
     res.cookie('token', token, {
         httpOnly: true,
         expires: new Date(Date.now() + oneDay),
-        secure: config.node.NODE_ENV === 'production',
+        secure: false,
         signed: true,
     });
+    // signed is bool to verify if it is https
+    // secure: config.node.NODE_ENV === 'production',
 }
 
 module.exports = { createJWT, isTokenValid, attachCookiesToResponse }
