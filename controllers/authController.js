@@ -51,27 +51,27 @@ const register = async (req, res) =>{
     // here we must hash password before saving password
     const newPassword = await bcrypt.hash(password.toString(), 10);
     
-    // const user = await User.createUser({
-    //     name, 
-    //     last_name,
-    //     cell_number,
-    //     role,
-    //     age,
-    //     email,
-    //     password: newPassword
-    // });
-    user = new User({
-        user_id: 1,
-        name: 'John',
-        last_name: 'Doe',
-        cell_number: '12345678',
-        role: 'user',
-        email: 'john.doe@example.com',
-        password: 'password'
-      });
+    const user = await User.createUser({
+        name, 
+        last_name,
+        cell_number,
+        role,
+        age,
+        email,
+        password: newPassword
+    });
+    // user = new User({
+    //     user_id: 1,
+    //     name: 'John',
+    //     last_name: 'Doe',
+    //     cell_number: '12345678',
+    //     role: 'user',
+    //     email: 'john.doe@example.com',
+    //     password: 'password'
+    //   });
     const tokenUser = createTokenUser(user);
-    
-    // attachCookiesToResponse({res, user: tokenUser});
+    // attachCookiesToResponse Not working
+    attachCookiesToResponse({res, user: tokenUser});
     res.status(StatusCodes.CREATED).json({user: tokenUser});
 }
 
