@@ -11,24 +11,23 @@ const login = async (req, res) =>{
         throw new CustomError.BadRequestError('Please provide email and password');
     }
 
-    const user = await User.findEmail(email);
+    const user = await User.getUserInfo(email);
 
     if(!user){
         throw new CustomError.UnauthenticatedError('Invalid Credentials');
     }
+
     // need to create comparePassword method
-    const isPasswordCorrect = await user.comparePassword(password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-    // if(!isPasswordCorrect){
-    //     throw new CustomError.UnauthenticatedError('Invalid Credentials');
-    // }
+    if(!isPasswordCorrect){
+        throw new CustomError.UnauthenticatedError('Invalid Credentials');
+    }
 
-    // const tokenUser = createTokenUser(user);
-    // attachCookiesToResponse({res, user: tokenUser});
-    const userId = user[0][0].user_id;
-    res.status(StatusCodes.OK).json({userid: userId});
+    const tokenUser = createTokenUser(user);
+    attachCookiesToResponse({res, user: tokenUser});
+    res.status(StatusCodes.OK).json(tokenUser);
 }
-
 
 const register = async (req, res) =>{
     const {name, last_name, cell_number, role, age, email, password} = req.body;
@@ -60,22 +59,24 @@ const register = async (req, res) =>{
         email,
         password: newPassword
     });
-    // user = new User({
-    //     user_id: 1,
-    //     name: 'John',
-    //     last_name: 'Doe',
-    //     cell_number: '12345678',
-    //     role: 'user',
-    //     email: 'john.doe@example.com',
-    //     password: 'password'
-    //   });
+    
     const tokenUser = createTokenUser(user);
-    // attachCookiesToResponse Not working
+    
     attachCookiesToResponse({res, user: tokenUser});
     res.status(StatusCodes.CREATED).json({user: tokenUser});
 }
 
+const logout = async (req, res)=>{
+    res.cookie('token','logout',{
+        httpOnly: true,
+        expires: new Date(Date.now()),
+    });
+    res.status(StatusCodes.OK).json({msg: 'user logged out!'});
+}
+
 module.exports = {
     login,
-    register
+    register, 
+    logout
 }
+

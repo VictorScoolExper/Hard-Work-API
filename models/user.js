@@ -14,11 +14,17 @@ const User = function (user) {
   this.created_at = new Date();
 };
 
-User.findEmail = (email, results) => {
+User.getUserInfo = (email, results) => {
   return new Promise((resolve, reject) => {
-    db.query("CALL sp_bool_email_auth(?)", email, (error, result) => {
-      return error ? reject(error) : resolve(result);
-    });
+    db.query(
+      "CALL sp_get_user_auth(?);",
+      email,
+      (error, result) => {
+        return error
+          ? reject(error)
+          : resolve(result[0][0]);
+      }
+    );
   });
 };
 
@@ -82,20 +88,22 @@ User.createUser = (data) => {
           reject(error);
         } else {
           // check the value of the email_exists output parameter
-          db.query("SELECT * FROM users WHERE user_id = LAST_INSERT_ID();", (error, results) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(results[0]);
+          db.query(
+            "SELECT * FROM users WHERE user_id = LAST_INSERT_ID();",
+            (error, results) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(results[0]);
+              }
             }
-          });
+          );
         }
       }
     );
   });
 };
 
-// Need to fix
 User.login = (newUser, result) => {
   db.query(
     "CALL login( ?, ?)",
@@ -111,11 +119,6 @@ User.login = (newUser, result) => {
       result(null, { id: res.insertId, ...newUser });
     }
   );
-};
-
-User.comparePassword = (candidatePassword) => {
-  const isMatch = bcrypt.compare(candidatePassword, this.password);
-  return isMatch;
 };
 
 module.exports = User;

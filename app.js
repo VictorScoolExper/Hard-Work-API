@@ -20,7 +20,7 @@ app.set('port', config.app.port);
 // router
 const authRoutes = require('./routes/authRoutes');
 // const userRoutes = require('./routes/userRoute');
-// const employeeRoutes = require('./routes/employeeRoute');
+const employeeRoutes = require('./routes/employeeRoute');
 
 
 // middleware
@@ -49,7 +49,7 @@ app.get('/', (req, res)=>{
 
 
 app.use('/api/v1/auth', authRoutes)
-// app.use('/api/v1/hr/employee', employeeRoutes);
+app.use('/api/v1/hr/employee', employeeRoutes);
 // app.use('/api/v1/user', userRoutes);
 
 app.use(notFoundMiddleware);
