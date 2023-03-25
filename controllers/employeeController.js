@@ -1,32 +1,138 @@
+const { StatusCodes } = require("http-status-codes");
+const CustomError = require("../errors");
+const Employee = require("../models/employee");
 
-const {StatusCodes} = require('http-status-codes');
-const CustomError = require('../errors');
+const createEmployee = async (req, res) => {
+  const {
+    name,
+    last_name,
+    cell_number,
+    role,
+    age,
+    email,
+    job_title,
+    department,
+    driver_license,
+    start_date,
+    wage_per_hour,
+  } = req.body;
+  const created_by = req.user.userId;
+  if (
+    !name ||
+    !last_name ||
+    !cell_number ||
+    !role ||
+    !age ||
+    !email ||
+    !job_title ||
+    !department ||
+    !driver_license ||
+    !start_date ||
+    !wage_per_hour ||
+    !created_by
+  ) {
+    throw new CustomError.BadRequestError(`Please include all the information`);
+  }
 
+  const employee = await Employee.createEmployeeUser({
+    ...req.body,
+    created_by,
+  });
+  if (employee.affectedRows === 0) {
+    throw new CustomError.BadRequestError("Was not created correctly");
+  }
 
-const createEmployee = async (req, res) =>{
-    res.status(StatusCodes.CREATED).json({ msg: 'Hello from create Employee' });
-}
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "User was created Successfully" });
+};
 
-const getAllEmployee = async (req, res) =>{
-    res.status(StatusCodes.CREATED).json({ msg: 'Hello from get all Employee' });
-}
+const getAllEmployee = async (req, res) => {
+  const {is_active} = req.body;
 
-const getSingleEmployee = async (req, res) =>{
-    res.status(StatusCodes.CREATED).json({ msg: 'Hello from get Single Employee' });
-}
+  if(is_active !== "false" && is_active !== 'true'){
+    throw new CustomError.BadRequestError('Choose a correct active status');
+  }
 
-const updateEmployee = async (req, res) =>{
-    res.status(StatusCodes.CREATED).json({ msg: 'Hello from update Employee' });
-}
+  const allEmployees = await Employee.getAllEmployeeByActive(is_active);
+  res.status(StatusCodes.CREATED).json({ list: allEmployees, totalEmployee: allEmployees.length});
+};
 
-const deleteEmployee = async (req, res) =>{
-    res.status(StatusCodes.CREATED).json({ msg: 'Hello from delete Employee' });
-}
+const getSingleEmployee = async (req, res) => {
+  const { id: employeeId } = req.params;
+
+  if(!employeeId){
+    throw new CustomError.BadRequestError('Need to include a valid ID');
+  }
+
+  const employee = await Employee.getSingleEmployee(employeeId);
+
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: employee });
+};
+
+const updateEmployee = async (req, res) => {
+  const { id: employeeId } = req.params;
+  const updated_by = req.user.userId;
+  const { 
+    name, 
+    last_name,
+    cell_number,
+    role,
+    age,
+    active,
+    job_title,
+    department,
+    driver_license,
+    start_date,
+    end_date,
+    wage_per_hour 
+  } = req.body
+  if(
+    !name || !last_name || 
+    !cell_number || !role || 
+    !age || !active || !job_title || 
+    !department || !driver_license || !start_date ||
+    !wage_per_hour
+  ){
+    throw new CustomError.BadRequestError("Please provide all the neccesary data.")
+  }
+
+  const employee = new Employee({
+    name,
+    last_name,
+    cell_number,
+    role,
+    age,
+    active,
+    employee_id : employeeId,
+    job_title,
+    department,
+    driver_license,
+    start_date,
+    end_date,
+    wage_per_hour,
+    updated_by
+  })
+
+  const employeeUpdated = await Employee.employeeUpdated(employee);
+
+  if(employeeUpdated.affectedRows > 1){
+    throw new CustomError.BadRequestError('Updated failed');
+  }
+
+  res.status(StatusCodes.CREATED).json({ msg: "The employee was updated successfully" });
+};
+//  for now this will not be used
+const deleteEmployee = async (req, res) => {
+  res.status(StatusCodes.CREATED).json({ msg: "This route will not be used for now" });
+};
 
 module.exports = {
-    createEmployee,
-    getAllEmployee,
-    getSingleEmployee,
-    updateEmployee,
-    deleteEmployee
-}
+  createEmployee,
+  getAllEmployee,
+  getSingleEmployee,
+  updateEmployee,
+  deleteEmployee,
+};

@@ -8,8 +8,9 @@ const User = function (user) {
   this.last_name = user.last_name;
   this.cell_number = user.cell_number;
   this.role = user.role;
+  this.age = user.age;
+  this.active = user.active;
   this.email = user.email;
-  this.role = user.role;
   this.password = user.password;
   this.created_at = new Date();
 };

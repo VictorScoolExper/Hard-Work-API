@@ -36,6 +36,7 @@ const register = async (req, res) =>{
         throw new CustomError.BadRequestError('Please provide all the details');
     }
 
+
     const emailAlreadyExist = await User.findEmailAuth(email);
     if(emailAlreadyExist === 1){
         throw new CustomError.BadRequestError('Email Already Exists')
