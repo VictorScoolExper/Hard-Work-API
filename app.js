@@ -21,6 +21,8 @@ app.set('port', config.app.port);
 const authRoutes = require('./routes/authRoutes');
 // const userRoutes = require('./routes/userRoute');
 const employeeRoutes = require('./routes/employeeRoute');
+const crewRoutes = require('./routes/crewRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
 
 
 // middleware
@@ -50,6 +52,8 @@ app.get('/', (req, res)=>{
 
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/hr/employee', employeeRoutes);
+app.use('/api/v1/hr/crew', crewRoutes);
+app.use('/api/v1/hr/attend', attendanceRoutes)
 // app.use('/api/v1/user', userRoutes);
 
 app.use(notFoundMiddleware);

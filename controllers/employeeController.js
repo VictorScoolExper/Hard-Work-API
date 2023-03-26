@@ -46,7 +46,7 @@ const createEmployee = async (req, res) => {
     .status(StatusCodes.CREATED)
     .json({ msg: "User was created Successfully" });
 };
-
+// TODO: return with ids
 const getAllEmployee = async (req, res) => {
   const {is_active} = req.body;
 
@@ -72,6 +72,7 @@ const getSingleEmployee = async (req, res) => {
     .json({ msg: employee });
 };
 
+// This function might replace our delete function, becuase we not delete user just inactive them
 const updateEmployee = async (req, res) => {
   const { id: employeeId } = req.params;
   const updated_by = req.user.userId;
@@ -124,6 +125,7 @@ const updateEmployee = async (req, res) => {
 
   res.status(StatusCodes.CREATED).json({ msg: "The employee was updated successfully" });
 };
+
 //  for now this will not be used
 const deleteEmployee = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ msg: "This route will not be used for now" });
