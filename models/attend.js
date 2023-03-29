@@ -10,13 +10,16 @@ class Attendance extends Employee {
         this.status = attend.status;
     }
 
-    static addAttendance(shifts_json){
+    static addAttendance(employee_id, status){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_add_shifts('${shifts_json}')`, (error, result)=>{
+            db.query(`CALL sp_insert_attendance(${employee_id}, '${status}')`, (error, result)=>{
                 error ? reject(error) : resolve(result);
             });
         })
     }
+
+
+
 
 }
 

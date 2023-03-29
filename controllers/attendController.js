@@ -3,9 +3,14 @@ const CustomError = require("../errors");
 const Attendance = require("../models/attend");
 
 
-
 // Get attendance by date
 const getAttendByDate =  async (req, res) =>{
+    // get incoming params
+    
+    // validate params
+
+    //send to db
+
     res.status(StatusCodes.CREATED).json({msg: "Route getAttendByDate"});
 }
 
@@ -20,30 +25,13 @@ const getAttendByEmployee =  async (req, res) =>{
 // this adds if they attended the Shiftd work hours
 const addAttendance = async (req, res) =>{
     // get params
-    // const {shifts} = req.body;
-    // // verify params
-    // if(shifts[0] === null){
-    //     throw new CustomError.BadRequestError('Invalid params');
-    // }
-    const shifts = [
-        {
-          employee_id: 1,
-          shift_date: '2023-03-28',
-          start_time: '09:00:00',
-          end_time: '17:00:00'
-        },
-        {
-          employee_id: 2,
-          shift_date: '2023-03-29',
-          start_time: '08:00:00',
-          end_time: '16:00:00'
-        }
-      ];
-
-    // transform data
-    const shifts_json = JSON.stringify(shifts);
+    const {employee_id, status} = req.body;
+    // verify params
+    if(!employee_id || !status){
+        throw new CustomError.BadRequestError('Invalid params');
+    }
     // send sp call
-    const response = await Attendance.addAttendance(shifts_json)
+    const response = await Attendance.addAttendance(employee_id, status);
     // if successfull return OK
     res.status(StatusCodes.CREATED).json({msg: response});
 }

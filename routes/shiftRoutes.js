@@ -7,14 +7,19 @@ const {
     getShiftById,
     addShift,
     modifyShift,
-    deleteShift
+    deleteShift,
+    getShiftByEmployeeIdAndDate
 } = require('../controllers/shiftController');
 
 
 router
     .route('/')
     .get(authenticateUser, getShiftsByDate)
-    .post(authenticateUser, addShift)
+    .post(authenticateUser, addShift);
+
+router
+    .route('/employee')
+    .get(authenticateUser, getShiftByEmployeeIdAndDate)
 
 router 
     .route('/:id')
