@@ -34,14 +34,29 @@ class Attendance extends Employee {
         })
     }
 
-    static getAttendByEmployee(employee_id, start_date, end_date){
+    static getAttendsOfEmployeeByRangeDate(start_date, end_date, employee_id){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL (${employee_id},'${start_date}', '${end_date}')`, (error, result)=>{
+            db.query(`CALL sp_get_attendances_by_date_range_and_employee('${start_date}', '${end_date}',${employee_id})`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
-        })
+        });
     }
 
+    static modifyAttendance(attend_id, status){
+        return new Promise((resolve, reject)=>{
+            db.query(`CALL sp_modify_attendance_status(${attend_id}, '${status}')`, (error, result)=>{
+                error ? reject(error) : resolve(result[0]);
+            });
+        });
+    }
+
+    static deleteAttendance(attend_id){
+        return new Promise((resolve, reject)=>{
+            db.query(`CALL sp_delete_attendance(${attend_id})`, (error, result)=>{
+                error ? reject(error) : resolve(result[0]);
+            });
+        });
+    }
 }
 
 module.exports = Attendance;

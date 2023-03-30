@@ -7,7 +7,8 @@ const {
     modifyAttendance,
     getAttendByEmployee,
     getAttendByDate,
-    getAttendById 
+    getAttendById,
+    deleteAttendance 
 } = require('../controllers/attendController');
 
 router
@@ -19,6 +20,7 @@ router
     .route('/:id')
     .get(authenticateUser, getAttendById)
     .patch(authenticateUser, modifyAttendance)
+    .delete(authenticateUser, deleteAttendance)
 
 router
     .route('/employee/:id')

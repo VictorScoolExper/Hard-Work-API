@@ -19,6 +19,9 @@ const getAttendByDate =  async (req, res) =>{
 const getAttendById =  async (req, res) =>{
     // get id from params
     const {id: attendance_id} = req.params;
+    if(!attendance_id){
+        throw new CustomError.BadRequestError('Invalid Data');
+    }
     //send data to db
     const attend_user = await Attendance.getAttendById(attendance_id);
 
@@ -26,15 +29,15 @@ const getAttendById =  async (req, res) =>{
 }
 
 const getAttendByEmployee =  async (req, res) =>{
-    const {} = req.params;
+    const {id: employee_id} = req.params;
     const {start_date, end_date} = req.body;
 
-    if(!start_date || !end_date){
+    if(!start_date || !end_date || !employee_id){
         throw new CustomError.BadRequestError('Invalid Data')
     }
 
-    const listEmployeeAttend = await Attendance.getAttendByEmployee();
-    res.status(StatusCodes.CREATED).json({msg: listEmployeeAttend});
+    const listEmployeeAttend = await Attendance.getAttendsOfEmployeeByRangeDate(start_date, end_date,employee_id);
+    res.status(StatusCodes.OK).json({msg: listEmployeeAttend});
 }
 
 // this adds if they attended the Shiftd work hours
@@ -53,8 +56,31 @@ const addAttendance = async (req, res) =>{
 
 // Modify attendance
 const modifyAttendance = async (req, res) =>{
-    res.status(StatusCodes.CREATED).json({msg: "Route modifyEmployeeAttendance"});
+    // get params 
+    const {id: attend_id} = req.params;
+    const {status} = req.body;
+    // validate params
+    if(!attend_id || !status){
+        throw new CustomError.BadRequestError('Invalid Data')
+    }
+    // send to db
+    await Attendance.modifyAttendance(attend_id, status);
+    res.status(StatusCodes.OK).json({msg: "Modified Correctly"});
 }
+
+const deleteAttendance = async (req, res) =>{
+    // get params 
+    const {id: attend_id} = req.params;
+
+    // validate params
+    if(!attend_id){
+        throw new CustomError.BadRequestError('Invalid Data')
+    }
+    // send to db
+    await Attendance.deleteAttendance(attend_id);
+    res.status(StatusCodes.OK).json({msg: "Deleted Correctly"});
+}
+
 
 module.exports = {
     addAttendance,
@@ -62,4 +88,5 @@ module.exports = {
     getAttendById,
     getAttendByDate,
     getAttendByEmployee,
+    deleteAttendance
 }
