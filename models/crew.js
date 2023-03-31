@@ -1,4 +1,3 @@
-
 const { db } = require("../db/connect");
 
 // employee is a list of employees
