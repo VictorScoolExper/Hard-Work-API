@@ -1,6 +1,6 @@
 class Address {
     constructor(address){
-        this.adress_id = address.adress_id;
+        this.address_id = address.address_id;
         this.street = address.street;
         this.city = address.city;
         this.state = address.state;

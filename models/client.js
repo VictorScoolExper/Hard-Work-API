@@ -22,7 +22,7 @@ class Client extends Address {
                 client.life_stage,
                 clientAddress
             ],(error, result)=>{
-                error ? reject(error) : resolve(result);
+                error ? reject(error) : resolve(result[0]);
             });
         })
     }
@@ -40,6 +40,37 @@ class Client extends Address {
             db.query('CALL sp_get_client_addresses(?)',clientId,(error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
+        })
+    }
+
+    static getClientById(clientId){
+        return new Promise((resolve, reject)=>{
+            db.query('CALL sp_get_client_info(?)',clientId,(error, result)=>{
+                error ? reject(error) : resolve(result[0][0]);
+            });
+        })
+    }
+    // recieves Client Id and Address id
+    static deleteById(clientId, addressId){
+        return new Promise((resolve, reject)=>{
+            db.query('CALL sp_delete_address(?,?)',[clientId,addressId],(error, result)=>{
+                error ? reject(error) : resolve(result[0]);
+            });
+        })
+    }
+
+    static modifyClient(client){
+        return new Promise((resolve, reject)=>{
+            db.query('CALL sp_update_client(?,?,?,?,?,?)', [
+                client.client_id, 
+                client.first_name,
+                client.last_name,
+                client.email,
+                client.cell_number,
+                client.life_stage
+            ], (error, result)=>{
+                error ? reject(error) : resolve(result[0]);
+            })
         })
     }
 
