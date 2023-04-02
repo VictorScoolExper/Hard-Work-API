@@ -34,6 +34,7 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
+    "validator": "^13.9.0",
     "xss-clean": "^0.1.1"
   },
   "engines": {

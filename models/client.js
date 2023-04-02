@@ -74,6 +74,20 @@ class Client extends Address {
         })
     }
 
+    static modifyAddress(address){
+        return new Promise((resolve, reject)=>{
+            db.query('CALL sp_modify_address(?,?,?,?,?,?)', [
+                address.address_id,
+                address.street,
+                address.city,
+                address.state,
+                address.zip_code,
+                address.country
+            ], (error, result)=>{
+                error ? reject(error) : resolve(result);
+            })
+        })
+    }
 }
 
 module.exports = Client;

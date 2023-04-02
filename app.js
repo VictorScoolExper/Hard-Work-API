@@ -24,6 +24,9 @@ const crewRoutes = require('./routes/crewRoutes');
 const attendanceRoutes = require('./routes/attendRoutes');
 const shiftRoutes = require('./routes/shiftRoutes');
 const clientRoutes = require('./routes/clientRoutes');
+const vendorRoutes = require('./routes/vendorRoutes');
+const companyRoutes = require('./routes/companyRoutes');
+
 
 
 // middleware
@@ -47,7 +50,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser(process.env.JWT_SECRET));
 
 app.get('/', (req, res)=>{    
-    res.send('e-commerce api');
+    res.send('Hard Work api');
 });
 
 
@@ -57,6 +60,8 @@ app.use('/api/v1/hr/crew', crewRoutes);
 app.use('/api/v1/hr/attend', attendanceRoutes);
 app.use('/api/v1/hr/shift', shiftRoutes);
 app.use('/api/v1/crm/client', clientRoutes);
+app.use('/api/v1/crm/vendor', vendorRoutes);
+app.use('/api/v1/company', companyRoutes);
 
 
 app.use(notFoundMiddleware);
