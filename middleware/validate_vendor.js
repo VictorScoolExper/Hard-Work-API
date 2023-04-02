@@ -12,8 +12,8 @@ const validateAddVendorParams = async (req, res, next) => {
     errors.last_name = 'Last name is required and must contain only letters';
   }
 
-  if (!params.company || !validator.isInt(params.company)) {
-    errors.last_name = 'Company is required and must contain only numbers';
+  if (!params.company_id || !Number.isInteger(params.company_id)) {
+    errors.company_id = 'Company Id is required and must contain only numbers';
   }
 
   if (!params.email || !validator.isEmail(params.email)) {

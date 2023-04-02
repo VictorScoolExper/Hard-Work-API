@@ -24,23 +24,37 @@ class Company {
   }
 
   // get all companies
-  static getAllCompanies(){
+  static getAllCompanies() {
     return new Promise((resolve, reject) => {
-        db.query("CALL sp_get_all_companies()", (error, result) => {
-          error ? reject(error) : resolve(result[0]);
-        });
+      db.query("CALL sp_get_all_companies()", (error, result) => {
+        error ? reject(error) : resolve(result[0]);
+      });
     });
   }
 
   // update company
-  static updateCompany(id, name){
+  static updateCompany(id, name) {
     return new Promise((resolve, reject) => {
-        db.query("CALL sp_update_company(?,?)", [id, name], (error, result) => {
-          error ? reject(error) : resolve(result);
-        });
+      db.query("CALL sp_update_company(?,?)", [id, name], (error, result) => {
+        error ? reject(error) : resolve(result);
+      });
     });
   }
 
+  // checks if company exists
+  static checkCompanyExistence(id) {
+    return new Promise((resolve, reject) => {
+      db.query(
+        "CALL sp_check_company_exists(?)",
+        [id],
+        (error, result) => {
+          error
+            ? reject(error)
+            : resolve(result[0][0]["EXISTS(SELECT 1 FROM companies WHERE company_id = p_company_id)"])
+        }
+      );
+    });
+  }
 }
 
 module.exports = Company;
