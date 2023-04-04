@@ -24,7 +24,7 @@ router
     .patch(authenticateUser, modifyClient) 
     .delete(authenticateUser, deleteAddress);
  
-// get list of address by client id 
+// get list of address/addresses by client id 
 router
     .route('/address/:id')
     .get(authenticateUser, getAddressById)
