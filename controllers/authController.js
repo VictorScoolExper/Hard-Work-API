@@ -29,6 +29,7 @@ const login = async (req, res) =>{
     res.status(StatusCodes.OK).json(tokenUser);
 }
 
+// TODO: eliminate function
 const register = async (req, res) =>{
     const {name, last_name, cell_number, role, age, email, password} = req.body;
 

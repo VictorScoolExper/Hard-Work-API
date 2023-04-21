@@ -15,7 +15,7 @@ const User = function (user) {
   this.created_at = new Date();
 };
 
-User.getUserInfo = (email, results) => {
+User.getUserInfo = (email) => {
   return new Promise((resolve, reject) => {
     db.query(
       "CALL sp_get_user_auth(?);",
