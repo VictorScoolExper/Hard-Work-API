@@ -48,14 +48,8 @@ const createEmployee = async (req, res) => {
 };
 // TODO: return with ids
 const getAllEmployee = async (req, res) => {
-  const {is_active} = req.body;
-
-  if(is_active !== "false" && is_active !== 'true'){
-    throw new CustomError.BadRequestError('Choose a correct active status');
-  }
-
-  const allEmployees = await Employee.getAllEmployeeByActive(is_active);
-  res.status(StatusCodes.CREATED).json({ list: allEmployees, totalEmployee: allEmployees.length});
+  const allEmployees = await Employee.getAllEmployee();
+  res.status(StatusCodes.CREATED).json({ listEmployees: allEmployees, totalEmployees: allEmployees.length});
 };
 
 const getSingleEmployee = async (req, res) => {

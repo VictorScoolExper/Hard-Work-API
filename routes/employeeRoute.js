@@ -13,13 +13,18 @@ const {
 router
     .route('/')
     .post(authenticateUser, createEmployee)
-    .get(authenticateUser, getAllEmployee);
+    .get(authenticateUser, getAllEmployee);;
+
+// router
+//     .route('/employee/:is_active')
+//     .get(authenticateUser, getAllEmployee);
 
 router
     .route('/:id')
     .get(authenticateUser, getSingleEmployee)
     .patch(authenticateUser, updateEmployee)
     .delete(authenticateUser, deleteEmployee);
+
 
 
 module.exports = router;

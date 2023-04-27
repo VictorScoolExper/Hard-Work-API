@@ -37,9 +37,9 @@ class Employee extends User {
     });
   }
 
-  static getAllEmployeeByActive(is_active) {
+  static getAllEmployee(is_active) {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_get_employee_list(?)", is_active,
+      db.query("CALL sp_get_employee_list()", is_active,
       (error, result) => {
         return error ? reject(error) : resolve(result[0]);
       });

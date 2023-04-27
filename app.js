@@ -62,12 +62,12 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/hr/employee", employeeRoutes);
-app.use("/api/v1/hr/crew", crewRoutes);
-app.use("/api/v1/hr/attend", attendanceRoutes);
-app.use("/api/v1/hr/shift", shiftRoutes);
-app.use("/api/v1/crm/client", clientRoutes);
-app.use("/api/v1/crm/vendor", vendorRoutes);
+app.use("/api/v1/employee", employeeRoutes);
+app.use("/api/v1/crew", crewRoutes);
+app.use("/api/v1/attend", attendanceRoutes);
+app.use("/api/v1/shift", shiftRoutes);
+app.use("/api/v1/client", clientRoutes);
+app.use("/api/v1/vendor", vendorRoutes);
 app.use("/api/v1/company", companyRoutes);
 
 app.use(notFoundMiddleware);
