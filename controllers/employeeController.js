@@ -49,7 +49,7 @@ const createEmployee = async (req, res) => {
 // TODO: return with ids
 const getAllEmployee = async (req, res) => {
   const allEmployees = await Employee.getAllEmployee();
-  res.status(StatusCodes.CREATED).json({ listEmployees: allEmployees, totalEmployees: allEmployees.length});
+  res.status(StatusCodes.CREATED).json({ employees: allEmployees, total_employees: allEmployees.length});
 };
 
 const getSingleEmployee = async (req, res) => {
