@@ -76,9 +76,14 @@ const logout = async (req, res)=>{
     res.status(StatusCodes.OK).json({msg: 'user logged out!'});
 }
 
+const checkPermission = (req, res) =>{
+    res.status(StatusCodes.OK).json({valid: 'true'});
+}
+
 module.exports = {
     login,
     register, 
-    logout
+    logout,
+    checkPermission
 }
 
