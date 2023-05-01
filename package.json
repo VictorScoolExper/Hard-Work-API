@@ -4,7 +4,7 @@
   "description": "This api was created for Hard Work ERP",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "dev": "nodemon index.js"
   },
   "repository": {
@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/VictorScoolExper/Hard-Work-API#readme",
   "devDependencies": {
+    "chai": "^4.3.7",
     "dotenv": "^16.0.3",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.21"
   },
   "dependencies": {
