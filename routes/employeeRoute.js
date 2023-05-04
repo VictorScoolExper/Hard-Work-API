@@ -7,17 +7,19 @@ const {
     getAllEmployee,
     getSingleEmployee,
     updateEmployee,
-    deleteEmployee
+    deleteEmployee,
+    getEmployeeImage
 } = require('../controllers/employeeController');
+const { checkPermission } = require('../controllers/authController');
 
 router
     .route('/')
     .post(authenticateUser, createEmployee)
-    .get(authenticateUser, getAllEmployee);;
+    .get(authenticateUser, getAllEmployee);
 
-// router
-//     .route('/employee/:is_active')
-//     .get(authenticateUser, getAllEmployee);
+router
+    .route('/employee/image/:file')
+    .get(checkPermission, getEmployeeImage)
 
 router
     .route('/:id')

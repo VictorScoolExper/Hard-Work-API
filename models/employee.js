@@ -16,7 +16,7 @@ class Employee extends User {
     this.updated_by = employee.updated_by;
   }
   // TODO apply the Employee class
-  static createEmployeeUser(employee) {
+  static createEmployeeUser (employee) {
     return new Promise((resolve, reject) => {
       db.query("CALL sp_insert_employee(?,?,?,?,?,?,?,?,?,?,?)", 
       [
@@ -25,6 +25,7 @@ class Employee extends User {
         employee.cell_number,
         employee.role,
         employee.age,
+        employee.imageLocation,
         employee.job_title,
         employee.department,
         employee.driver_license,

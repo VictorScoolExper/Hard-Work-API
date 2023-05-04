@@ -4,6 +4,9 @@ require("express-async-errors");
 const express = require("express");
 const app = express();
 
+// file handler
+const fileUpload = require('express-fileupload');
+
 //rest of packages
 const config = require("./config");
 const morgan = require("morgan");
@@ -50,6 +53,8 @@ app.use(
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(xss());
+
+app.use(fileUpload);
 
 // middleware
 app.use(morgan("dev"));
