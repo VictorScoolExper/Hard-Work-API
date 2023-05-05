@@ -1,8 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 const Employee = require("../models/employee");
-const { uploadImageLocal } = require("../utils/image_handler");
-const fs = require("fs");
+
+const config = require('../config');
+const { S3Client } = require("@aws-sdk/client-s3");
 
 const createEmployee = async (req, res) => {
   // const {
@@ -42,11 +43,9 @@ const createEmployee = async (req, res) => {
   //   throw new CustomError.BadRequestError('No file uploaded!');
   // }
 
-  // const imageLocation = (await uploadImageLocal("employee", req.files)).imageSrc;
-
   // const employee = {
   //   ...req.body,
-  //   iamge: req.files,
+  //   image: req.files,
   //   created_by,
   // }
 
@@ -56,7 +55,12 @@ const createEmployee = async (req, res) => {
   //   throw new CustomError.BadRequestError("Was not created correctly");
   // }
 
-  res.status(StatusCodes.CREATED).json({ msg: req.body });
+  console.log("req.file: " , req.file);
+  console.log("req.body", req.body);
+
+  req.file.buffer
+
+  res.status(StatusCodes.CREATED).json({ msg: "hello test" });
   // .json({ emp: employee });
 };
 

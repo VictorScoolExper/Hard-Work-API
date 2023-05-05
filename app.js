@@ -4,14 +4,10 @@ require("express-async-errors");
 const express = require("express");
 const app = express();
 
-// file handler
-const fileUpload = require('express-fileupload');
-
 //rest of packages
 const config = require("./config");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const fileUpload = require("express-fileupload");
 const rateLimiter = require("express-rate-limit");
 const helmet = require("helmet");
 const xss = require("xss-clean");
@@ -41,6 +37,7 @@ const companyRoutes = require("./routes/companyRoutes");
 // middleware
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandleMiddleware = require("./middleware/error-handler");
+const { checkPermission } = require("./controllers/authController");
 
 app.set("trust proxy", 1);
 app.use(
@@ -53,8 +50,6 @@ app.use(
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(xss());
-
-app.use(fileUpload);
 
 // middleware
 app.use(morgan("dev"));
@@ -77,5 +72,6 @@ app.use("/api/v1/company", companyRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandleMiddleware);
+
 
 module.exports = app;
