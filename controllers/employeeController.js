@@ -213,9 +213,16 @@ const updateEmployee = async (req, res) => {
 
 //  for now this will not be used
 const deleteEmployee = async (req, res) => {
+  const { id: employeeId } = req.params;
+  if(!Number.isInteger(employeeId)){
+    throw new CustomError.BadRequestError('The employee id is invalid')
+  }
+
+  await Employee.deleteEmployee(employeeId);
+
   res
     .status(StatusCodes.CREATED)
-    .json({ msg: "This route will not be used for now" });
+    .json({ msg: 'The employee with id: ' + employeeId + ' was deleted' });
 };
 
 module.exports = {

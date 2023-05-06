@@ -83,6 +83,16 @@ class Employee extends User {
       });
     });
   }
+
+  // delete employee and user info
+  static employee_delete(employeeId){
+    return new Promise((resolve, reject) => {
+      db.query('CALL sp_delete_employee_and_user(?)', employeeId,
+      (error, result) => {
+        return error ? reject(error) : resolve(result);
+      });
+    })
+  }
 }
 
 module.exports = Employee;

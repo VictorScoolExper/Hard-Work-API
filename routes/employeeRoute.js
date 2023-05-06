@@ -7,8 +7,7 @@ const {
     getAllEmployee,
     getSingleEmployee,
     updateEmployee,
-    deleteEmployee,
-    getEmployeeImage
+    deleteEmployee
 } = require('../controllers/employeeController');
 
 const {middlewareUploadImage} = require('../utils/image_handler');
@@ -18,9 +17,6 @@ router
     .post(authenticateUser, middlewareUploadImage, createEmployee)
     .get(authenticateUser, getAllEmployee);
 
-// router
-//     .route('/employee/image/:file')
-//     .get(checkPermission, getEmployeeImage)
 
 router
     .route('/:id')
