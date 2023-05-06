@@ -18,9 +18,9 @@ module.exports = {
         NODE_ENV: process.env.NODE_ENV || 'production' 
     },
     aws: {
-        S3_BUCKET: process.env.S3_BUCKET_NAME,
-        BUCKET_REGION: process.env.BUCKET_REGION,
-        ACCESS_KEY: process.env.ACCESS_KEY,
-        SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY
+        bucketName: process.env.BUCKET_NAME,
+        bucketRegion: process.env.BUCKET_REGION,
+        accessKey: process.env.ACCESS_KEY,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY
     }
 }

@@ -2,86 +2,136 @@ const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 const Employee = require("../models/employee");
 
-const config = require('../config');
-const { S3Client } = require("@aws-sdk/client-s3");
+const config = require("../config");
+const {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+const crypto = require("crypto");
+const sharp = require("sharp");
+const e = require("express");
+
+const randomImageName = (bytes = 32) =>
+  crypto.randomBytes(bytes).toString("hex");
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: config.aws.accessKey,
+    secretAccessKey: config.aws.secretAccessKey,
+  },
+  region: config.aws.bucketRegion,
+});
 
 const createEmployee = async (req, res) => {
-  // const {
-  //   name,
-  //   last_name,
-  //   cell_number,
-  //   role,
-  //   age,
-  //   email,
-  //   job_title,
-  //   department,
-  //   driver_license,
-  //   start_date,
-  //   wage_per_hour,
-  // } = req.body;
+  const {
+    name,
+    last_name,
+    cell_number,
+    role,
+    age,
+    email,
+    job_title,
+    department,
+    driver_license,
+    start_date,
+    wage_per_hour,
+    created_by,
+  } = req.body;
 
-  // const created_by = req.user.userId;
-  // if (
-  //   !name ||
-  //   !last_name ||
-  //   !cell_number ||
-  //   !role ||
-  //   !age ||
-  //   !email ||
-  //   !job_title ||
-  //   !department ||
-  //   !driver_license ||
-  //   !start_date ||
-  //   !wage_per_hour ||
-  //   !created_by
-  // ) {
-  //   throw new CustomError.BadRequestError(`Please include all the information`);
-  // }
+  if (
+    !name ||
+    !last_name ||
+    !cell_number ||
+    !role ||
+    !age ||
+    !email ||
+    !job_title ||
+    !department ||
+    !driver_license ||
+    !start_date ||
+    !wage_per_hour ||
+    !created_by
+  ) {
+    throw new CustomError.BadRequestError(`Please include all the information`);
+  }
 
-  // // check if file exists
-  // if(!req.files){
-  //   throw new CustomError.BadRequestError('No file uploaded!');
-  // }
+  // check if file exists
+  if (!req.file) {
+    throw new CustomError.BadRequestError("No file uploaded!");
+  }
 
-  // const employee = {
-  //   ...req.body,
-  //   image: req.files,
-  //   created_by,
-  // }
+  // resize image and then convert to buffer
+  const buffer = await sharp(req.file.buffer)
+    .resize({ height: 800, width: 800, fit: "contain" })
+    .toBuffer();
 
-  // const employeeRes = await Employee.createEmployeeUser(employee);
+  const imageName = randomImageName();
 
-  // if (employeeRes.affectedRows === 0) {
-  //   throw new CustomError.BadRequestError("Was not created correctly");
-  // }
+  const params = {
+    Bucket: config.aws.bucketName,
+    // The name of the file
+    // Key: req.file.originalname,
+    Key: imageName,
+    // The buffer is the image
+    // Body: req.file.buffer,
+    Body: buffer,
+    // we set the type
+    ContentType: req.file.mimetype,
+  };
 
-  console.log("req.file: " , req.file);
-  console.log("req.body", req.body);
+  const command = new PutObjectCommand(params);
 
-  req.file.buffer
+  await s3.send(command);
 
-  res.status(StatusCodes.CREATED).json({ msg: "hello test" });
-  // .json({ emp: employee });
-};
+  const employee = {
+    name,
+    last_name,
+    cell_number,
+    role,
+    age: Number(age),
+    email,
+    job_title,
+    department,
+    driver_license,
+    start_date,
+    wage_per_hour: Number(wage_per_hour),
+    created_by: Number(created_by),
+    imageName,
+  };
 
-const getEmployeeImage = (req, res) => {
-  const filename = req.params.filename;
-  const imagePath = path.join(__dirname, "file/employee_images", filename);
+  const employeeRes = await Employee.createEmployeeUser(employee);
 
-  // Check if file exists
-  if (fs.existsSync(imagePath)) {
-    // Serve image if user has permissions
-    res.sendFile(imagePath);
-  } 
-  
-  res.status(404).json({ message: "Image not found" });
+  if (employeeRes.affectedRows === 0) {
+    throw new CustomError.BadRequestError("Was not created correctly");
+  }
+
+  res.status(StatusCodes.CREATED).json({ msg: "created new employee" });
 };
 
 // TODO: return with ids
 const getAllEmployee = async (req, res) => {
   const allEmployees = await Employee.getAllEmployee();
+
+  for (const employee of allEmployees) {
+    if (employee.image) {
+      const getObjectParams = {
+        Bucket: config.aws.bucketName,
+        Key: employee.image,
+      };
+      const command = new GetObjectCommand(getObjectParams);
+      const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+      employee.imageUrl = url;
+      console.log(url)
+    } else {
+      employee.imageUrl = null;
+    }
+  }
+
   res
-    .status(StatusCodes.CREATED)
+    .status(StatusCodes.OK)
     .json({ employees: allEmployees, total_employees: allEmployees.length });
 };
 
@@ -174,5 +224,4 @@ module.exports = {
   getSingleEmployee,
   updateEmployee,
   deleteEmployee,
-  getEmployeeImage
 };
