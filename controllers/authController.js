@@ -31,9 +31,9 @@ const login = async (req, res) =>{
 
 // TODO: eliminate function
 const register = async (req, res) =>{
-    const {name, last_name, cell_number, role, age, email, password} = req.body;
+    const {name, last_name, cell_number, role, birth_date, email, password} = req.body;
 
-    if(!name || !last_name || !cell_number || !age || !email || !password){
+    if(!name || !last_name || !cell_number || !birth_date || !email || !password){
         throw new CustomError.BadRequestError('Please provide all the details');
     }
 
@@ -52,15 +52,17 @@ const register = async (req, res) =>{
     // here we must hash password before saving password
     const newPassword = await bcrypt.hash(password.toString(), 10);
     
-    const user = await User.createUser({
-        name, 
-        last_name,
+    const newUser = {
+        name: name.toLowerCase(), 
+        last_name: last_name.toLowerCase(),
         cell_number,
-        role,
-        age,
+        role: role.toLowerCase(),
+        birth_date,
         email,
         password: newPassword
-    });
+    }
+
+    const user = await User.createUser(newUser);
     
     const tokenUser = createTokenUser(user);
     

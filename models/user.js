@@ -8,7 +8,7 @@ const User = function (user) {
   this.last_name = user.last_name;
   this.cell_number = user.cell_number;
   this.role = user.role;
-  this.age = user.age;
+  this.birth_date = user.birth_date
   this.active = user.active;
   this.email = user.email;
   this.password = user.password;
@@ -80,7 +80,7 @@ User.createUser = (data) => {
         data.last_name,
         data.cell_number,
         data.role,
-        data.age,
+        data.birth_date,
         data.email,
         data.password,
       ],

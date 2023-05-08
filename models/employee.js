@@ -6,6 +6,7 @@ class Employee extends User {
   constructor(employee) {
     super(employee);
     this.employee_id = employee.employee_id;
+    this.image_name = employee.image_name;
     this.job_title = employee.job_title;
     this.department = employee.department;
     this.driver_license = employee.driver_license;
@@ -24,7 +25,7 @@ class Employee extends User {
         employee.last_name,
         employee.cell_number,
         employee.role,
-        employee.age,
+        employee.birth_date,
         employee.imageName,
         employee.job_title,
         employee.department,
@@ -38,9 +39,9 @@ class Employee extends User {
     });
   }
 
-  static getAllEmployee(is_active) {
+  static getAllEmployee() {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_get_employee_list()", is_active,
+      db.query("CALL sp_get_employee_list()",
       (error, result) => {
         return error ? reject(error) : resolve(result[0]);
       });
@@ -49,28 +50,30 @@ class Employee extends User {
   
   static getSingleEmployee(employee_id){
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_get_employee_by_id(?, @name, @last_name, @cell_number, @role, @age, @active,@job_title, @department, @driver_license, @start_date, @end_date, @wage_per_hour)", 
+      db.query("CALL sp_get_employee_by_id(?, @p_name, @p_last_name, @p_cell_number, @p_role, @p_birth_date, @p_active, @p_image_name, @p_job_title, @p_department, @p_driver_license, @p_start_date, @p_end_date,  @p_wage_per_hour)", 
       employee_id,
       (error, result) => {
-        error ? reject(error) : db.query("SELECT @name, @last_name, @cell_number, @role, @age, @active, @job_title, @department, @driver_license, @start_date, @end_date, @wage_per_hour;",
+        error ? reject(error) : db.query("SELECT @p_name, @p_last_name, @p_cell_number, @p_role, @p_birth_date, @p_active, @p_image_name, @p_job_title, @p_department, @p_driver_license, @p_start_date, @p_end_date, @p_wage_per_hour;",
         (error, result) =>{
           error ? reject(error) : resolve(result[0])
         });
       });
     });
   }
+
   // This one has used Employee class
   static employeeUpdated(employee){
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_update_employee_details(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+      db.query("CALL sp_update_employee_details(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
       [
         employee.employee_id,
-        employee.name,
-        employee.last_name,
+        employee.name.toLowerCase(),
+        employee.last_name.toLowerCase(),
         employee.cell_number,
-        employee.role,
-        employee.age,
+        employee.role.toLowerCase(),
+        employee.birth_date,
         employee.active,
+        employee.image_name,
         employee.job_title,
         employee.department,
         employee.driver_license,
@@ -85,7 +88,7 @@ class Employee extends User {
   }
 
   // delete employee and user info
-  static employee_delete(employeeId){
+  static deleteEmployee(employeeId){
     return new Promise((resolve, reject) => {
       db.query('CALL sp_delete_employee_and_user(?)', employeeId,
       (error, result) => {

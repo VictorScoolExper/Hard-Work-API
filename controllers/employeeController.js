@@ -7,6 +7,7 @@ const {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectCommand,
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
@@ -31,7 +32,7 @@ const createEmployee = async (req, res) => {
     last_name,
     cell_number,
     role,
-    age,
+    birth_date,
     email,
     job_title,
     department,
@@ -46,7 +47,7 @@ const createEmployee = async (req, res) => {
     !last_name ||
     !cell_number ||
     !role ||
-    !age ||
+    !birth_date ||
     !email ||
     !job_title ||
     !department ||
@@ -65,7 +66,7 @@ const createEmployee = async (req, res) => {
 
   // resize image and then convert to buffer
   const buffer = await sharp(req.file.buffer)
-    .resize({ height: 800, width: 800, fit: "contain" })
+    .resize({ height: 1800, width: 1200, fit: "contain" })
     .toBuffer();
 
   const imageName = randomImageName();
@@ -87,14 +88,14 @@ const createEmployee = async (req, res) => {
   await s3.send(command);
 
   const employee = {
-    name,
-    last_name,
+    name: name.toLowerCase(),
+    last_name: last_name.toLowerCase(),
     cell_number,
-    role,
-    age: Number(age),
+    role: role.toLowerCase(),
+    birth_date,
     email,
-    job_title,
-    department,
+    job_title: job_title.toLowerCase(),
+    department: department.toLowerCase(),
     driver_license,
     start_date,
     wage_per_hour: Number(wage_per_hour),
@@ -116,15 +117,15 @@ const getAllEmployee = async (req, res) => {
   const allEmployees = await Employee.getAllEmployee();
 
   for (const employee of allEmployees) {
-    if (employee.image) {
+    if (employee.image_name) {
       const getObjectParams = {
         Bucket: config.aws.bucketName,
-        Key: employee.image,
+        Key: employee.image_name,
       };
       const command = new GetObjectCommand(getObjectParams);
       const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
       employee.imageUrl = url;
-      console.log(url)
+      // console.log(url)
     } else {
       employee.imageUrl = null;
     }
@@ -156,7 +157,7 @@ const updateEmployee = async (req, res) => {
     last_name,
     cell_number,
     role,
-    age,
+    birth_date,
     active,
     job_title,
     department,
@@ -170,7 +171,7 @@ const updateEmployee = async (req, res) => {
     !last_name ||
     !cell_number ||
     !role ||
-    !age ||
+    !birth_date ||
     !active ||
     !job_title ||
     !department ||
@@ -188,7 +189,7 @@ const updateEmployee = async (req, res) => {
     last_name,
     cell_number,
     role,
-    age,
+    birth_date,
     active,
     employee_id: employeeId,
     job_title,
@@ -214,15 +215,36 @@ const updateEmployee = async (req, res) => {
 //  for now this will not be used
 const deleteEmployee = async (req, res) => {
   const { id: employeeId } = req.params;
-  if(!Number.isInteger(employeeId)){
+  
+  if(!Number.isInteger(parseInt(employeeId))){
     throw new CustomError.BadRequestError('The employee id is invalid')
   }
+
+  const employee = await Employee.getSingleEmployee(employeeId);
+
+  if(employee['@p_name'] === null){
+    throw new CustomError.BadRequestError('The employee does not exist')
+  }
+
+  // if the employee image exists
+  if(employee['@p_image_name']){
+    // delete it from the bucket
+    const params = {
+      Bucket: config.aws.bucketName,
+      Key: employee['@p_image_name']
+    }
+
+    const command = new DeleteObjectCommand(params);
+    await s3.send(command);
+  }
+
+  // console.log(employee['@p_image_name']);
 
   await Employee.deleteEmployee(employeeId);
 
   res
     .status(StatusCodes.CREATED)
-    .json({ msg: 'The employee with id: ' + employeeId + ' was deleted' });
+    .json({ msg: `The employee ${employee['@p_name']}  ${employee['@p_last_name']} with id: ` + employeeId + ' was deleted' });
 };
 
 module.exports = {
