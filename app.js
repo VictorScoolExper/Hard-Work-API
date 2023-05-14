@@ -19,7 +19,7 @@ app.set("port", config.app.port);
 //  Cors configuration
 const corsOptions = {
   origin: "http://localhost:3000", // Set the specific origin
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true, // Allow credentials
 };

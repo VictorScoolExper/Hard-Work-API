@@ -21,7 +21,7 @@ router
 router
     .route('/:id')
     .get(authenticateUser, getSingleEmployee)
-    .patch(authenticateUser, updateEmployee)
+    .put(authenticateUser, middlewareUploadImage, updateEmployee)
     .delete(authenticateUser, deleteEmployee);
 
 

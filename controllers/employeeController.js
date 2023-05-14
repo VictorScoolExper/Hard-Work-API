@@ -151,7 +151,7 @@ const getSingleEmployee = async (req, res) => {
 // This function might replace our delete function, becuase we not delete user just inactive them
 const updateEmployee = async (req, res) => {
   const { id: employeeId } = req.params;
-  const updated_by = req.user.userId;
+  
   const {
     name,
     last_name,
@@ -163,9 +163,12 @@ const updateEmployee = async (req, res) => {
     department,
     driver_license,
     start_date,
-    end_date,
     wage_per_hour,
+    created_by,
+    email,
+    image_name
   } = req.body;
+
   if (
     !name ||
     !last_name ||
@@ -177,11 +180,36 @@ const updateEmployee = async (req, res) => {
     !department ||
     !driver_license ||
     !start_date ||
-    !wage_per_hour
+    !wage_per_hour ||
+    !email ||
+    !image_name ||
+    !created_by
   ) {
     throw new CustomError.BadRequestError(
       "Please provide all the neccesary data."
     );
+  }
+
+  if (req.file) {
+    const buffer = await sharp(req.file.buffer)
+      .resize({ height: 1800, width: 1200, fit: "contain" })
+      .toBuffer();
+
+    const params = {
+      Bucket: config.aws.bucketName,
+      // The name of the file
+      // Key: req.file.originalname,
+      Key: image_name,
+      // The buffer is the image
+      // Body: req.file.buffer,
+      Body: buffer,
+      // we set the type
+      ContentType: req.file.mimetype,
+    };
+
+    const command = new PutObjectCommand(params);
+
+    await s3.send(command);
   }
 
   const employee = new Employee({
@@ -196,16 +224,13 @@ const updateEmployee = async (req, res) => {
     department,
     driver_license,
     start_date,
-    end_date,
     wage_per_hour,
-    updated_by,
+    edited_by: created_by,
+    email,
+    image_name
   });
 
-  const employeeUpdated = await Employee.employeeUpdated(employee);
-
-  if (employeeUpdated.affectedRows > 1) {
-    throw new CustomError.BadRequestError("Updated failed");
-  }
+  await Employee.employeeUpdated(employee);
 
   res
     .status(StatusCodes.CREATED)
@@ -215,24 +240,24 @@ const updateEmployee = async (req, res) => {
 //  for now this will not be used
 const deleteEmployee = async (req, res) => {
   const { id: employeeId } = req.params;
-  
-  if(!Number.isInteger(parseInt(employeeId))){
-    throw new CustomError.BadRequestError('The employee id is invalid')
+
+  if (!Number.isInteger(parseInt(employeeId))) {
+    throw new CustomError.BadRequestError("The employee id is invalid");
   }
 
   const employee = await Employee.getSingleEmployee(employeeId);
 
-  if(employee['@p_name'] === null){
-    throw new CustomError.BadRequestError('The employee does not exist')
+  if (employee["@p_name"] === null) {
+    throw new CustomError.BadRequestError("The employee does not exist");
   }
 
   // if the employee image exists
-  if(employee['@p_image_name']){
+  if (employee["@p_image_name"]) {
     // delete it from the bucket
     const params = {
       Bucket: config.aws.bucketName,
-      Key: employee['@p_image_name']
-    }
+      Key: employee["@p_image_name"],
+    };
 
     const command = new DeleteObjectCommand(params);
     await s3.send(command);
@@ -244,7 +269,12 @@ const deleteEmployee = async (req, res) => {
 
   res
     .status(StatusCodes.CREATED)
-    .json({ msg: `The employee ${employee['@p_name']}  ${employee['@p_last_name']} with id: ` + employeeId + ' was deleted' });
+    .json({
+      msg:
+        `The employee ${employee["@p_name"]}  ${employee["@p_last_name"]} with id: ` +
+        employeeId +
+        " was deleted",
+    });
 };
 
 module.exports = {

@@ -11,7 +11,6 @@ class Employee extends User {
     this.department = employee.department;
     this.driver_license = employee.driver_license;
     this.start_date = employee.start_date;
-    this.end_date = employee.end_date;
     this.wage_per_hour = employee.wage_per_hour;
     this.created_by = employee.created_by;
     this.updated_by = employee.updated_by;
@@ -19,7 +18,7 @@ class Employee extends User {
   // TODO apply the Employee class
   static createEmployeeUser (employee) {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_insert_employee(?,?,?,?,?,?,?,?,?,?,?,?)", 
+      db.query("CALL sp_insert_employee(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
       [
         employee.name,
         employee.last_name,
@@ -32,7 +31,8 @@ class Employee extends User {
         employee.driver_license,
         employee.start_date,
         employee.wage_per_hour,
-        employee.created_by
+        employee.created_by,
+        employee.email
       ], (error, result) => {
         return error ? reject(error) : resolve(result);
       });
@@ -50,10 +50,10 @@ class Employee extends User {
   
   static getSingleEmployee(employee_id){
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_get_employee_by_id(?, @p_name, @p_last_name, @p_cell_number, @p_role, @p_birth_date, @p_active, @p_image_name, @p_job_title, @p_department, @p_driver_license, @p_start_date, @p_end_date,  @p_wage_per_hour)", 
+      db.query("CALL sp_get_employee_by_id(?, @p_name, @p_last_name, @p_cell_number, @p_role, @p_birth_date, @p_active, @p_image_name, @p_job_title, @p_department, @p_driver_license, @p_start_date,  @p_wage_per_hour, @p_email)", 
       employee_id,
       (error, result) => {
-        error ? reject(error) : db.query("SELECT @p_name, @p_last_name, @p_cell_number, @p_role, @p_birth_date, @p_active, @p_image_name, @p_job_title, @p_department, @p_driver_license, @p_start_date, @p_end_date, @p_wage_per_hour;",
+        error ? reject(error) : db.query("SELECT @p_name, @p_last_name, @p_cell_number, @p_role, @p_birth_date, @p_active, @p_image_name, @p_job_title, @p_department, @p_driver_license, @p_start_date, @p_wage_per_hour, @p_email;",
         (error, result) =>{
           error ? reject(error) : resolve(result[0])
         });
@@ -74,13 +74,13 @@ class Employee extends User {
         employee.birth_date,
         employee.active,
         employee.image_name,
-        employee.job_title,
+        employee.job_title.toLowerCase(),
         employee.department,
         employee.driver_license,
         employee.start_date, 
-        employee.end_date,
         employee.wage_per_hour,
-        employee.updated_by
+        employee.edited_by,
+        employee.email
       ], (error, result) => {
         return error ? reject(error) : resolve(result);
       });
