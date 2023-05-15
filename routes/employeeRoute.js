@@ -1,29 +1,34 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { authenticateUser } = require('../middleware/authentication');
+const {
+  authenticateUser,
+  validateCreateParamsEmployee,
+  validateUpdateParamsEmployee,
+  middlewareUploadImage,
+} = require("../middleware");
 
 const {
-    createEmployee,
-    getAllEmployee,
-    getSingleEmployee,
-    updateEmployee,
-    deleteEmployee
-} = require('../controllers/employeeController');
-
-const {middlewareUploadImage} = require('../utils/image_handler');
+  createEmployee,
+  getAllEmployee,
+  getSingleEmployee,
+  updateEmployee,
+  deleteEmployee,
+} = require("../controllers/employeeController");
 
 router
-    .route('/')
-    .post(authenticateUser, middlewareUploadImage, createEmployee)
-    .get(authenticateUser, getAllEmployee);
-
+  .route("/")
+  .post(
+    authenticateUser,
+    middlewareUploadImage,
+    validateCreateParamsEmployee,
+    createEmployee
+  )
+  .get(authenticateUser, getAllEmployee);
 
 router
-    .route('/:id')
-    .get(authenticateUser, getSingleEmployee)
-    .put(authenticateUser, middlewareUploadImage, updateEmployee)
-    .delete(authenticateUser, deleteEmployee);
-
-
+  .route("/:id")
+  .get(authenticateUser, getSingleEmployee)
+  .put(authenticateUser, middlewareUploadImage, validateUpdateParamsEmployee, updateEmployee)
+  .delete(authenticateUser, deleteEmployee);
 
 module.exports = router;

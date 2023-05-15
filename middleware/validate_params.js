@@ -59,7 +59,7 @@ const validateVendorParams = async (req, res, next) => {
     errors.last_name = "Last name is required and must contain only letters";
   }
 
-  if (!params.company_id || !Number.isInteger(params.company_id)) {
+  if (!params.company_id ||  !Number.isInteger(params.company_id)) {
     errors.company_id = "Company Id is required and must contain only numbers";
   }
 

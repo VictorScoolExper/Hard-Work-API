@@ -6,8 +6,16 @@ const {
   validateVendorParams,
   validateId,
 } = require("./validate_params");
+const {
+  validateCreateParamsEmployee,
+  validateUpdateParamsEmployee
+} = require("./validate_employee");
+const {
+  middlewareUploadImage
+} = require("./image_handler");
 
 module.exports = {
+  middlewareUploadImage,
   authenticateUser,
   authorizePermissions,
   errorHandlerMiddleware,
@@ -15,4 +23,6 @@ module.exports = {
   validateAddressParams,
   validateVendorParams,
   validateId,
+  validateCreateParamsEmployee,
+  validateUpdateParamsEmployee
 };
