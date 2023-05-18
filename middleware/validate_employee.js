@@ -7,7 +7,7 @@ const validateCreateParamsEmployee = async (req, res, next) =>{
   const convertedCreatedBy = parseInt(params.created_by);
 
   if(!params.name || !validator.isAlpha(params.name)){
-    errors.name = "Name is required or name must only be with alfabeltical values.";
+    errors.name = "Name is required or name must only be with alphabetical values.";
   }  
 
   if (!params.last_name || !validator.isAlpha(params.last_name)) {
@@ -23,7 +23,7 @@ const validateCreateParamsEmployee = async (req, res, next) =>{
   }
 
   if (!params.role || !validator.isAlpha(params.role)) {
-    errors.role = "Role is required and must contain only letters.";
+    errors.role = "Role is required and must contain only alphabetical values.";
   }
 
   if(!params.birth_date || !validator.isDate(params.birth_date)){
