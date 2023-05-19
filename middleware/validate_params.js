@@ -1,9 +1,9 @@
 const validator = require("validator");
 
-const validateAddressParams = async (req, res, next) => {
+const validateArrayAddressParams = async (req, res, next) => {
   const params = req.body;
   const errors = {};
-  
+
   if (!params.address || !Array.isArray(params.address) || !params.address[0]) {
     errors.address =
       "Addresses must be an array or must have at least one object";
@@ -47,32 +47,38 @@ const validateAddressParams = async (req, res, next) => {
   }
 };
 
-const validateVendorParams = async (req, res, next) => {
-  const params = req.body;
+const validateAddressParams = async (req, res, next) => {
+  const { address } = req.body;
   const errors = {};
 
-  if (!params.first_name || !validator.isAlpha(params.first_name)) {
-    errors.first_name = "First name is required and must contain only letters";
-  }
+  if (!address) {
+    errors.address =
+      "Addresses must be an array or must have at least one object";
+  } else if (address) {
+    if (!address.street) {
+      errors[`address[${index}].street`] =
+        "Street is required and must be alphanumeric";
+    }
 
-  if (!params.last_name || !validator.isAlpha(params.last_name)) {
-    errors.last_name = "Last name is required and must contain only letters";
-  }
+    if (!address.city || !validator.isAlpha(address.city)) {
+      errors[`address[${index}].city`] =
+        "City is required and must contain only letters";
+    }
 
-  if (!params.company_id ||  !Number.isInteger(params.company_id)) {
-    errors.company_id = "Company Id is required and must contain only numbers";
-  }
+    if (!address.state || !validator.isAlpha(address.state)) {
+      errors[`address[${index}].state`] =
+        "State is required and must contain only letters";
+    }
 
-  if (!params.email || !validator.isEmail(params.email)) {
-    errors.email = "Email is required and must be a valid email address";
-  }
+    if (!address.zip_code || !validator.isPostalCode(address.zip_code, "any")) {
+      errors[`address[${index}].zip_code`] =
+        "Zip code is required and must be a valid postal code";
+    }
 
-  if (
-    !params.cell_number ||
-    !validator.isMobilePhone(params.cell_number, "any")
-  ) {
-    errors.cell_number =
-      "Cell number is required and must be a valid phone number";
+    if (!address.country || !validator.isAlpha(address.country)) {
+      errors[`address[${index}].country`] =
+        "Country is required and must contain only letters";
+    }
   }
 
   if (Object.keys(errors).length > 0) {
@@ -100,6 +106,5 @@ const validateId = async (req, res, next) => {
 
 module.exports = {
   validateAddressParams,
-  validateVendorParams,
   validateId,
 };

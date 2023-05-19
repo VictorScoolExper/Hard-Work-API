@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   authenticateUser,
   validateId,
-  validateVendorParams,
+  // validateVendorParams,
   validateAddressParams,
 } = require("../middleware");
 
@@ -21,7 +21,7 @@ router
   .route("/")
   .post(
     authenticateUser,
-    validateVendorParams,
+    // validateVendorParams,
     validateAddressParams,
     addVendor
   )
@@ -37,6 +37,6 @@ router
 router
   .route("/:id")
   .get(authenticateUser, validateId, getSingleVendor)
-  .patch(authenticateUser, validateId, validateVendorParams, modifyVendor);
+  // .patch(authenticateUser, validateId, validateVendorParams, modifyVendor);
 
 module.exports = router;

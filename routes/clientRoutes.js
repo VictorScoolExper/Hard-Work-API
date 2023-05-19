@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateUser } = require('../middleware/authentication');
+const { authenticateUser, validateAddressParams, validateClientParams } = require('../middleware');
 
 const {
     createClient,
@@ -14,7 +14,7 @@ const {
 
 router
     .route('/')
-    .post(authenticateUser, createClient)
+    .post(authenticateUser,  validateClientParams, createClient)
     .get(authenticateUser, getAllClients)
 
 

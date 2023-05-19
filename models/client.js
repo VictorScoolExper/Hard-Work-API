@@ -5,22 +5,26 @@ class Client extends Address {
     constructor(client){
         super(client.address);
         this.client_id = client.client_id;
-        this.first_name = client.first_name;
+        this.name = client.name;
         this.last_name = client.last_name;
         this.email = client.email;
         this.cell_number = client.cell_number;
         this.life_stage = client.life_stage
     }
 
-    static addClient (client, clientAddress){
+    static addClient (client){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_insert_client(?,?,?,?,?,?)', [
-                client.first_name,
-                client.last_name,
-                client.email,
+            db.query('CALL sp_insert_client(?,?,?,?,?,?,?,?,?,?)', [
+                client.name.toLowerCase(),
+                client.last_name.toLowerCase(),
+                client.email.toLowerCase(),
                 client.cell_number,
-                client.life_stage,
-                clientAddress
+                client.life_stage.toLowerCase(),
+                client.address.street.toLowerCase(),
+                client.address.city.toLowerCase(),
+                client.address.state.toLowerCase(),
+                client.address.zip_code,
+                client.address.country.toLowerCase()
             ],(error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });

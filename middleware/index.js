@@ -3,13 +3,15 @@ const errorHandlerMiddleware = require("./error-handler");
 const notFound = require("./not-found");
 const {
   validateAddressParams,
-  validateVendorParams,
   validateId,
 } = require("./validate_params");
 const {
   validateCreateParamsEmployee,
   validateUpdateParamsEmployee
 } = require("./validate_employee");
+const {
+  validateClientParams
+} = require("./validate_client");
 const {
   middlewareUploadImage
 } = require("./image_handler");
@@ -21,8 +23,8 @@ module.exports = {
   errorHandlerMiddleware,
   notFound,
   validateAddressParams,
-  validateVendorParams,
   validateId,
   validateCreateParamsEmployee,
-  validateUpdateParamsEmployee
+  validateUpdateParamsEmployee,
+  validateClientParams
 };
