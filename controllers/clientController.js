@@ -23,17 +23,10 @@ const getAllClients = async (req, res) => {
 };
 
 // get all client address by client id
-const getAddressById = async (req, res) => {
-  // Validate req.params
+const getClientAddressById = async (req, res) => {
   const { id: clientId } = req.params;
-  // validate that id is a valid number
-  if (!clientId || isNaN(clientId)) {
-    throw new CustomError.BadRequestError(`${clientId} is not valid`);
-  }
-
-  // The ID paramter is a valid number, convert
-  const clientIdInt = parseInt(clientId);
-  const clientAddresses = await Client.getClientAddressesById(clientIdInt);
+  
+  const clientAddresses = await Client.getClientAddressesById(clientId);
   res
     .status(StatusCodes.OK)
     .json({ listAddress: clientAddresses, length: clientAddresses.length });
@@ -156,7 +149,7 @@ const modifyAddress = async (req, res) => {
 module.exports = {
   createClient,
   getAllClients,
-  getAddressById,
+  getClientAddressById,
   getSingleClientById,
   deleteAddress,
   modifyClient,

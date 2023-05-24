@@ -33,7 +33,7 @@ class Client extends Address {
 
     static getAllClients(){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_get_all_clients()',(error, result)=>{
+            db.query('CALL sp_get_clients()',(error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -80,7 +80,7 @@ class Client extends Address {
 
     static modifyAddress(address){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_modify_address(?,?,?,?,?,?)', [
+            db.query('CALL sp_update_address(?,?,?,?,?,?)', [
                 address.address_id,
                 address.street,
                 address.city,
