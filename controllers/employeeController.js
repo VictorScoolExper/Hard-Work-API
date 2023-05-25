@@ -115,23 +115,23 @@ const updateEmployee = async (req, res) => {
   }
 
   const employee = new Employee({
-    name,
-    last_name,
+    name: name.toLowerCase(),
+    last_name: last_name.toLowerCase(),
     cell_number,
-    role,
+    role: role.toLowerCase(),
     birth_date,
-    active,
+    active: role.toLowerCase(),
     employee_id: employeeId,
-    job_title,
-    department,
+    job_title: job_title.toLowerCase(),
+    department: department.toLowerCase(),
     driver_license,
     start_date,
-    wage_per_hour,
-    edited_by: created_by,
-    email,
+    wage_per_hour: Number(wage_per_hour),
+    edited_by: Number(created_by),
+    email: email.toLowerCase(),
     image_name,
   });
-
+  
   await Employee.employeeUpdated(employee);
 
   res

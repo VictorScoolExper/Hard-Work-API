@@ -63,35 +63,21 @@ class Client extends Address {
         })
     }
 
-    static modifyClient(client){
+    static updateClient(client){
         return new Promise((resolve, reject)=>{
             db.query('CALL sp_update_client(?,?,?,?,?,?)', [
                 client.client_id, 
-                client.first_name,
-                client.last_name,
-                client.email,
+                client.name.toLowerCase(),
+                client.last_name.toLowerCase(),
+                client.email.toLowerCase(),
                 client.cell_number,
-                client.life_stage
+                client.life_stage.toLowerCase()
             ], (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             })
         })
     }
 
-    static modifyAddress(address){
-        return new Promise((resolve, reject)=>{
-            db.query('CALL sp_update_address(?,?,?,?,?,?)', [
-                address.address_id,
-                address.street,
-                address.city,
-                address.state,
-                address.zip_code,
-                address.country
-            ], (error, result)=>{
-                error ? reject(error) : resolve(result);
-            })
-        })
-    }
 }
 
 module.exports = Client;

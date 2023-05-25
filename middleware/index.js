@@ -4,6 +4,7 @@ const notFound = require("./not-found");
 const {
   validateAddressParams,
   validateId,
+  validateSingleAddress
 } = require("./validate_params");
 const {
   validateCreateParamsEmployee,
@@ -26,5 +27,6 @@ module.exports = {
   validateId,
   validateCreateParamsEmployee,
   validateUpdateParamsEmployee,
-  validateClientParams
+  validateClientParams,
+  validateSingleAddress
 };

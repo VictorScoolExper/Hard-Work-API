@@ -33,6 +33,7 @@ const shiftRoutes = require("./routes/shiftRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const vendorRoutes = require("./routes/vendorRoutes");
 const companyRoutes = require("./routes/companyRoutes");
+const addressRoutes = require("./routes/addressRoutes")
 
 // middleware
 const notFoundMiddleware = require("./middleware/not-found");
@@ -69,6 +70,7 @@ app.use("/api/v1/shift", shiftRoutes);
 app.use("/api/v1/client", clientRoutes);
 app.use("/api/v1/vendor", vendorRoutes);
 app.use("/api/v1/company", companyRoutes);
+app.use("/api/v1/address", addressRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandleMiddleware);

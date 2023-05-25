@@ -13,25 +13,24 @@ const {
   getClientAddressById,
   getSingleClientById,
   deleteAddress,
-  modifyClient,
-  modifyAddress,
+  updateClient
 } = require("../controllers/clientController");
 
 router
   .route("/")
-  .post(authenticateUser, validateClientParams, createClient)
+  // TODO: validate that this post req works
+  .post(authenticateUser, validateClientParams, validateAddressParams, createClient)
   .get(authenticateUser, getAllClients);
 
 router
   .route("/:id")
-  .get(authenticateUser, getSingleClientById)
-  .patch(authenticateUser, modifyClient)
+  // .get(authenticateUser, getSingleClientById)
+  .put(authenticateUser, updateClient)
   .delete(authenticateUser, deleteAddress);
 
 // get list of address/addresses by client id
 router
   .route("/address/:id")
-  .get(authenticateUser, validateId, getClientAddressById)
-  .patch(authenticateUser, modifyAddress);
+  .get(authenticateUser, validateId, getClientAddressById);
 
 module.exports = router;

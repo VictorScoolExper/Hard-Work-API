@@ -88,6 +88,42 @@ const validateAddressParams = async (req, res, next) => {
   }
 };
 
+const validateSingleAddress = async(req, res, next) => {
+  const { street, city, state, zip_code, country } = req.body;
+  const errors = {};
+
+  if (!street) {
+    errors[`[${index}].street`] =
+      "Street is required and must be alphanumeric";
+  }
+
+  if (!city || !validator.isAlpha(city)) {
+    errors[`[${index}].city`] =
+      "City is required and must contain only letters";
+  }
+
+  if (!state || !validator.isAlpha(state)) {
+    errors[`[${index}].state`] =
+      "State is required and must contain only letters";
+  }
+
+  if (!zip_code || !validator.isPostalCode(zip_code, "any")) {
+    errors[`[${index}].zip_code`] =
+      "Zip code is required and must be a valid postal code";
+  }
+
+  if (!country || !validator.isAlpha(country)) {
+    errors[`[${index}].country`] =
+      "Country is required and must contain only letters";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({ errors });
+  } else {
+    next();
+  }
+}
+
 const validateId = async (req, res, next) => {
   const { id } = req.params;
   const convertedId = parseInt(id);
@@ -107,4 +143,5 @@ const validateId = async (req, res, next) => {
 module.exports = {
   validateAddressParams,
   validateId,
+  validateSingleAddress
 };

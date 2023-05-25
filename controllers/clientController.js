@@ -70,81 +70,15 @@ const deleteAddress = async (req, res) => {
 };
 
 // TODO modify client with id, note that we can change activity
-const modifyClient = async (req, res) => {
+const updateClient = async (req, res) => {
   //Retrieve params
   const { id: clientId } = req.params;
   const client = req.body;
 
-  if (!clientId || isNaN(clientId)) {
-    throw new CustomError.BadRequestError(`${clientId} is not valid`);
-  }
-  if (!client || typeof client !== "object") {
-    throw new Error("Invalid client parameter");
-  }
-
-  // Validate client properties
-  const requiredClientProperties = [
-    "first_name",
-    "last_name",
-    "email",
-    "cell_number",
-    "life_stage",
-  ];
-  for (const prop of requiredClientProperties) {
-    if (!client[prop]) {
-      throw new Error(`Missing client property: ${prop}`);
-    }
-  }
-
-  // Convert client objects to instances of the Client and ensure that cliendId is INT
-  const convertedClient = new Client(client);
-  const clientIdInt = parseInt(clientId);
-  // add client_id to client instances
-  convertedClient["client_id"] = clientIdInt;
-  // call db
-  await Client.modifyClient(convertedClient);
-  res.status(StatusCodes.ACCEPTED).json({ msg: convertedClient});
+  await Client.updateClient({...client, client_id: clientId});
+  res.status(StatusCodes.OK).json({ msg: "Updated client corretly"});
 };
 
-// TODO modify address
-const modifyAddress = async (req, res) => {
-  // Validate req.body params
-  const address = req.body;
-  const { id: addressId } = req.params;
-
-  // validate that id is a valid number
-  if (!addressId || isNaN(addressId)) {
-    throw new CustomError.BadRequestError(`${addressId} is not valid`);
-  }
-
-  if (!address || typeof address !== "object") {
-    throw new Error("Invalid address parameter");
-  }
-
-  // Validate address properties
-  const requiredClientProperties = [
-    "street",
-    "city",
-    "state",
-    "zip_code",
-    "country"
-  ];
-
-  for (const prop of requiredClientProperties) {
-    if (!address[prop]) {
-      throw new Error(`Missing address property: ${prop}`);
-    }
-  }
-
-  // transform data
-  const addressIdInt = parseInt(addressId);
-  const convertedAddress = new Address(address);
-  convertedAddress["address_id"] = addressIdInt;
-
-  await Client.modifyAddress(convertedAddress);
-
-  res.status(StatusCodes.ACCEPTED).json({ msg: `Address_id:${addressIdInt} was modified correctly` });
-};
 
 module.exports = {
   createClient,
@@ -152,6 +86,5 @@ module.exports = {
   getClientAddressById,
   getSingleClientById,
   deleteAddress,
-  modifyClient,
-  modifyAddress,
+  updateClient,
 };
