@@ -10,10 +10,10 @@ class Vendor {
     this.cell_number = vendor.cell_number;
   }
 
-  static insertVendor(vendor, addresses) {
+  static insertVendor(vendor) {
     return new Promise((resolve, reject) => {
       db.query(
-        "CALL sp_insert_vendor(?,?,?,?,?,?,?,?,?,?)",
+        "CALL sp_insert_vendor(?,?,?,?,?,?,?,?,?,?,?)",
         [
           vendor.name.toLowerCase(),
           vendor.last_name.toLowerCase(),
@@ -23,8 +23,8 @@ class Vendor {
           vendor.street.toLowerCase(),
           vendor.city.toLowerCase(),
           vendor.state.toLowerCase(),
-          vendor.zip_code,
-          vendor.cpuntry.toLowerCase(),
+          vendor.zip_code || "",
+          vendor.country.toLowerCase(),
           vendor.include_address
         ],
         (error, result) => {

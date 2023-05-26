@@ -2,7 +2,6 @@ const { StatusCodes } = require("http-status-codes");
 const validator = require("validator");
 const CustomError = require("../errors");
 const Address = require("../models/address");
-const Company = require("../models/company");
 const Vendor = require("../models/vendor");
 
 // Add vendor and list of addresses.
@@ -10,8 +9,8 @@ const createVendor = async (req, res) => {
   // get params
   const vendor = req.body;
 
-  // // send to db function
-  // await Vendor.insertVendor(vendor);
+  // send to db function
+  await Vendor.insertVendor(vendor);
 
   res.status(StatusCodes.CREATED).json({ msg: "The vendor has been inserted correctly", status: 1});
 };
