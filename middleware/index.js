@@ -18,6 +18,8 @@ const {
   middlewareUploadImage
 } = require("./image_handler");
 
+  const {validateVendorParams} = require("./validate_vendor")
+
 module.exports = {
   middlewareUploadImage,
   authenticateUser,
@@ -30,5 +32,6 @@ module.exports = {
   validateUpdateParamsEmployee,
   validateClientParams,
   validateSingleAddress,
-  validateCompanyParams
+  validateCompanyParams,
+  validateVendorParams
 };

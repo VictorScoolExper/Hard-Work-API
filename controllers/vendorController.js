@@ -6,20 +6,12 @@ const Company = require("../models/company");
 const Vendor = require("../models/vendor");
 
 // Add vendor and list of addresses.
-const addVendor = async (req, res) => {
+const createVendor = async (req, res) => {
   // get params
-  const params = req.body;
-  const vendor = new Vendor(params);  
-  const addresses = params.address.map((address) => new Address(address));
+  const vendor = req.body;
 
-  // checks if company exists
-  const companyExist = await Company.checkCompanyExistence(vendor["company_id"]);
-  if(companyExist !== 1){
-    throw new CustomError.BadRequestError("Error when inserting company")
-  }
-
-  // send to db function
-  await Vendor.addVendor(vendor, JSON.stringify(addresses));
+  // // send to db function
+  // await Vendor.insertVendor(vendor);
 
   res.status(StatusCodes.CREATED).json({ msg: "The vendor has been inserted correctly", status: 1});
 };
@@ -90,7 +82,7 @@ const deleteVenderAddress = async (req, res) =>{
 }
 
 module.exports = {
-  addVendor,
+  createVendor,
   getVendors,
   getSingleVendor,
   getAddressVendor,

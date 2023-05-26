@@ -3,24 +3,29 @@ const { db } = require("../db/connect");
 class Vendor {
   constructor(vendor) {
     this.vendor_id = vendor.vendor_id;
-    this.first_name = vendor.first_name;
+    this.name = vendor.name;
     this.last_name = vendor.last_name;
     this.company_id = vendor.company_id;
     this.email = vendor.email;
     this.cell_number = vendor.cell_number;
   }
 
-  static addVendor(vendor, addresses) {
+  static insertVendor(vendor, addresses) {
     return new Promise((resolve, reject) => {
       db.query(
-        "CALL sp_insert_vendor(?,?,?,?,?,?)",
+        "CALL sp_insert_vendor(?,?,?,?,?,?,?,?,?,?)",
         [
-          vendor.first_name,
-          vendor.last_name,
+          vendor.name.toLowerCase(),
+          vendor.last_name.toLowerCase(),
           vendor.company_id,
           vendor.cell_number,
-          vendor.email,
-          addresses,
+          vendor.email.toLowerCase(),
+          vendor.street.toLowerCase(),
+          vendor.city.toLowerCase(),
+          vendor.state.toLowerCase(),
+          vendor.zip_code,
+          vendor.cpuntry.toLowerCase(),
+          vendor.include_address
         ],
         (error, result) => {
           error ? reject(error) : resolve(result[0]);
