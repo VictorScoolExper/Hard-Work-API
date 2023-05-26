@@ -124,6 +124,28 @@ const validateSingleAddress = async(req, res, next) => {
   }
 }
 
+const validateCompanyParams = async (req, res, next) => {
+  const {name, service_type} = req.body;
+  const errors = {};
+
+  if(!name){
+    errors[`[${index}].name`] =
+      "Name is required and must contain only letters";
+  }
+
+  if(!service_type || !validator.isAlpha(service_type)){
+    errors[`[${index}].service_type`] =
+      "Service Type is required and must contain only letters";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({ errors });
+  } else {
+    next();
+  }
+
+}
+
 const validateId = async (req, res, next) => {
   const { id } = req.params;
   const convertedId = parseInt(id);
@@ -143,5 +165,6 @@ const validateId = async (req, res, next) => {
 module.exports = {
   validateAddressParams,
   validateId,
-  validateSingleAddress
+  validateSingleAddress,
+  validateCompanyParams
 };
