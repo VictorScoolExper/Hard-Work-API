@@ -79,6 +79,8 @@ const validateVendorParams = async (req, res, next) => {
 
 };
 
+// TODO: validate update for vendor 
+
 module.exports = {
     validateVendorParams
 }

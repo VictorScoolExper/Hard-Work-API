@@ -22,6 +22,7 @@ const getVendors = async (req, res) =>{
 }
 
 // Get single vendor
+// TODO: Validate if this function is neccesary or delete
 const getSingleVendor = async (req, res) =>{
   const {id: vendorId} = req.body;
   const vendor = await Vendor.getSingleVendor(vendorId);
@@ -29,6 +30,7 @@ const getSingleVendor = async (req, res) =>{
 };
 
 // Get address/addresses of vendor by id
+// TODO: Validate if this function is neccesary or delete
 const getAddressVendor = async (req, res) =>{
   const {id: vendorId} = req.params;
   const addresses = await Vendor.getAddressVendor(vendorId);
@@ -37,16 +39,15 @@ const getAddressVendor = async (req, res) =>{
 
 // modify vendor
 const modifyVendor = async (req, res) =>{
-  const {id: vendorId} = req.params;
-  const vendor = new Vendor(req.body);
-  vendor["vendor_id"] = parseInt(vendorId);
-  await Vendor.modifyVendor(vendor);
+  const vendor = (req.body);
 
-  res.status(StatusCodes.OK).json({msg: vendor, status: 1})
+  await Vendor.updateVendor(vendor);
+
+  res.status(StatusCodes.OK).json({msg: "updated vendor correctly", status: 1})
 }
 
 // modify address
-// TODO: create throw error when the ids do not match anything.
+// TODO: validate if this function is necessary otherwise delete
 const modifyAddressVendor = async (req, res) => {
   const { id: vendor_id } = req.params;
   const { address_id, address } = req.body;

@@ -30,12 +30,11 @@ router
 router
   .route("/address/:id")
   .get(authenticateUser, validateId, getAddressVendor)
-  .delete(authenticateUser, validateId, deleteVenderAddress)
-  // .patch(authenticateUser, validateId, validateAddressParams, modifyAddressVendor);
+  .delete(authenticateUser, validateId, deleteVenderAddress);
 
 router
   .route("/:id")
   .get(authenticateUser, validateId, getSingleVendor)
-  // .patch(authenticateUser, validateId, validateVendorParams, modifyVendor);
+  .put(authenticateUser, validateId, validateVendorParams, modifyVendor);
 
 module.exports = router;

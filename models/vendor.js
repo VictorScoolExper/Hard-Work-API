@@ -62,17 +62,25 @@ class Vendor {
     });
   }
 
-  static modifyVendor(vendor) {
+  static updateVendor(vendor) {
     return new Promise((resolve, reject) => {
       db.query(
-        "CALL sp_modify_vendor(?,?,?,?,?,?)",
+        "CALL sp_update_vendor(?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [
           vendor.vendor_id,
-          vendor.first_name,
-          vendor.last_name,
+          vendor.name.toLowerCase(),
+          vendor.last_name.toLowerCase(),
           vendor.company_id,
           vendor.cell_number,
-          vendor.email,
+          vendor.email.toLowerCase(),
+          vendor.address_id,
+          vendor.street.toLowerCase(),
+          vendor.city.toLowerCase(),
+          vendor.state.toLowerCase(),
+          vendor.zip_code,
+          // "usa" is used because the system is used in the united states and always will be usa
+          "usa",
+          vendor.include_address
         ],
         (error, result) => {
           error ? reject(error) : resolve(result);
