@@ -1,5 +1,5 @@
 const { db } = require("../db/connect");
-
+// TODO: utilize class or delete constructor
 // employee is a list of employees
 class Crew  {
     constructor(crew ) {

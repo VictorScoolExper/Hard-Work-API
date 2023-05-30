@@ -1,7 +1,7 @@
 const { db } = require("../db/connect");
 const bcrypt = require("bcrypt");
 const User = require("./user");
-
+// TODO: utilize class or delete constructor
 class Employee extends User {
   constructor(employee) {
     super(employee);

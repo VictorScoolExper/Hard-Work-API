@@ -1,6 +1,6 @@
 const { db } = require("../db/connect");
 const bcrypt = require("bcrypt");
-
+// TODO: utilize class or delete constructor
 // function constructor
 const User = function (user) {
   this.user_id = user.user_id;

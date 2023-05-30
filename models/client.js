@@ -1,6 +1,6 @@
 const { db } = require("../db/connect");
 const Address = require("./address");
-
+// TODO: utilize class or delete constructor
 class Client extends Address {
     constructor(client){
         super(client.address);

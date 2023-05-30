@@ -1,6 +1,6 @@
 const {db} = require("../db/connect");
 const Employee = require('./employee');
-
+// TODO: utilize class or delete constructor
 class Attendance extends Employee {
     constructor(attend){
         super(attend);

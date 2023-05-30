@@ -1,5 +1,5 @@
 const { db } = require("../db/connect");
-
+// TODO: utilize class or delete constructor
 class Company {
   constructor(company) {
     this.company_id = company.company_id;

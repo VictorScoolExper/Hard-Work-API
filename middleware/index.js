@@ -5,20 +5,16 @@ const {
   validateAddressParams,
   validateId,
   validateSingleAddress,
-  validateCompanyParams
+  validateCompanyParams,
 } = require("./validate_params");
 const {
   validateCreateParamsEmployee,
-  validateUpdateParamsEmployee
+  validateUpdateParamsEmployee,
 } = require("./validate_employee");
-const {
-  validateClientParams
-} = require("./validate_client");
-const {
-  middlewareUploadImage
-} = require("./image_handler");
-
-  const {validateVendorParams} = require("./validate_vendor")
+const { validateClientParams } = require("./validate_client");
+const { middlewareUploadImage } = require("./image_handler");
+const { validateVendorParams } = require("./validate_vendor");
+const {validateServiceParams} = require("./validate_service");
 
 module.exports = {
   middlewareUploadImage,
@@ -33,5 +29,6 @@ module.exports = {
   validateClientParams,
   validateSingleAddress,
   validateCompanyParams,
-  validateVendorParams
+  validateVendorParams,
+  validateServiceParams
 };
