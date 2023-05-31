@@ -2,7 +2,7 @@ const {StatusCodes} = require("http-status-codes");
 const Service = require("../models/service");
 
 const createService = async (req, res) => {
-    const service = req.params;
+    const service = req.body;
 
     await Service.createService(service);
 
@@ -17,7 +17,7 @@ const getServices = async (req, res) => {
 const updateService = async (req, res) => {
     const {id} = req.params;
     const service = req.body; 
-
+    await Service.updateService(service);
     res.status(StatusCodes.OK).json({msg: "the service has been updated", status: 1});
 }
 

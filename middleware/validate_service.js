@@ -1,5 +1,5 @@
 const validateServiceParams = async (req, res, next) => {
-  const { service_name, description, is_per_hour, price, duration_minutes } = req.body;
+  const { service_name, description, is_per_hour, price } = req.body;
   const errors = {};
 
   if (!service_name || typeof service_name !== "string") {
@@ -9,11 +9,12 @@ const validateServiceParams = async (req, res, next) => {
   if (!description || typeof description !== "string") {
     errors.description = "Description is required or must only alphabetical";
   }
-  if (!is_per_hour || typeof price !== "number") {
-    errors.is_per_hour = "is per hour must be a number between 0 1";
+  if (!is_per_hour || typeof is_per_hour !== "string") {
+    errors.is_per_hour = "Is per hour must be true or false";
   }
-  if (!duration_minutes || typeof duration_minutes !== "number") {
-    errors.duration_minutes = "duration minutes required and must be a number";
+  const convertedPrice = parseInt(price)
+  if(!convertedPrice || typeof convertedPrice !== "number"){
+    errors.price = "Price is required and must be a number"
   }
 
   if (Object.keys(errors).length > 0) {
