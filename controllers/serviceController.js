@@ -11,7 +11,7 @@ const createService = async (req, res) => {
 
 const getServices = async (req, res) => {
     const response = await Service.getServices();
-    res.status(StatusCodes.OK).json({ services: response, status: 1 });
+    res.status(StatusCodes.OK).json({ services: response, length: response.length, status: 1 });
 }
 
 const updateService = async (req, res) => {
