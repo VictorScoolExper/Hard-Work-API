@@ -10,7 +10,7 @@ class Material {
 
     static createMaterial(material){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_create_service(?,?)', [
+            db.query('CALL sp_create_material(?,?,?)', [
                 material.material_name.toLowerCase(),
                 material.description.toLowerCase(),
                 material.unit.toLowerCase()
@@ -30,7 +30,7 @@ class Material {
 
     static updateMaterial(material){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_update_material(?,?,?)', 
+            db.query('CALL sp_update_material(?,?,?,?)', 
             [
                 material.material_id,
                 material.material_name.toLowerCase(),

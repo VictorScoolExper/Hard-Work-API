@@ -8,7 +8,7 @@ const validateMaterialParams = (req, res, next) => {
   if (typeof description !== "string") {
     errors.description = "Description needs to be a string";
   }
-  if(unit !== 'yard' || unit !== 'ton' || unit !== 'piece'){
+  if(!unit || typeof unit !== "string"){
     errors.unit = "Unit does not have a valid value";
   }
 

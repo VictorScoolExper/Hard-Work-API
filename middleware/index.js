@@ -15,7 +15,10 @@ const { validateClientParams } = require("./validate_client");
 const { middlewareUploadImage } = require("./image_handler");
 const { validateVendorParams } = require("./validate_vendor");
 const {validateServiceParams} = require("./validate_service");
-const {validateMaterialParams} = require("./validate_material")
+const {validateMaterialParams} = require("./validate_material");
+const {validateAppSettingParams} = require("./validate_app_setting")
+
+
 module.exports = {
   middlewareUploadImage,
   authenticateUser,
@@ -31,5 +34,6 @@ module.exports = {
   validateCompanyParams,
   validateVendorParams,
   validateServiceParams,
-  validateMaterialParams
+  validateMaterialParams,
+  validateAppSettingParams
 };
