@@ -32,7 +32,7 @@ class AppSettings {
 
     static updateAppSetting(appSetting){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_update_app_setting()', [
+            db.query('CALL sp_update_app_setting(?,?,?)', [
                 appSetting.setting_name.toLowerCase(),
                 appSetting.setting_value.toLowerCase(),
                 appSetting.type_value.toLowerCase()
