@@ -50,6 +50,7 @@ class Employee extends User {
   
   static getSingleEmployee(employee_id){
     return new Promise((resolve, reject) => {
+      // TODO: optimize sp and this function
       db.query("CALL sp_get_employee_by_id(?, @p_name, @p_last_name, @p_cell_number, @p_role, @p_birth_date, @p_active, @p_image_name, @p_job_title, @p_department, @p_driver_license, @p_start_date,  @p_wage_per_hour, @p_email)", 
       employee_id,
       (error, result) => {
