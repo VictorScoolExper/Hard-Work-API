@@ -37,6 +37,7 @@ const addressRoutes = require("./routes/addressRoutes");
 const serviceRoutes = require("./routes/serviceRoutes");
 const materialRoutes = require("./routes/materialRoutes");
 const appSettingRoutes = require("./routes/appSettingRoutes");
+const serviceScheduleRoutes = require("./routes/serviceScheduleRoute");
 
 // middleware
 const notFoundMiddleware = require("./middleware/not-found");
@@ -76,7 +77,8 @@ app.use("/api/v1/company", companyRoutes);
 app.use("/api/v1/address", addressRoutes);
 app.use("/api/v1/service", serviceRoutes);
 app.use("/api/v1/material", materialRoutes);
-app.use("/api/v1/app-setting", appSettingRoutes)
+app.use("/api/v1/app-setting", appSettingRoutes);
+app.use("/api/v1/service-schedule", serviceScheduleRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandleMiddleware);
