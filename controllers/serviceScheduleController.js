@@ -4,7 +4,7 @@ const ServiceSchedule = require("../models/service_schedule");
 const createServiceSchedule = async(req, res) => {
     const serviceScheduled = req.body;
 
-    await ServiceSchedule.createServiceSchedule(serviceScheduled);
+    // await ServiceSchedule.createServiceSchedule(serviceScheduled);
 
     res.status(StatusCodes.CREATED).json({msg: "created successfully", status: 1});
 }

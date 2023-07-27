@@ -3,11 +3,11 @@ const router = express.Router();
 
 const {
   validateServiceScheduleParams,
-  authenticateUser,
+  authenticateUser
 } = require("../middleware");
 
 const {
-  createServiceSchedule,
+  createServiceSchedule
 } = require("../controllers/serviceScheduleController");
 
 router
@@ -15,13 +15,7 @@ router
   .post(
     authenticateUser, 
     validateServiceScheduleParams, 
-    createServiceSchedule)
-  .get();
-
-//  TODO: add route for services service
-
-// TODO: add route for service material
-
-// TODO: add route for service employees
-
+    createServiceSchedule
+  )
+  
 module.exports = router;
