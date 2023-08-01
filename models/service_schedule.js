@@ -7,7 +7,7 @@ class ServiceSchedule {
     this.address_id = serviceSchedule.address_id;
     this.start_time = serviceSchedule.start_time;
     this.end_time = serviceSchedule.end_time;
-    this.to_do_date = serviceSchedule.to_do_date;
+    this.date_scheduled = serviceSchedule.date_scheduled;
     this.type = serviceSchedule.type;
     this.status = serviceSchedule.status;
   };
@@ -15,17 +15,18 @@ class ServiceSchedule {
   static createServiceSchedule(serviceSchedule) {
     return new Promise((resolve, reject) => {
       db.query(
-        "CALL sp_create_service_schedule(?,?,?,?,?,?,?,?,?,?,?)",
+        "CALL sp_create_service_schedule(?,?,?,?,?,?,?,?,?,?)",
         [
           serviceSchedule.client_id,
           serviceSchedule.address_id,
           serviceSchedule.start_time,
           serviceSchedule.end_time,
-          serviceSchedule.to_do_date,
+          serviceSchedule.date_scheduled,
           serviceSchedule.type,
-          `${serviceSchedule.services}`,
-          `${serviceSchedule.materials}``${serviceSchedule.employees}`,
-          serviceSchedule.days_until_repeat,
+          JSON.stringify(serviceSchedule.services),
+          JSON.stringify(serviceSchedule.materials),
+          JSON.stringify(serviceSchedule.employees),
+          serviceSchedule.days_until_repeat || 0
         ],
         (error, result) => {
           return error ? reject(error) : resolve(result[0]);
@@ -81,7 +82,7 @@ class ServiceSchedule {
             serviceSchedule.service_schedule_id,
             serviceSchedule.start_time,
             serviceSchedule.end_time,
-            serviceSchedule.to_do_date
+            serviceSchedule.date_scheduled
         ], (error, result) => {
             return error ? reject(error) : resolve(result);
         })
