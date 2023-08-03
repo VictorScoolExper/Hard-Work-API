@@ -13,20 +13,22 @@ class ServiceSchedule {
   };
 
   static createServiceSchedule(serviceSchedule) {
+    // We transform data if null
+    const materials = serviceSchedule.materials === null ? [] : serviceSchedule.materials;
+    const employees = serviceSchedule.employees === null ? [] : serviceSchedule.employees;
+
     return new Promise((resolve, reject) => {
       db.query(
-        "CALL sp_create_service_schedule(?,?,?,?,?,?,?,?,?,?)",
+        "CALL sp_create_service_schedule(?,?,?,?,?,?,?,?)",
         [
           serviceSchedule.client_id,
           serviceSchedule.address_id,
           serviceSchedule.start_time,
           serviceSchedule.end_time,
           serviceSchedule.date_scheduled,
-          serviceSchedule.type,
           JSON.stringify(serviceSchedule.services),
-          JSON.stringify(serviceSchedule.materials),
-          JSON.stringify(serviceSchedule.employees),
-          serviceSchedule.days_until_repeat || 0
+          JSON.stringify(materials),
+          JSON.stringify(employees)
         ],
         (error, result) => {
           return error ? reject(error) : resolve(result[0]);
