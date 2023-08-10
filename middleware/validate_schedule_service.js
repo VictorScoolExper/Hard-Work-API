@@ -144,6 +144,10 @@ const validateServiceScheduleParams = (req, res, next) => {
     }
   }
 
+  if(type){
+    errors['type'] = "type is required";
+  }
+
   // TODO: transform to ternary expression
   if(type === 'routine'){
     if (!days_until_repeat || typeof days_until_repeat !== "number" || isNaN(days_until_repeat)) {
