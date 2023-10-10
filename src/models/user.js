@@ -16,6 +16,13 @@ const User = function (user) {
   this.created_at = new Date();
 };
 
+/**
+ * Retrieves user information from the database using the provided email address.
+ *
+ * @param {string} email - The email address of the user to retrieve information for.
+ * @returns {Promise<Object|null>} A Promise that resolves to the user information object if found,
+ *                                  or null if no user with the provided email exists.
+ */
 User.getUserInfo = (email) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -30,6 +37,13 @@ User.getUserInfo = (email) => {
   });
 };
 
+/**
+ * Checks if an email exists in the database by calling a stored procedure.
+ *
+ * @param {string} email - The email address to check for existence.
+ * @returns {Promise<boolean>} A Promise that resolves to true if the email exists,
+ *                            or false if it doesn't.
+ */
 User.findEmailAuth = (email) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -53,6 +67,13 @@ User.findEmailAuth = (email) => {
   });
 };
 
+/**
+ * Checks if a specific authentication-related table is empty by calling a stored procedure.
+ *
+ * @param {string} table - The name of the table to check for emptiness.
+ * @returns {Promise<boolean>} A Promise that resolves to true if the table is empty,
+ *                            or false if it contains data.
+ */
 User.isUserEmpty = (table) => {
   return new Promise((resolve, reject) => {
     db.query("CALL sp_check_auth_empty(@is_empty);", (error, results) => {
@@ -72,6 +93,14 @@ User.isUserEmpty = (table) => {
   });
 };
 
+/**
+ * Creates a new user in the database with the provided user data.
+ *
+ * @param {Object} data - An object containing user data including name, last_name,
+ *                       cell_number, role, birth_date, email, and password.
+ * @returns {Promise<Object|null>} A Promise that resolves to the newly created user object if successful,
+ *                                  or null if the creation fails.
+ */
 User.createUser = (data) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -104,23 +133,6 @@ User.createUser = (data) => {
       }
     );
   });
-};
-
-User.login = (newUser, result) => {
-  db.query(
-    "CALL login( ?, ?)",
-    [newUser.email, newUser.password],
-    (err, res) => {
-      if (err) {
-        console.log("Error creating new user: ", err);
-        result(err, null);
-        return;
-      }
-
-      console.log("Created new user: ", { id: res.insertId, ...newUser });
-      result(null, { id: res.insertId, ...newUser });
-    }
-  );
 };
 
 module.exports = User;

@@ -24,7 +24,7 @@ const validateClientParams = async (req, res, next) => {
       "Cell number is required and must be a valid phone number.";
   }
   if (!validator.isAlpha(params.life_stage)) {
-    errors.life_stage = "Life stage must be a alphabetical values";
+    errors.life_stage = "Life stage must be a alphabetical value";
   }
 
   if (Object.keys(errors).length > 0) {

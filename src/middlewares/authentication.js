@@ -1,9 +1,14 @@
 /* Green Work ERP by Victor Martinez */
 
 const CustomError = require("../errors");
-const user = require("../models/user");
 const { isTokenValid } = require("../utils");
 
+/**
+ * Authenticates the user 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 const authenticateUser = async (req, res, next) => {
   const token = req.signedCookies.token;
 
@@ -20,6 +25,11 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
+/**
+ * Checks if the user has the permissions
+ * @param  {Object} roles 
+ * @returns 
+ */
 const authorizePermissions = (...roles) => {
   return (req, res, next) => {
     //in the incoming list includes the role in the user it will have access

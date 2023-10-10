@@ -15,15 +15,19 @@ const {
   validateUpdateParamsEmployee,
 } = require("./validate_employee");
 
+const {validateAuthParams, validateRegisterParams} = require("./validate_auth");
+
 const { validateClientParams } = require("./validate_client");
 const { middlewareUploadImage } = require("./image_handler");
 const { validateVendorParams } = require("./validate_vendor");
-const {validateServiceParams} = require("./validate_service");
+const { validateServiceParams } = require("./validate_service");
 const {validateMaterialParams} = require("./validate_material");
 const {validateAppSettingParams} = require("./validate_app_setting")
 const {validateServiceScheduleParams} = require("./validate_schedule_service");
 
 module.exports = {
+  validateRegisterParams,
+  validateAuthParams,
   validateServiceScheduleParams,
   middlewareUploadImage,
   authenticateUser,

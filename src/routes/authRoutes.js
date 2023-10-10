@@ -4,14 +4,15 @@ const express = require('express');
 const router = express.Router();
 
 const { login, logout, register, checkPermission } = require('../controllers/authController');
-const { authenticateUser } = require('../middlewares/authentication');
-
+const { authenticateUser, validateRegisterParams} = require('../middlewares');
 
 router.post('/login', login);
-// Owner/Admin can only create users
-router.post('/register', register);
+router.post('/register', validateRegisterParams, register);
 router.get('/logout', logout);
-router.route('/checkPermission').get( authenticateUser, checkPermission);
 
+//the following should be eliminated
+// router.route('/checkPermission').get( authenticateUser('admin'), checkPermission);
+
+// TODO: add create user functionality that can only be used by admins and Managers
 
 module.exports = router;

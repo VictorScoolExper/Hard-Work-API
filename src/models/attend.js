@@ -2,6 +2,7 @@
 
 const {db} = require("../utils/mysql");
 const Employee = require('./employee');
+
 // TODO: utilize class or delete constructor
 class Attendance extends Employee {
     constructor(attend){
