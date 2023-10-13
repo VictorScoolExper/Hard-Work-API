@@ -1,13 +1,16 @@
 /* Green Work ERP by Victor Martinez */
 
+// TODO: Move to utils
 // Helper function to check if a time is within a given range
 function isTimeInRange(time, startTime, endTime) {
   return time >= startTime && time <= endTime;
 }
+// TODO: Move to utils
 // Helper function to check if a time is within a given range
 function isStartTimeLessThanEndTime(startTime, endTime) {
   return startTime > endTime;
 }
+// TODO: Move to utils
 // Helper function to check if it is a json object
 function isEmptyJson(jsonObj) {
   return Object.keys(jsonObj).length === 0;
@@ -166,6 +169,6 @@ const validateServiceScheduleParams = (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
   validateServiceScheduleParams,
 };

@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const {db} = require('../db/connect');
+import { connection } from '../utils/index.js';
 
 class RoutineScheduledService {
     constructor(routineScheduledService){
@@ -13,7 +13,7 @@ class RoutineScheduledService {
 
     static getAllRoutines (routineScheduledService){
         return new Promise((resolve, reject) => {
-          db.query("CALL sp_select_routine_scheduled_services(?)", [
+          connection.query("CALL sp_select_routine_scheduled_services(?)", [
             routineScheduledService.service_schedule_id
           ], (error, result) => {
             return error ? reject(error) : resolve(result[0]);
@@ -23,7 +23,7 @@ class RoutineScheduledService {
 
     static updateDaysUntilRepeat (routineScheduledService) {
         return new Promise((resolve, reject) => {
-            db.query('CALL sp_update_days_repeat_routine_scheduled_services(?,?)', [
+            connection.query('CALL sp_update_days_repeat_routine_scheduled_services(?,?)', [
                 routineScheduledService.routine_schedule_id,
                 routineScheduledService.days_until_repeat
             ], (error, result) => {
@@ -34,7 +34,7 @@ class RoutineScheduledService {
 
     static updateStatus (routineScheduledService){
         return new Promise((resolve, reject) => {
-            db.query('CALL sp_update_status_routine_scheduled_services(?,?)', [
+            connection.query('CALL sp_update_status_routine_scheduled_services(?,?)', [
                 routineScheduledService.routine_schedule_id,
                 routineScheduledService.status
             ], (error, result) => {
@@ -45,7 +45,7 @@ class RoutineScheduledService {
     // TODO: Test sp to make sure it functions
     static updateLastService (routineScheduledService){
         return new Promise((resolve, reject) => {
-            db.query('CALL sp_update_last_service_routine_scheduled_services(?,?)', [
+            connection.query('CALL sp_update_last_service_routine_scheduled_services(?,?)', [
                 routineScheduledService.routine_schedule_id,
                 routineScheduledService.last_service_date
             ], (error, result) => {
@@ -55,4 +55,4 @@ class RoutineScheduledService {
     }
 }
 
-module.exports = RoutineScheduledService;
+export default RoutineScheduledService;

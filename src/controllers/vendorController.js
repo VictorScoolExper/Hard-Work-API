@@ -1,10 +1,10 @@
 /* Green Work ERP by Victor Martinez */
 
-const { StatusCodes } = require("http-status-codes");
-const validator = require("validator");
-const CustomError = require("../errors");
-const Address = require("../models/address");
-const Vendor = require("../models/vendor");
+import { StatusCodes } from 'http-status-codes';
+import validator from 'validator';
+import * as CustomError from '../errors/index.js';
+import Address from '../models/address.js';
+import Vendor from '../models/vendor.js';
 
 // Add vendor and list of addresses.
 const createVendor = async (req, res) => {
@@ -83,7 +83,7 @@ const deleteVenderAddress = async (req, res) =>{
   res.status(StatusCodes.OK).json({msg: "You have successfully deleted address", status: 1});
 }
 
-module.exports = {
+export {
   createVendor,
   getVendors,
   getSingleVendor,

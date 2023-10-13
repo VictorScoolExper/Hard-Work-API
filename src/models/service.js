@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const { db } = require("../utils/mysql");
+import { connection } from '../utils/index.js';
 
 class Service {
     constructor(service){
@@ -13,7 +13,7 @@ class Service {
 
     static createService(service){
         return new Promise((resolve, reject) =>{
-            db.query('CALL sp_create_service(?,?,?,?)', 
+            connection.query('CALL sp_create_service(?,?,?,?)', 
             [
                 service.service_name.toLowerCase(),
                 service.description.toLowerCase(),
@@ -27,7 +27,7 @@ class Service {
 
     static getServices(){
         return new Promise((resolve, reject) =>{
-            db.query('CALL sp_get_services()',  (error, result)=>{
+            connection.query('CALL sp_get_services()',  (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             })
         })
@@ -35,7 +35,7 @@ class Service {
 
     static updateService(service){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_update_service(?,?,?,?,?)',
+            connection.query('CALL sp_update_service(?,?,?,?,?)',
             [
                 service.service_id,
                 service.service_name,
@@ -53,4 +53,4 @@ class Service {
     // TODO: get single service
 }
 
-module.exports = Service;
+export default Service;

@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const { db } = require("../utils/mysql");
+import { connection } from '../utils/index.js';
 // TODO: utilize class or delete constructor
 class Vendor {
   constructor(vendor) {
@@ -14,7 +14,7 @@ class Vendor {
 
   static insertVendor(vendor) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_insert_vendor(?,?,?,?,?,?,?,?,?,?,?)",
         [
           vendor.name.toLowerCase(),
@@ -38,7 +38,7 @@ class Vendor {
 
   static getAllVendors() {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_get_all_vendor();", (error, result) => {
+      connection.query("CALL sp_get_all_vendor();", (error, result) => {
         error ? reject(error) : resolve(result[0]);
       });
     });
@@ -46,7 +46,7 @@ class Vendor {
 
   static getSingleVendor(vendorId) {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_get_single_vendor(?);", [vendorId], (error, result) => {
+      connection.query("CALL sp_get_single_vendor(?);", [vendorId], (error, result) => {
         error ? reject(error) : resolve(result[0]);
       });
     });
@@ -54,7 +54,7 @@ class Vendor {
 
   static getAddressVendor(vendorId) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_get_vendor_addresses(?);",
         [vendorId],
         (error, result) => {
@@ -66,7 +66,7 @@ class Vendor {
 
   static updateVendor(vendor) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_update_vendor(?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [
           vendor.vendor_id,
@@ -93,7 +93,7 @@ class Vendor {
 
   static deleteAddressVendor(vendorId, addressId) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_delete_vendor_address(?,?)", [vendorId, addressId],
         (error, result) => {
           error ? reject(error) : resolve(result);
@@ -104,7 +104,7 @@ class Vendor {
   
   static modifyAddressVendor(vendorId, address) {
     return new Promise((resolve, reject) => {
-        db.query(
+        connection.query(
           "CALL sp_update_address(?,?,?,?,?,?,?)", [
             vendorId, 
             address.address_id,
@@ -122,4 +122,4 @@ class Vendor {
   }
 }
 
-module.exports = Vendor;
+export default Vendor;

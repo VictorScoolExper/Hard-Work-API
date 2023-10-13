@@ -1,17 +1,17 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { authenticateUser } = require('../middlewares/authentication');
+import { authenticateUser } from '../middlewares/index.js';
 
-const {
+import {
     getShiftsByDate,
     getShiftById,
     addShift,
     modifyShift,
     deleteShift,
     getShiftByEmployeeIdAndDate
-} = require('../controllers/shiftController');
+} from '../controllers/shiftController.js';
 
 
 router
@@ -30,4 +30,4 @@ router
     .delete(authenticateUser, deleteShift)
 
 
-module.exports = router;
+export default router;

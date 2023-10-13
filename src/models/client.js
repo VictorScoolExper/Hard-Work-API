@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const { db } = require("../utils/mysql");
-const Address = require("./address");
+import { connection } from '../utils/index.js';
+import Address from './address.js';
 // TODO: utilize class or delete constructor
 class Client extends Address {
     constructor(client){
@@ -16,7 +16,7 @@ class Client extends Address {
 
     static addClient (client){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_insert_client(?,?,?,?,?,?,?,?,?,?)', [
+            connection.query('CALL sp_insert_client(?,?,?,?,?,?,?,?,?,?)', [
                 client.name.toLowerCase(),
                 client.last_name.toLowerCase(),
                 client.email.toLowerCase(),
@@ -35,7 +35,7 @@ class Client extends Address {
 
     static getAllClients(){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_get_clients()',(error, result)=>{
+            connection.query('CALL sp_get_clients()',(error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -43,7 +43,7 @@ class Client extends Address {
 
     static getClientAddressesById(clientId){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_get_client_addresses(?)',clientId,(error, result)=>{
+            connection.query('CALL sp_get_client_addresses(?)',clientId,(error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -51,7 +51,7 @@ class Client extends Address {
 
     static getClientById(clientId){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_get_client_info(?)',clientId,(error, result)=>{
+            connection.query('CALL sp_get_client_info(?)',clientId,(error, result)=>{
                 error ? reject(error) : resolve(result[0][0]);
             });
         })
@@ -59,7 +59,7 @@ class Client extends Address {
     // recieves Client Id and Address id
     static deleteById(clientId, addressId){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_delete_address(?,?)',[clientId,addressId],(error, result)=>{
+            connection.query('CALL sp_delete_address(?,?)',[clientId,addressId],(error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -67,7 +67,7 @@ class Client extends Address {
 
     static updateClient(client){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_update_client(?,?,?,?,?,?)', [
+            connection.query('CALL sp_update_client(?,?,?,?,?,?)', [
                 client.client_id, 
                 client.name.toLowerCase(),
                 client.last_name.toLowerCase(),
@@ -82,4 +82,4 @@ class Client extends Address {
 
 }
 
-module.exports = Client;
+export default Client;

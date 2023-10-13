@@ -1,31 +1,32 @@
 /* Green Work ERP by Victor Martinez */
 
-const { authenticateUser, authorizePermissions } = require("./authentication");
-const errorHandlerMiddleware = require("./error-handler");
-const notFound = require("./not-found");
-const {
+import { authenticateUser, authorizePermissions } from './authentication.js';
+import errorHandlerMiddleware from './error-handler.js';
+import notFound from './not-found.js';
+import {
   validateAddressParams,
   validateId,
   validateSingleAddress,
   validateCompanyParams,
-} = require("./validate_params");
+} from './validate_params.js';
 
-const {
+import {
   validateCreateParamsEmployee,
   validateUpdateParamsEmployee,
-} = require("./validate_employee");
+} from './validate_employee.js';
 
-const {validateAuthParams, validateRegisterParams} = require("./validate_auth");
+import {validateAuthParams, validateRegisterParams} from './validate_auth.js';
 
-const { validateClientParams } = require("./validate_client");
-const { middlewareUploadImage } = require("./image_handler");
-const { validateVendorParams } = require("./validate_vendor");
-const { validateServiceParams } = require("./validate_service");
-const {validateMaterialParams} = require("./validate_material");
-const {validateAppSettingParams} = require("./validate_app_setting")
-const {validateServiceScheduleParams} = require("./validate_schedule_service");
+import { validateClientParams } from './validate_client.js';
+import { middlewareUploadImage } from './image_handler.js';
+import { validateVendorParams } from './validate_vendor.js';
+import { validateServiceParams } from './validate_service.js';
+import { validateMaterialParams } from './validate_material.js';
+import { validateAppSettingParams } from './validate_app_setting.js';
+import { validateServiceScheduleParams } from './validate_schedule_service.js';
 
-module.exports = {
+
+export {
   validateRegisterParams,
   validateAuthParams,
   validateServiceScheduleParams,

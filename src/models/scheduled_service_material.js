@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const {db} = require("../db/connect");
+import { connection } from '../utils/index.js';
 
 class ScheduleServiceMaterial {
     constructor(serviceMaterial){
@@ -13,7 +13,7 @@ class ScheduleServiceMaterial {
 
     static getServiceMaterials(serviceMaterial){
         return new Promise((resolve, reject) => {
-          db.query("CALL sp_select_scheduled_service_materials(?)", [
+          connection.query("CALL sp_select_scheduled_service_materials(?)", [
             serviceMaterial.service_schedule_id
           ], (error, result) => {
             return error ? reject(error) : resolve(result[0]);
@@ -23,7 +23,7 @@ class ScheduleServiceMaterial {
 
     static getSingleServiceMaterial(serviceMaterial){
         return new Promise((resolve, reject) => {
-          db.query("CALL sp_select_single_scheduled_service_material(?)", [
+          connection.query("CALL sp_select_single_scheduled_service_material(?)", [
             serviceMaterial.scheduled_service_material_id
           ], (error, result) => {
             return error ? reject(error) : resolve(result[0]);
@@ -33,7 +33,7 @@ class ScheduleServiceMaterial {
 
     static updateServiceMaterial (serviceMaterial) {
         return new Promise((resolve, reject) =>{
-            db.query("CALL sp_update_service_material_scheduled(?,?,?,?)", [
+            connection.query("CALL sp_update_service_material_scheduled(?,?,?,?)", [
                 serviceMaterial.scheduled_service_material_id,
                 serviceMaterial.material_id,
                 serviceMaterial.qty,
@@ -46,4 +46,4 @@ class ScheduleServiceMaterial {
 
 }
 
-module.exports = ScheduleServiceMaterial
+export default ScheduleServiceMaterial;

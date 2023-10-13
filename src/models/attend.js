@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const {db} = require("../utils/mysql");
-const Employee = require('./employee');
+import { connection } from '../utils/index.js';
+import Employee from './employee.js';
 
 // TODO: utilize class or delete constructor
 class Attendance extends Employee {
@@ -15,7 +15,7 @@ class Attendance extends Employee {
 
     static addAttendance(employee_id, status){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_insert_attendance(${employee_id}, '${status}')`, (error, result)=>{
+            connection.query(`CALL sp_insert_attendance(${employee_id}, '${status}')`, (error, result)=>{
                 error ? reject(error) : resolve(result);
             });
         })
@@ -23,7 +23,7 @@ class Attendance extends Employee {
 
     static getAllAttendByDate(start_date, end_date){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_get_attended_users_by_date('${start_date}', '${end_date}')`, (error, result)=>{
+            connection.query(`CALL sp_get_attended_users_by_date('${start_date}', '${end_date}')`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -31,7 +31,7 @@ class Attendance extends Employee {
 
     static getAttendById(attend_id){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_get_attendance_record_by_id(${attend_id})`, (error, result)=>{
+            connection.query(`CALL sp_get_attendance_record_by_id(${attend_id})`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -39,7 +39,7 @@ class Attendance extends Employee {
 
     static getAttendsOfEmployeeByRangeDate(start_date, end_date, employee_id){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_get_attendances_by_date_range_and_employee('${start_date}', '${end_date}',${employee_id})`, (error, result)=>{
+            connection.query(`CALL sp_get_attendances_by_date_range_and_employee('${start_date}', '${end_date}',${employee_id})`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         });
@@ -47,7 +47,7 @@ class Attendance extends Employee {
 
     static modifyAttendance(attend_id, status){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_modify_attendance_status(${attend_id}, '${status}')`, (error, result)=>{
+            connection.query(`CALL sp_modify_attendance_status(${attend_id}, '${status}')`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         });
@@ -55,11 +55,11 @@ class Attendance extends Employee {
 
     static deleteAttendance(attend_id){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_delete_attendance(${attend_id})`, (error, result)=>{
+            connection.query(`CALL sp_delete_attendance(${attend_id})`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         });
     }
 }
 
-module.exports = Attendance;
+export default Attendance;

@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const { StatusCodes } = require('http-status-codes');
-const CustomAPIError = require('./custom-api');
+import { StatusCodes } from 'http-status-codes';
+import CustomAPIError from './custom-api.js';
 
 class UnauthorizedError extends CustomAPIError {
   constructor(message) {
@@ -10,4 +10,4 @@ class UnauthorizedError extends CustomAPIError {
   }
 }
 
-module.exports = UnauthorizedError;
+export default UnauthorizedError;

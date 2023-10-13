@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const {StatusCodes} = require("http-status-codes");
-const Service = require("../models/service");
+import {StatusCodes} from 'http-status-codes';
+import Service from '../models/service.js';
 
 const createService = async (req, res) => {
     const service = req.body;
@@ -25,7 +25,7 @@ const updateService = async (req, res) => {
 
 // delete services
 
-module.exports = {
+export {
     createService,
     getServices,
     updateService

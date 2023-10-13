@@ -1,10 +1,10 @@
 /* Green Work ERP by Victor Martinez */
 
-const User = require("../models/user");
-const bcrypt = require("bcrypt");
-const { StatusCodes } = require("http-status-codes");
-const CustomError = require("../errors");
-const { attachCookiesToResponse, createTokenUser } = require("../utils");
+import User from '../models/user.js';
+import bcrypt from 'bcrypt';
+import { StatusCodes } from 'http-status-codes';
+import * as CustomError from '../errors/index.js';
+import { attachCookiesToResponse, createTokenUser } from '../utils/index.js';
 
 /**
  * Handles user login by validating credentials, generating tokens and sending a response
@@ -116,7 +116,7 @@ const checkPermission = (req, res) => {
   res.status(StatusCodes.OK).json({ valid: "true" });
 };
 
-module.exports = {
+export {
   login,
   register,
   logout,

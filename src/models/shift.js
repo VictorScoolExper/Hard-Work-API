@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const {db} = require("../utils/mysql");
-const Employee = require('./employee');
+import { connection } from '../utils/index.js';
+import Employee from './employee.js';
 // TODO: utilize class or delete constructor
 class Shift extends Employee {
     constructor(shift){
@@ -14,7 +14,7 @@ class Shift extends Employee {
 
     static addShift(shifts_json){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_add_shifts('${shifts_json}')`, (error, result)=>{
+            connection.query(`CALL sp_add_shifts('${shifts_json}')`, (error, result)=>{
                 error ? reject(error) : resolve(result);
             });
         })
@@ -22,7 +22,7 @@ class Shift extends Employee {
 
     static getAllShiftsbyDates(start_date, end_date){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_get_shifts_by_date_range('${start_date}', '${end_date}')`, (error, result)=>{
+            connection.query(`CALL sp_get_shifts_by_date_range('${start_date}', '${end_date}')`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -30,7 +30,7 @@ class Shift extends Employee {
 
     static getShiftsEmployeeByDate(employee_id, start_date, end_date){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_get_shifts_employee_by_date_range('${employee_id}','${start_date}', '${end_date}')`, (error, result)=>{
+            connection.query(`CALL sp_get_shifts_employee_by_date_range('${employee_id}','${start_date}', '${end_date}')`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -38,7 +38,7 @@ class Shift extends Employee {
 
     static getShiftById(shiftId){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_get_shift_by_id(${shiftId})`, (error, result)=>{
+            connection.query(`CALL sp_get_shift_by_id(${shiftId})`, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -46,7 +46,7 @@ class Shift extends Employee {
 
     static modifyShift(shiftId, start_time, end_time){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_update_shift(${shiftId}, '${start_time}', '${end_time}')`, (error, result)=>{
+            connection.query(`CALL sp_update_shift(${shiftId}, '${start_time}', '${end_time}')`, (error, result)=>{
                 error ? reject(error) : resolve(result);
             });
         })
@@ -54,11 +54,11 @@ class Shift extends Employee {
 
     static deleteShift(shiftId){
         return new Promise((resolve, reject)=>{
-            db.query(`CALL sp_delete_shift_by_id(${shiftId})`, (error, result)=>{
+            connection.query(`CALL sp_delete_shift_by_id(${shiftId})`, (error, result)=>{
                 error ? reject(error) : resolve(result);
             });
         })
     }
 }
 
-module.exports = Shift;
+export default Shift;

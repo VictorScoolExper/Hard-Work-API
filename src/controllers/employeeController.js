@@ -1,16 +1,16 @@
 /* Green Work ERP by Victor Martinez */
 
-const { StatusCodes } = require("http-status-codes");
-const CustomError = require("../errors");
-const Employee = require("../models/employee");
+import { StatusCodes } from 'http-status-codes';
+import * as CustomError from '../errors/index.js';
+import Employee from '../models/employee.js';
 
-const sharp = require("sharp");
-const {
+import sharp from 'sharp';
+import {
   addObjectS3Bucket,
   createSignedUrls,
   updateS3ObjectBucket,
   deleteObjectS3Bucket,
-} = require("../utils/aws");
+} from '../utils/aws/index.js';
 
 const createEmployee = async (req, res) => {
   const {
@@ -173,7 +173,7 @@ const deleteEmployee = async (req, res) => {
   });
 };
 
-module.exports = {
+export {
   createEmployee,
   getAllEmployee,
   getSingleEmployee,

@@ -1,17 +1,17 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { authenticateUser } = require('../middlewares/authentication');
+import { authenticateUser } from '../middlewares/index.js';
 
-const {
+import {
     addAttendance,
     modifyAttendance,
     getAttendByEmployee,
     getAttendByDate,
     getAttendById,
     deleteAttendance 
-} = require('../controllers/attendController');
+} from '../controllers/attendController.js';
 
 router
     .route('/')
@@ -29,4 +29,4 @@ router
     .get(authenticateUser, getAttendByEmployee)
 
 
-module.exports = router;
+export default router;

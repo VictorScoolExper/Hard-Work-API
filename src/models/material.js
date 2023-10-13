@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const {db} = require("../utils/");
+import { connection } from '../utils/index.js';
 
 class Material {
     constructor(material){
@@ -12,7 +12,7 @@ class Material {
 
     static createMaterial(material){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_create_material(?,?,?)', [
+            connection.query('CALL sp_create_material(?,?,?)', [
                 material.material_name.toLowerCase(),
                 material.description.toLowerCase(),
                 material.unit.toLowerCase()
@@ -24,7 +24,7 @@ class Material {
 
     static getMaterials(){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_get_materials()', (error, result)=>{
+            connection.query('CALL sp_get_materials()', (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -32,7 +32,7 @@ class Material {
 
     static updateMaterial(material){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_update_material(?,?,?,?)', 
+            connection.query('CALL sp_update_material(?,?,?,?)', 
             [
                 material.material_id,
                 material.material_name.toLowerCase(),
@@ -45,4 +45,4 @@ class Material {
     }
 }
 
-module.exports = Material;
+export default Material;

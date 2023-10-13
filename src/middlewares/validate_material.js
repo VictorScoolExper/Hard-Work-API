@@ -21,6 +21,6 @@ const validateMaterialParams = (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
     validateMaterialParams
 }

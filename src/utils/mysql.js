@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const mysql = require('mysql');
-const dbconfig = require("../configs/mysql.config");
+import mysql from 'mysql';
+import dbconfig from '../configs/mysql.config.js';
 
 const connection = mysql.createConnection(dbconfig);
 
@@ -27,7 +27,7 @@ const connectDB = () => {
   return connection;
 }
 
-module.exports = {
+export  {
   connectDB,
-  db: connection
+  connection
 };

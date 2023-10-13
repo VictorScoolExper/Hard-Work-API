@@ -1,15 +1,15 @@
 /* Green Work ERP by Victor Martinez */
 
-const config = require("../../configs/config");
-const {
+import * as config from '../../configs/config.js';
+import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
-} = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-const crypto = require("crypto");
+import crypto from 'crypto';
 
 const randomImageName = (bytes = 32) =>
   crypto.randomBytes(bytes).toString("hex");
@@ -90,7 +90,7 @@ const deleteObjectS3Bucket = async (objectKey) => {
   return
 }
 
-module.exports = {
+export {
     addObjectS3Bucket,
     createSignedUrls,
     updateS3ObjectBucket,

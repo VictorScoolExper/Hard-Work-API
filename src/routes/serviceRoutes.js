@@ -1,18 +1,18 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const {
+import {
   authenticateUser,
   validateServiceParams,
   validateId,
-} = require("../middlewares");
+} from '../middlewares/index.js';
 
-const {
+import {
   createService,
   getServices,
   updateService,
-} = require("../controllers/serviceController");
+} from '../controllers/serviceController.js';
 
 router
   .route("/")
@@ -21,4 +21,4 @@ router
 
 router.route("/:id").put(authenticateUser, validateId, updateService);
 
-module.exports = router;
+export default router;

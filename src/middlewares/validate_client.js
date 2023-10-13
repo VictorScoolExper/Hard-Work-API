@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const validator = require("validator");
+import validator from 'validator';
 
 const validateClientParams = async (req, res, next) => {
   const params = req.body;
@@ -34,6 +34,6 @@ const validateClientParams = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
   validateClientParams,
 };

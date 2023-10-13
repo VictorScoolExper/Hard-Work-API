@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const {db} = require("../db/connect");
+import { connection } from '../utils/index.js';
 
 class ScheduledServiceServices {
     constructor(scheduleServiceServices){
@@ -13,7 +13,7 @@ class ScheduledServiceServices {
 
     static getSingleScheduledServiceService(scheduleServiceServices){
         return new Promise((resolve, reject) => {
-          db.query("CALL sp_select_scheduled_service_services(?)", [
+          connection.query("CALL sp_select_scheduled_service_services(?)", [
             scheduleServiceServices.service_schedule_id
           ], (error, result) => {
             return error ? reject(error) : resolve(result[0]);
@@ -23,7 +23,7 @@ class ScheduledServiceServices {
 
     static updateScheduleServiceServices (scheduleServiceServices) {
         return new Promise((resolve, reject) =>{
-            db.query("CALL sp_update_scheduled_service_services(?,?,?)", [
+            connection.query("CALL sp_update_scheduled_service_services(?,?,?)", [
                 scheduleServiceServices.scheduled_service_task_id,
                 scheduleServiceServices.service_id,
                 scheduleServiceServices.quantity
@@ -34,4 +34,4 @@ class ScheduledServiceServices {
     }
 }
 
-module.exports = ScheduledServiceServices
+export default ScheduledServiceServices

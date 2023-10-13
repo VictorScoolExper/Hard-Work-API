@@ -1,9 +1,9 @@
 /* Green Work ERP by Victor Martinez */
 
-const {StatusCodes} = require("http-status-codes");
-const CustomError = require("../errors");
-const Crew = require("../models/crew");
-const Employee = require("../models/employee");
+import {StatusCodes} from 'http-status-codes';
+import * as CustomError from '../errors/index.js';
+import Crew from '../models/crew.js';
+import Employee from '../models/employee.js';
 
 const createCrew = async (req, res) => {
     // recieve our data through body
@@ -80,7 +80,7 @@ const deleteCrewEmployee = async (req, res) => {
     res.status(StatusCodes.OK).json({ msg: 'Deleted Employee from crew' });
 }
 
-module.exports = {
+export {
     createCrew,
     getAllCrew,
     getSingleCrew,

@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const validator = require("validator");
+import validator from 'validator';
 
 /**
  * Middleware to validate authentication parameters (email and password) in a request.
@@ -76,4 +76,4 @@ const validateRegisterParams = (req, res, next) => {
   }
 };
 
-module.exports = { validateAuthParams, validateRegisterParams };
+export { validateAuthParams, validateRegisterParams };

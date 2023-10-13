@@ -1,21 +1,21 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const {
+import {
   authenticateUser,
   validateCreateParamsEmployee,
   validateUpdateParamsEmployee,
   middlewareUploadImage,
-} = require("../middlewares");
+} from '../middlewares/index.js';
 
-const {
+import {
   createEmployee,
   getAllEmployee,
   getSingleEmployee,
   updateEmployee,
   deleteEmployee,
-} = require("../controllers/employeeController");
+} from '../controllers/employeeController.js';
 
 router
   .route("/")
@@ -33,4 +33,4 @@ router
   .put(authenticateUser, middlewareUploadImage, validateUpdateParamsEmployee, updateEmployee)
   .delete(authenticateUser, deleteEmployee);
 
-module.exports = router;
+export default router;

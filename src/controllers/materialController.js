@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const {StatusCodes} = require("http-status-codes");
-const Material = require("../models/material");
+import {StatusCodes} from 'http-status-codes';
+import Material from '../models/material.js';
 
 const createMaterial = async (req, res) =>{
     const material = req.body;
@@ -26,7 +26,7 @@ const updateMaterial = async (req, res) =>{
     res.status(StatusCodes.OK).json({msg: "Material updated correctly", status: 1})
 }
 
-module.exports = {
+export {
     createMaterial,
     getMaterials,
     updateMaterial

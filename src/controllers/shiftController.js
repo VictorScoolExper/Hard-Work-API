@@ -1,8 +1,8 @@
 /* Green Work ERP by Victor Martinez */
 
-const {StatusCodes} = require("http-status-codes");
-const CustomError = require("../errors");
-const Shift = require("../models/shift");
+import {StatusCodes} from 'http-status-codes';
+import * as CustomError from '../errors/index.js';
+import Shift from '../models/shift.js';
 
 // get the list of work Shifts by daily
 const getShiftsByDate =  async (req, res) =>{
@@ -82,7 +82,7 @@ const deleteShift = async (req, res) =>{
 }
 
 
-module.exports = {
+export {
     getShiftsByDate,
     getShiftById,
     addShift,

@@ -1,15 +1,15 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const {
+import {
   authenticateUser,
   validateId,
   validateVendorParams,
   validateAddressParams,
-} = require("../middlewares");
+} from '../middlewares/index.js';
 
-const {
+import {
   createVendor,
   getVendors,
   getSingleVendor,
@@ -17,7 +17,7 @@ const {
   modifyVendor,
   deleteVenderAddress,
   modifyAddressVendor
-} = require("../controllers/vendorController");
+} from '../controllers/vendorController.js';
 
 router
   .route("/")
@@ -39,4 +39,4 @@ router
   .get(authenticateUser, validateId, getSingleVendor)
   .put(authenticateUser, validateId, validateVendorParams, modifyVendor);
 
-module.exports = router;
+export default router;

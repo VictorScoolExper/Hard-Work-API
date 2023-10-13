@@ -21,6 +21,6 @@ const validateAppSettingParams = (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
     validateAppSettingParams
 }

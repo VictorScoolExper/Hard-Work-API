@@ -1,8 +1,8 @@
 /* Green Work ERP by Victor Martinez */
 
-const {StatusCodes} = require("http-status-codes");
-const CustomError = require("../errors");
-const Attendance = require("../models/attend");
+import {StatusCodes}from 'http-status-codes';
+import * as CustomError from '../errors/index.js';
+import Attendance from '../models/attend.js';
 
 
 // Get attendance by date
@@ -84,7 +84,7 @@ const deleteAttendance = async (req, res) =>{
 }
 
 
-module.exports = {
+export {
     addAttendance,
     modifyAttendance,
     getAttendById,

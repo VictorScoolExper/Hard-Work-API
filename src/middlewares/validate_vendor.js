@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const validator = require("validator");
-const Company = require("../models/company");
+import validator from 'validator';
+import Company from '../models/company.js';
 
 const validateVendorParams = async (req, res, next) => {
   const {
@@ -81,6 +81,6 @@ const validateVendorParams = async (req, res, next) => {
 
 };
 
-module.exports = {
+export {
     validateVendorParams
 }

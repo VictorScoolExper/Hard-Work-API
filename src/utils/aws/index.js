@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
-const { createSignedUrls, deleteObjectS3Bucket, addObjectS3Bucket, updateS3ObjectBucket } = require("./s3");
+import { createSignedUrls, deleteObjectS3Bucket, addObjectS3Bucket, updateS3ObjectBucket } from './s3.js';
 
-module.exports = {
+export {
     createSignedUrls,
     addObjectS3Bucket,
     updateS3ObjectBucket,

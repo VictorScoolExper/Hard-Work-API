@@ -26,6 +26,6 @@ const validateServiceParams = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
   validateServiceParams,
 };

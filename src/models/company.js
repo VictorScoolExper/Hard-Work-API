@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const { db } = require("../utils/mysql");
+import { connection } from '../utils/index.js';
 // TODO: utilize class or delete constructor
 class Company {
   constructor(company) {
@@ -12,7 +12,7 @@ class Company {
   // create sp to add company
   static createCompany(company) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_create_company(?,?)",
         [company.name.toLowerCase(), company.service_type.toLowerCase()],
         (error, result) => {
@@ -24,7 +24,7 @@ class Company {
   // create sp to edit company by company_id
   static getCompanyById(id) {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_getCompanyById(?)", id, (error, result) => {
+      connection.query("CALL sp_getCompanyById(?)", id, (error, result) => {
         error ? reject(error) : resolve(result[0][0]);
       });
     });
@@ -33,7 +33,7 @@ class Company {
   // get all companies
   static getAllCompanies() {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_get_companies", (error, result) => {
+      connection.query("CALL sp_get_companies", (error, result) => {
         error ? reject(error) : resolve(result[0]);
       });
     });
@@ -42,7 +42,7 @@ class Company {
   // update company
   static updateCompany(id, company) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_update_company(?,?,?)",
         [id, company.name.toLowerCase(), company.service_type.toLowerCase()],
         (error, result) => {
@@ -55,7 +55,7 @@ class Company {
   // checks if company exists
   static checkCompanyExistence(id) {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_check_company_exists(?)", [id], (error, result) => {
+      connection.query("CALL sp_check_company_exists(?)", [id], (error, result) => {
         error
           ? reject(error)
           : resolve(
@@ -68,4 +68,4 @@ class Company {
   }
 }
 
-module.exports = Company;
+export default Company;

@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const CustomError = require('../errors');
+import * as CustomError from '../errors/index.js';
 
 const checkPermissions = (requestUser, resourceUserId) =>{
     //console.log(requestUser);
@@ -21,4 +21,4 @@ const checkPermissions = (requestUser, resourceUserId) =>{
     throw new CustomError.UnauthorizedError('Not authorized to access this route');
 };
 
-module.exports = checkPermissions;
+export default checkPermissions;

@@ -2,9 +2,10 @@
   "name": "hard-work-api",
   "version": "0.0.1",
   "description": "This api was created for Hard Work ERP",
-  "main": "src/index.js",
+  "main": "src/app.js",
+  "type": "module",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest --run",
     "dev": "nodemon ./src/app.js"
   },
   "repository": {

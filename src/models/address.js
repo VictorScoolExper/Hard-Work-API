@@ -1,6 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const { db } = require("../utils/mysql");
+import { connection } from '../utils/index.js';
+
 // TODO: utilize class or delete constructor
 class Address {
     constructor(address){
@@ -14,7 +15,7 @@ class Address {
 
     static getSingleAddress(addressId){
         return new Promise((resolve, reject) =>{
-            db.query('CALL sp_get_single_address(?)', addressId, (error, result)=>{
+            connection.query('CALL sp_get_single_address(?)', addressId, (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             })
         })
@@ -22,7 +23,7 @@ class Address {
 
     static updateSingleAddress(address){
         return new Promise((resolve, reject) =>{
-            db.query('CALL sp_update_address(?,?,?,?,?,?)', [
+            connection.query('CALL sp_update_address(?,?,?,?,?,?)', [
                 address.address_id,
                 address.street.toLowerCase(),
                 address.city.toLowerCase(),
@@ -36,4 +37,4 @@ class Address {
     }
 }
 
-module.exports = Address;
+export default Address;

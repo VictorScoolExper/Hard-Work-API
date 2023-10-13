@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const {db} = require("../utils/mysql");
+import { connection } from '../utils/index.js';
 
 class AppSettings {
     constructor(appSetting){
@@ -12,7 +12,7 @@ class AppSettings {
 
     static createAppSetting (appSetting){
         return new Promise((resolve, reject) => {
-            db.query('CALL sp_create_app_setting(?,?,?)', 
+            connection.query('CALL sp_create_app_setting(?,?,?)', 
             [
                 appSetting.setting_name.toLowerCase(),
                 appSetting.setting_value.toLowerCase(),
@@ -26,7 +26,7 @@ class AppSettings {
 
     static getAppSettings(){
         return new Promise((resolve, reject) =>{
-            db.query('CALL sp_get_app_settings()', (error, result)=>{
+            connection.query('CALL sp_get_app_settings()', (error, result)=>{
                 error ? reject(error) : resolve(result[0]);
             });
         })
@@ -34,7 +34,7 @@ class AppSettings {
 
     static updateAppSetting(appSetting){
         return new Promise((resolve, reject)=>{
-            db.query('CALL sp_update_app_setting(?,?,?)', [
+            connection.query('CALL sp_update_app_setting(?,?,?)', [
                 appSetting.setting_name.toLowerCase(),
                 appSetting.setting_value.toLowerCase(),
                 appSetting.type_value.toLowerCase()
@@ -45,4 +45,4 @@ class AppSettings {
     }
 }
 
-module.exports = AppSettings;
+export default AppSettings;

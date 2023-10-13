@@ -1,12 +1,14 @@
 /* Green Work ERP by Victor Martinez */
 
-const jwt = require('jsonwebtoken');
-const config = require('../configs/config');
+import jwt from 'jsonwebtoken';
+import * as config from '../configs/config.js';
 
-const createJWT = ({payload}) =>{
+// Check where this function is used outside of file
+const createJWT = (payload) =>{
     const token = jwt.sign(payload, config.jwt.secret, {
         expiresIn: config.jwt.lifetime
     })
+    
     return token;
 };
 
@@ -27,4 +29,4 @@ const attachCookiesToResponse = ({res, user}) =>{
     // secure: config.node.NODE_ENV === 'production',
 }
 
-module.exports = { createJWT, isTokenValid, attachCookiesToResponse }
+export { createJWT, isTokenValid, attachCookiesToResponse }

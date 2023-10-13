@@ -1,19 +1,19 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const {
+import {
   authenticateUser,
   validateCompanyParams,
   validateId,
-} = require("../middlewares");
+} from '../middlewares/index.js';
 
-const {
+import {
   createCompany,
   getCompanyById,
   getCompanies,
   updateCompany,
-} = require("../controllers/companyController");
+} from '../controllers/companyController.js';
 
 router
   .route("/")
@@ -25,4 +25,4 @@ router
   .get(authenticateUser, validateId, getCompanyById)
   .put(authenticateUser, validateId, validateCompanyParams, updateCompany);
 
-module.exports = router;
+export default router;

@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const {StatusCodes} = require("http-status-codes");
-const AppSettings = require("../models/app_settings");
+import {StatusCodes} from 'http-status-codes';
+import AppSettings from '../models/app_settings.js';
 
 const createAppSetting = async (req, res)=>{
     const appSetting = req.body;
@@ -23,7 +23,7 @@ const updateAppSetting = async (req, res) => {
     res.status(StatusCodes.OK).json({msg: "App Setting updated", status: 1});
 }
 
-module.exports = {
+export {
     createAppSetting,
     getAppSettings,
     updateAppSetting

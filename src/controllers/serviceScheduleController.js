@@ -1,8 +1,8 @@
 /* Green Work ERP by Victor Martinez */
 
-const {StatusCodes} = require("http-status-codes");
-const ServiceSchedule = require("../models/service_schedule");
-const CustomError = require('../errors');
+import {StatusCodes} from 'http-status-codes';
+import ServiceSchedule from '../models/service_schedule.js';
+import * as CustomError from '../errors/index.js';
 
 const createServiceSchedule = async (req, res) => {
     const serviceScheduled = req.body;
@@ -13,6 +13,6 @@ const createServiceSchedule = async (req, res) => {
 }
 
 
-module.exports = {
+export {
     createServiceSchedule
 }

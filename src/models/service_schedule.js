@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const { db } = require("../utils/mysql");
+import { connection } from '../utils/index.js';
 
 class ServiceSchedule {
   constructor(serviceSchedule) {
@@ -31,7 +31,7 @@ class ServiceSchedule {
 
     return new Promise((resolve, reject) => {
       if (this.isTypeSingle(serviceSchedule.type)) {
-        db.query(
+        connection.query(
           "CALL sp_create_service_schedule(?,?,?,?,?,?,?,?)",
           [
             serviceSchedule.client_id,
@@ -55,7 +55,7 @@ class ServiceSchedule {
 
   static getServiceScheduled() {
     return new Promise((resolve, reject) => {
-      db.query("CALL sp_select_all_service_schedule()", (error, result) => {
+      connection.query("CALL sp_select_all_service_schedule()", (error, result) => {
         return error ? reject(error) : resolve(result[0]);
       });
     });
@@ -63,7 +63,7 @@ class ServiceSchedule {
 
   static getSingleServiceScheduled(serviceSchedule) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_select_service_schedule(?)",
         [serviceSchedule.service_schedule_id],
         (error, result) => {
@@ -75,7 +75,7 @@ class ServiceSchedule {
 
   static updateClientServiceScheduled(serviceSchedule) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_update_client_id_service_schedule(?,?)",
         [serviceSchedule.service_schedule_id, serviceSchedule.client_id],
         (error, result) => {
@@ -87,7 +87,7 @@ class ServiceSchedule {
 
   static updateAddressServiceScheduled(serviceSchedule) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_update_address_id_service_schedule(?,?)",
         [serviceSchedule.service_schedule_id, serviceSchedule.address_id],
         (error, result) => {
@@ -99,7 +99,7 @@ class ServiceSchedule {
 
   static updateToDoTimeServiceScheduled(serviceSchedule) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_update_todo_and_time_service_schedule(?,?,?,?)",
         [
           serviceSchedule.service_schedule_id,
@@ -116,7 +116,7 @@ class ServiceSchedule {
 
   static updateTypeServiceScheduled(serviceSchedule) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_update_type_service_schedule(?,?)",
         [serviceSchedule.service_schedule_id, serviceSchedule.type],
         (error, result) => {
@@ -128,7 +128,7 @@ class ServiceSchedule {
 
   static updateStatusServiceScheduled(serviceSchedule) {
     return new Promise((resolve, reject) => {
-      db.query(
+      connection.query(
         "CALL sp_update_status_service_schedule(?,?)",
         [serviceSchedule.service_schedule_id, serviceSchedule.status],
         (error, result) => {
@@ -139,4 +139,4 @@ class ServiceSchedule {
   }
 }
 
-module.exports = ServiceSchedule;
+export default ServiceSchedule;

@@ -1,5 +1,5 @@
 /* Green Work ERP by Victor Martinez */
-const { db } = require("../utils/mysql");
+import { connection } from '../utils/index.js';
 
 // TODO: utilize class or delete constructor
 // function constructor
@@ -25,7 +25,7 @@ const User = function (user) {
  */
 User.getUserInfo = (email) => {
   return new Promise((resolve, reject) => {
-    db.query(
+    connection.query(
       "CALL sp_get_user_auth(?);",
       email,
       (error, result) => {
@@ -46,7 +46,7 @@ User.getUserInfo = (email) => {
  */
 User.findEmailAuth = (email) => {
   return new Promise((resolve, reject) => {
-    db.query(
+    connection.query(
       "CALL sp_bool_email_auth(?, @email_exists);",
       [email],
       (error, results) => {
@@ -54,7 +54,7 @@ User.findEmailAuth = (email) => {
           reject(error);
         } else {
           // check the value of the email_exists output parameter
-          db.query("SELECT @email_exists", (error, results) => {
+          connection.query("SELECT @email_exists", (error, results) => {
             if (error) {
               reject(error);
             } else {
@@ -76,12 +76,12 @@ User.findEmailAuth = (email) => {
  */
 User.isUserEmpty = (table) => {
   return new Promise((resolve, reject) => {
-    db.query("CALL sp_check_auth_empty(@is_empty);", (error, results) => {
+    connection.query("CALL sp_check_auth_empty(@is_empty);", (error, results) => {
       if (error) {
         reject(error);
       } else {
         // check the value of the email_exists output parameter
-        db.query("SELECT @is_empty AS is_empty;", (error, results) => {
+        connection.query("SELECT @is_empty AS is_empty;", (error, results) => {
           if (error) {
             reject(error);
           } else {
@@ -103,7 +103,7 @@ User.isUserEmpty = (table) => {
  */
 User.createUser = (data) => {
   return new Promise((resolve, reject) => {
-    db.query(
+    connection.query(
       `CALL sp_insert_user(?,?,?,?,?,?,?);`,
       [
         data.name,
@@ -119,7 +119,7 @@ User.createUser = (data) => {
           reject(error);
         } else {
           // check the value of the email_exists output parameter
-          db.query(
+          connection.query(
             "SELECT * FROM users WHERE user_id = LAST_INSERT_ID();",
             (error, results) => {
               if (error) {
@@ -135,4 +135,4 @@ User.createUser = (data) => {
   });
 };
 
-module.exports = User;
+export default User;

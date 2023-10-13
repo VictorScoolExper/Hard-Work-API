@@ -1,18 +1,18 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const {
+import {
   authenticateUser,
   validateMaterialParams,
   validateId,
-} = require("../middlewares");
+} from '../middlewares/index.js';
 
-const {
+import {
   createMaterial,
   getMaterials,
   updateMaterial,
-} = require("../controllers/materialController");
+} from '../controllers/materialController.js';
 
 router
     .route("/")
@@ -21,4 +21,4 @@ router
 
 router.route("/:id").put(authenticateUser, validateMaterialParams, updateMaterial);
 
-module.exports = router;
+export default router;

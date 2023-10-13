@@ -1,18 +1,21 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const { login, logout, register, checkPermission } = require('../controllers/authController');
-const { authenticateUser, validateRegisterParams} = require('../middlewares');
+import { login, logout, register, checkPermission } from '../controllers/authController.js';
+import { authenticateUser, validateRegisterParams} from '../middlewares/index.js';
 
 router.post('/login', login);
+
+//the following should be eliminated
+router.get('/checkPermission', authenticateUser, checkPermission);
+
 router.post('/register', validateRegisterParams, register);
 router.get('/logout', logout);
 
-//the following should be eliminated
-// router.route('/checkPermission').get( authenticateUser('admin'), checkPermission);
+
 
 // TODO: add create user functionality that can only be used by admins and Managers
 
-module.exports = router;
+export default router;

@@ -1,9 +1,9 @@
 /* Green Work ERP by Victor Martinez */
 
-const { StatusCodes } = require("http-status-codes");
-const CustomError = require("../errors");
-const Address = require("../models/address");
-const Client = require("../models/client");
+import { StatusCodes } from 'http-status-codes';
+import * as CustomError from '../errors/index.js';
+import Address from '../models/address.js';
+import Client from '../models/client.js';
 
 // add client with list of address
 const createClient = async (req, res) => {
@@ -82,7 +82,7 @@ const updateClient = async (req, res) => {
 };
 
 
-module.exports = {
+export {
   createClient,
   getAllClients,
   getClientAddressById,

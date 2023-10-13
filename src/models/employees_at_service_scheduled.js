@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const {db} = require('../db/connect');
+import { connection } from '../utils/index.js';
 
 class EmployeesAtServiceScheduled {
     constructor(employeeAtServiceScheduled){
@@ -11,7 +11,7 @@ class EmployeesAtServiceScheduled {
 
     static getAllEmployeesAtService(employeeAtServiceScheduled){
         return new Promise((resolve, reject) => {
-          db.query("CALL sp_select_employees_at_service_scheduled(?)", [
+          connection.query("CALL sp_select_employees_at_service_scheduled(?)", [
             employeeAtServiceScheduled.service_schedule_id
           ], (error, result) => {
             return error ? reject(error) : resolve(result[0]);
@@ -21,7 +21,7 @@ class EmployeesAtServiceScheduled {
 
     static updateEmployeesAtServiceScheduled (employeeAtServiceScheduled) {
         return new Promise((resolve, reject) => {
-            db.query('CALL sp_update_employees_at_service_scheduled(?,?)', [
+            connection.query('CALL sp_update_employees_at_service_scheduled(?,?)', [
                 employeeAtServiceScheduled.emp_at_service_id,
                 employeeAtServiceScheduled.employee_id
             ], (error, result) => {
@@ -31,5 +31,5 @@ class EmployeesAtServiceScheduled {
     }
 }
 
-module.exports = EmployeesAtServiceScheduled;
+export default EmployeesAtServiceScheduled;
 

@@ -1,17 +1,17 @@
 /* Green Work ERP by Victor Martinez */
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {authenticateUser, validateId, validateSingleAddress } = require('../middlewares')
+import {authenticateUser, validateId, validateSingleAddress } from '../middlewares/index.js';
 
-const {
+import {
     getSingleAddress,
     updateSingleAddress
-} = require('../controllers/addressController');
+} from '../controllers/addressController.js';
 
 router
     .route('/:id')
     .get(authenticateUser, validateId, getSingleAddress)
     .put(authenticateUser, validateId, validateSingleAddress, updateSingleAddress)
 
-module.exports = router;
+export default router;

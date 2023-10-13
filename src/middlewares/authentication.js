@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const CustomError = require("../errors");
-const { isTokenValid } = require("../utils");
+import * as CustomError from '../errors/index.js';
+import { isTokenValid } from '../utils/index.js';
 
 /**
  * Authenticates the user 
@@ -42,7 +42,7 @@ const authorizePermissions = (...roles) => {
   };
 };
 
-module.exports = {
+export {
   authenticateUser,
   authorizePermissions,
 };

@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
-const {StatusCodes} = require("http-status-codes");
-const Address = require('../models/address');
+import {StatusCodes} from 'http-status-codes';
+import Address from '../models/address.js';
 
 const getSingleAddress = async (req, res) =>{
     const {id} = req.params;
@@ -27,7 +27,7 @@ const updateSingleAddress = async (req, res) => {
     res.status(StatusCodes.OK).json({msg: "Updated address correctly"})
 }
 
-module.exports = {
+export {
     getSingleAddress,
     updateSingleAddress
 }

@@ -1,20 +1,20 @@
 /* Green Work ERP by Victor Martinez */
 
-require("express-async-errors");
+import 'express-async-errors';
 
 // express
-const express = require("express");
+import express from 'express';
 const app = express();
 
 //rest of packages
-const config = require("./configs/config");
-const { connectDB } = require("./utils/mysql");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const rateLimiter = require("express-rate-limit");
-const helmet = require("helmet");
-const xss = require("xss-clean");
-const cors = require("cors");
+import * as config from './configs/config.js';
+import { connectDB } from './utils/mysql.js';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import rateLimiter from 'express-rate-limit';
+import helmet from 'helmet';
+import xss from 'xss-clean';
+import cors from 'cors';
 
 // configuration
 app.set("port", config.app.port);
@@ -28,24 +28,24 @@ const corsOptions = {
 };
 
 // router
-const authRoutes = require("./routes/authRoutes");
-const employeeRoutes = require("./routes/employeeRoute");
-const crewRoutes = require("./routes/crewRoutes");
-const attendanceRoutes = require("./routes/attendRoutes");
-const shiftRoutes = require("./routes/shiftRoutes");
-const clientRoutes = require("./routes/clientRoutes");
-const vendorRoutes = require("./routes/vendorRoutes");
-const companyRoutes = require("./routes/companyRoutes");
-const addressRoutes = require("./routes/addressRoutes");
-const serviceRoutes = require("./routes/serviceRoutes");
-const materialRoutes = require("./routes/materialRoutes");
-const appSettingRoutes = require("./routes/appSettingRoutes");
-const serviceScheduleRoutes = require("./routes/serviceScheduleRoute");
+import authRoutes from './routes/authRoutes.js';
+import employeeRoutes from './routes/employeeRoutes.js';
+import crewRoutes from './routes/crewRoutes.js';
+import attendanceRoutes from './routes/attendRoutes.js';
+import shiftRoutes from './routes/shiftRoutes.js';
+import clientRoutes from './routes/clientRoutes.js';
+import vendorRoutes from './routes/vendorRoutes.js';
+import companyRoutes from './routes/companyRoutes.js';
+import addressRoutes from './routes/addressRoutes.js';
+import serviceRoutes from './routes/serviceRoutes.js';
+import materialRoutes from './routes/materialRoutes.js';
+import appSettingRoutes from './routes/appSettingRoutes.js';
+import serviceScheduleRoutes from './routes/serviceScheduleRoutes.js';
 
 // middleware
-const notFoundMiddleware = require("./middlewares/not-found");
-const errorHandleMiddleware = require("./middlewares/error-handler");
-const { checkPermission } = require("./controllers/authController");
+import notFoundMiddleware from './middlewares/not-found.js';
+import errorHandleMiddleware from './middlewares/error-handler.js';
+import { checkPermission } from './controllers/authController.js';
 
 app.set("trust proxy", 1);
 app.use(

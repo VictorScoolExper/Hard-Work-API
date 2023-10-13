@@ -1,9 +1,9 @@
 /* Green Work ERP by Victor Martinez */
 
-const { StatusCodes } = require("http-status-codes");
-const CustomError = require("../errors");
-const validator = require("validator");
-const Company = require("../models/company");
+import { StatusCodes } from 'http-status-codes';
+import * as CustomError from '../errors/index.js';
+import validator from 'validator';
+import Company from '../models/company.js';
 
 // TODO: Create Company
 const createCompany = async (req, res) =>{
@@ -42,7 +42,7 @@ const updateCompany = async (req, res) =>{
     res.status(StatusCodes.OK).json({msg: `${companyId} is updated` });
 }
 
-module.exports = {
+export {
     createCompany,
     getCompanies,
     getCompanyById,

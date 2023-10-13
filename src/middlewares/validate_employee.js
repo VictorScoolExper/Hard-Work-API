@@ -1,6 +1,6 @@
 /* Green Work ERP by Victor Martinez */
 
-const validator = require("validator");
+import validator from 'validator';
 
 const validateCreateParamsEmployee = async (req, res, next) =>{
   const params = req.body;
@@ -141,7 +141,7 @@ const validateUpdateParamsEmployee = async (req, res, next) =>{
 }
 
 
-module.exports = {
+export {
   validateCreateParamsEmployee,
   validateUpdateParamsEmployee
 }

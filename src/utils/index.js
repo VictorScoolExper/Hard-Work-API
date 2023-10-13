@@ -1,13 +1,16 @@
 /* Green Work ERP by Victor Martinez */
 
-const {createJWT, isTokenValid, attachCookiesToResponse } = require('./jwt');
-const createTokenUser = require('./createTokenUser');
-const checkPermissions = require('./checkPermissions');
+import {createJWT, isTokenValid, attachCookiesToResponse } from './jwt.js';
+import createTokenUser from './createTokenUser.js';
+import checkPermissions from './checkPermissions.js';
+import { connectDB, connection } from './mysql.js';
 
-module.exports = {
+export {
     createJWT,
     isTokenValid,
     attachCookiesToResponse,
     createTokenUser,
-    checkPermissions
+    checkPermissions,
+    connectDB, 
+    connection
 }
