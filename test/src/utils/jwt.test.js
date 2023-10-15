@@ -11,30 +11,35 @@ import {
   vi,
 } from "vitest";
 import jwt from "jsonwebtoken";
-import { attachCookiesToResponse, createJWT } from "../../../src/utils";
-import config from "../../../src/configs/config";
+import { attachCookiesToResponse, createJWT, isTokenValid } from "../../../src/utils";
+import * as config from "../../../src/configs/config";
 
 // gets hoisted
-vi.mock("jwt", () => {
-  return {
-    default: {
-      sign: (...args) => {
-        return args.length;
-      },
-    },
-  };
-});
+vi.mock('jwt');
 
-vi.mock("config", () => {
-    
-});
+// we mock ./src/utils
+vi.mock('../../../src/utils', () => ({
+  attachCookiesToResponse: ({res, user}) => {},
+  createJWT: (payload) => {},
+  isTokenValid: ({token}) => {}
+}));
+
+let payload;
+
+vi.spyOn(jwt, "sign");
+vi.spyOn(jwt, "verify");
+
+const mockResponse = {
+  cookie: vi.fn(() => {
+
+  }),
+};
 
 describe("createJWT()", () => {
-  let payload;
-  const spySign = vi.spyOn(jwt, "sign");
 
   beforeAll(() => {
     payload = {
+      userId: '123',
       user: "test_user",
       role: "test_role",
     };
@@ -42,6 +47,7 @@ describe("createJWT()", () => {
 
   afterEach(() => {
     payload = {
+      userId: '123',
       user: "test_user",
       role: "test_role",
     };
@@ -49,14 +55,6 @@ describe("createJWT()", () => {
     vi.mockReset;
   });
 
-  it("should create a token that is signed", () => {
-    // TODO: write test
-    // Arange
-    // Act
-    // Assert
-  });
-
-  it("should recieve a string", () => {});
 
   it("should return a string", () => {
     const token = createJWT(payload);
@@ -73,22 +71,71 @@ describe("createJWT()", () => {
   it("should recieve 3 parameters the jwt.sign method", () => {
     createJWT(payload);
 
-    expect(jwt.sign).toBeCalledWith(payload, '', 123);
+    expect(jwt.sign).toBeCalledWith(payload, config.jwt.secret, {
+      expiresIn: config.jwt.lifetime,
+    });
   });
 
-  it("should recieve a strong password the jwt.sign method", () => {
+  it("should return a valid token", () => {
+    const token = createJWT(payload);
 
-  })
+    expect(typeof token).toBe("string");
+
+    const decoded = jwt.verify(token, config.jwt.secret);
+    expect(decoded.userId).toBe(payload.userId);
+  });
 });
 
 describe("isTokenValid()", () => {
-  it("should return a true when token is valid", () => {});
+  let token;
+  
+  beforeAll(() => {
+    payload = {
+      userId: '123',
+      user: "test_user",
+      role: "test_role",
+    };
 
-  it("should return false when token is invalid", () => {});
+    token = createJWT(payload);
+  })
+
+  it("should return a validated token", () => {
+
+    const decodedToken = isTokenValid({token});
+
+    expect(decodedToken.userId).toEqual(payload.userId)
+  });
+
+  it("should execute the sign method", () => {
+    isTokenValid({token});
+
+    expect(jwt.verify).toBeCalled();
+  });
 });
 
 describe("attachCookiesToResponse()", () => {
-  it("should set a signed cookie with a valid JWT Token", () => {
-    // TODO: write test
+  it("should call the createJWT method", () => {
+    attachCookiesToResponse({ res: mockResponse, user: payload});
+
+    // expect(createJWT).toBeCalled();
   });
+
+  it("should the `token` cookie", () => {
+    attachCookiesToResponse({ res: mockResponse, user: payload});
+
+    const token = createJWT(payload)
+
+    // Expect the `cookie` method to have been called with the correct arguments
+    expect(mockResponse.cookie).toHaveBeenCalledWith(
+      'token',
+      '121234asdasd',
+      {
+        httpOnly: true,
+        expires: expect.any(Date),
+        secure: false,
+        signed: true,
+      }
+    );
+  });
+
 });
