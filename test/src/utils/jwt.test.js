@@ -11,131 +11,127 @@ import {
   vi,
 } from "vitest";
 import jwt from "jsonwebtoken";
-import { attachCookiesToResponse, createJWT, isTokenValid } from "../../../src/utils";
+import {
+  attachCookiesToResponse,
+  createJWT,
+  isTokenValid,
+} from "../../../src/utils/jwt";
 import * as config from "../../../src/configs/config";
-
-// gets hoisted
-vi.mock('jwt');
-
-// we mock ./src/utils
-vi.mock('../../../src/utils', () => ({
-  attachCookiesToResponse: ({res, user}) => {},
-  createJWT: (payload) => {},
-  isTokenValid: ({token}) => {}
-}));
 
 let payload;
 
-vi.spyOn(jwt, "sign");
-vi.spyOn(jwt, "verify");
+vi.mock('jwt');
+
+vi.spyOn(jwt, 'sign');
+vi.spyOn(jwt, 'verify');
 
 const mockResponse = {
-  cookie: vi.fn(() => {
-
-  }),
+  cookie: vi.fn(),
 };
 
-describe("createJWT()", () => {
+describe("JWT", () => {
 
-  beforeAll(() => {
-    payload = {
-      userId: '123',
-      user: "test_user",
-      role: "test_role",
-    };
-  });
+  describe("createJWT()", () => {
+    
 
-  afterEach(() => {
-    payload = {
-      userId: '123',
-      user: "test_user",
-      role: "test_role",
-    };
+    beforeAll(() => {
+      payload = {
+        userId: "123",
+        user: "test_user",
+        role: "test_role",
+      };
+    });
 
-    vi.mockReset;
-  });
+    afterEach(() => {
+      payload = {
+        userId: "123",
+        user: "test_user",
+        role: "test_role",
+      };
 
+      vi.mockReset;
+    });
 
-  it("should return a string", () => {
-    const token = createJWT(payload);
+    it("should return a string", () => {
+      const token = createJWT(payload);
 
-    expect(typeof token).toBe("string");
-  });
+      expect(typeof token).toBe("string");
+    });
 
-  it("should execute the jwt.sign method", () => {
-    createJWT(payload);
+    it("should execute the jwt.sign method", () => {
+      createJWT(payload);
 
-    expect(jwt.sign).toBeCalled();
-  });
+      expect(jwt.sign).toBeCalled();
+    });
 
-  it("should recieve 3 parameters the jwt.sign method", () => {
-    createJWT(payload);
+    it("should recieve 3 parameters the jwt.sign method", () => {
+      createJWT(payload);
 
-    expect(jwt.sign).toBeCalledWith(payload, config.jwt.secret, {
-      expiresIn: config.jwt.lifetime,
+      expect(jwt.sign).toBeCalledWith(payload, config.jwt.secret, {
+        expiresIn: config.jwt.lifetime,
+      });
+    });
+
+    it("should return a valid token", () => {
+      const token = createJWT(payload);
+
+      expect(typeof token).toBe("string");
+
+      const decoded = jwt.verify(token, config.jwt.secret);
+      expect(decoded.userId).toBe(payload.userId);
     });
   });
 
-  it("should return a valid token", () => {
-    const token = createJWT(payload);
+  describe("isTokenValid()", () => {
+    let token;
 
-    expect(typeof token).toBe("string");
+    beforeAll(() => {
+      payload = {
+        userId: "123",
+        user: "test_user",
+        role: "test_role",
+      };
 
-    const decoded = jwt.verify(token, config.jwt.secret);
-    expect(decoded.userId).toBe(payload.userId);
-  });
-});
+      token = createJWT(payload);
+    });
 
-describe("isTokenValid()", () => {
-  let token;
-  
-  beforeAll(() => {
-    payload = {
-      userId: '123',
-      user: "test_user",
-      role: "test_role",
-    };
+    it("should return a validated token", () => {
+      const decodedToken = isTokenValid({ token });
 
-    token = createJWT(payload);
-  })
+      expect(decodedToken.userId).toEqual(payload.userId);
+    });
 
-  it("should return a validated token", () => {
+    it("should execute the sign method", () => {
+      isTokenValid({ token });
 
-    const decodedToken = isTokenValid({token});
-
-    expect(decodedToken.userId).toEqual(payload.userId)
+      expect(jwt.verify).toBeCalled();
+    });
   });
 
-  it("should execute the sign method", () => {
-    isTokenValid({token});
+  describe("attachCookiesToResponse()", () => {
+    
+    it("should call the createJWT method", () => {
+      attachCookiesToResponse({ res: mockResponse, user: payload });
 
-    expect(jwt.verify).toBeCalled();
+      expect(jwt.sign).toBeCalled();
+    });
+
+    it("should attach the cookies to the response", () => {
+      // attachCookiesToResponse({ res: mockResponse, user: payload });
+
+      const token = createJWT(payload);
+
+      // Expect the `cookie` method to have been called with the correct arguments
+      expect(mockResponse.cookie).toHaveBeenCalledWith(
+        "token",
+        token,
+        {
+          httpOnly: true,
+          expires: expect.any(Date),
+          secure: false,
+          signed: true,
+        }
+      );
+    });
   });
-});
-
-describe("attachCookiesToResponse()", () => {
-  it("should call the createJWT method", () => {
-    attachCookiesToResponse({ res: mockResponse, user: payload});
-
-    // expect(createJWT).toBeCalled();
-  });
-
-  it("should the `token` cookie", () => {
-    attachCookiesToResponse({ res: mockResponse, user: payload});
-
-    const token = createJWT(payload)
-
-    // Expect the `cookie` method to have been called with the correct arguments
-    expect(mockResponse.cookie).toHaveBeenCalledWith(
-      'token',
-      '121234asdasd',
-      {
-        httpOnly: true,
-        expires: expect.any(Date),
-        secure: false,
-        signed: true,
-      }
-    );
-  });
-
 });
