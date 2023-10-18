@@ -1,3 +1,5 @@
+/* Green Work ERP by Victor Martinez */
+
 import { vi, describe, it, expect } from 'vitest';
 
 import checkPermissions from '../../../src/utils/checkPermissions.js'

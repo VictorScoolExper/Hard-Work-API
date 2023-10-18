@@ -1,3 +1,5 @@
+/* Green Work ERP by Victor Martinez */
+
 import { vi, it, describe, expect } from "vitest";
 
 import createTokenUser from "../../../src/utils/createTokenUser";

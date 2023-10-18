@@ -4,8 +4,7 @@ import * as config from './config.js';
 
 const dbconfig = {
     host: config.mysql.host,
-    user: 'root',
-    // user: config.mysql.user,
+    user: config.mysql.user,
     password: config.mysql.password,
     database: config.mysql.database
 }
