@@ -3,9 +3,6 @@
 import * as CustomError from '../errors/index.js';
 
 const checkPermissions = (requestUser, resourceUserId) =>{
-    //console.log(requestUser);
-    //console.log(resourceUserId);
-    //console.log(typeof resourceUserId);
 
     //if user is admin it will allow
     if(requestUser.role === 'admin'){

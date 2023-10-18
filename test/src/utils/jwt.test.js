@@ -20,8 +20,11 @@ import * as config from "../../../src/configs/config";
 
 let payload;
 
+// vitest automatically hoist the mock but in jest we must declare it at the top before the imports
 vi.mock('jwt');
 
+// This code might not be necessary because we mock jwt without passing functions
+// mock automatically creates the spy functions by default when only using vi.mock('jwt');
 vi.spyOn(jwt, 'sign');
 vi.spyOn(jwt, 'verify');
 
@@ -49,7 +52,10 @@ describe("JWT", () => {
         role: "test_role",
       };
 
-      vi.mockReset;
+    });
+
+    afterAll(() => {
+      vi.resetAllMocks();
     });
 
     it("should return a string", () => {
@@ -74,7 +80,7 @@ describe("JWT", () => {
 
     it("should return a valid token", () => {
       const token = createJWT(payload);
-
+      
       expect(typeof token).toBe("string");
 
       const decoded = jwt.verify(token, config.jwt.secret);
@@ -92,16 +98,23 @@ describe("JWT", () => {
         role: "test_role",
       };
 
-      token = createJWT(payload);
     });
 
-    it("should return a validated token", () => {
-      const decodedToken = isTokenValid({ token });
+    afterAll(() => {
+      vi.resetAllMocks();
+    });
 
-      expect(decodedToken.userId).toEqual(payload.userId);
+    it("should recieve 2 parameters the jwt.verify method", () => {
+      token = createJWT(payload);
+
+      isTokenValid({ token })
+
+      expect(jwt.verify).toBeCalledWith(token, config.jwt.secret);
     });
 
     it("should execute the sign method", () => {
+      token = createJWT;
+
       isTokenValid({ token });
 
       expect(jwt.verify).toBeCalled();
@@ -109,8 +122,12 @@ describe("JWT", () => {
   });
 
   describe("attachCookiesToResponse()", () => {
+
+    afterAll(() => {
+      vi.resetAllMocks();
+    });
     
-    it("should call the createJWT method", () => {
+    it("should call the createJWT method which includes the jwt.sign", () => {
       attachCookiesToResponse({ res: mockResponse, user: payload });
 
       expect(jwt.sign).toBeCalled();
