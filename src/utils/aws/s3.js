@@ -32,17 +32,22 @@ const addObjectS3Bucket = async (buffer, file) => {
     // Key: req.file.originalname,
     Key: imageName,
     // The buffer is the image
-    // Body: req.file.buffer,
+    // TODO: check req.file.buffer or delete
+    // Body: req.file.buffer
     Body: buffer,
     // we set the type
     ContentType: file.mimetype,
   };
-
+  
+  // this tells S3 how to upload the object 
   const command = new PutObjectCommand(params);
 
-  await s3.send(command);
-
-  return imageName;
+  try {
+    await s3.send(command);
+    return imageName;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const createSignedUrls = async (paramList) => {

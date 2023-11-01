@@ -37,6 +37,7 @@ const createEmployee = async (req, res) => {
       .resize({ height: 1800, width: 1200, fit: "contain" })
       .toBuffer();
 
+    // TODO: add try catch and error handler (maybe but error should buble up from utils/aws/s3)
     imageName = await addObjectS3Bucket(buffer, req.file);
   }
 
