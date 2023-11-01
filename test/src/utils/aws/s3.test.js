@@ -16,30 +16,48 @@ import {
   deleteObjectS3Bucket,
 } from '../../../../src/utils/aws/s3.js';
 
+// Mocks
 vi.mock('@aws-sdk/client-s3', () => {
-  const S3Client = vi.fn()
-});
+  const S3Client = vi.fn();
+  const PutObjectCommand = vi.fn();
+  const GetObjectCommand = vi.fn();
+  const DeleteObjectCommand = vi.fn();
 
+  S3Client.send = vi.fn(() => {
+    return;
+  })
+
+  return {
+    S3Client,
+    PutObjectCommand,
+    GetObjectCommand,
+    DeleteObjectCommand
+  }
+});
 vi.mock('@aws-sdk/s3-request-presigner', () => {
+  const getSignedUrl = vi.fn();
 
+  return {
+    getSignedUrl
+  }
+});
+vi.mock('crypto', () => {
+  return {
+    default: {
+      randomBytes: vi.fn(() => 'name-crypto-random-data')
+    }
+  };
 });
 
-
-vi.mock('crypto');
-
-vi.mock('PutObjectCommand', (params) => {
-  return params.Key;
-});
-
-vi.spyOn(crypto, 'randomBytes');
-
-vi.mock('../../configs/config.js', {
-  aws: {
-    bucketName: 'testBucketName',
-    bucketRegion: 'testBucketRegion',
-    accessKey: 'testAccesKey',
-    secretAccessKey: 'secretAccessKey',
-  },
+vi.mock('../../configs/config.js', () => {
+  return {
+    aws: {
+      bucketName: 'testBucketName',
+      bucketRegion: 'testBucketRegion',
+      accessKey: 'testAccesKey',
+      secretAccessKey: 'secretAccessKey',
+    },
+  }
 });
 
 describe('s3', () => {
