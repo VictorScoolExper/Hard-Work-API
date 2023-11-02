@@ -1,12 +1,5 @@
 /* Green Work ERP by Victor Martinez */
 
-import * as dotenv from 'dotenv';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import * as config from '../../configs/config.js';
-
-
-import crypto from 'crypto';
 import { vi, test, describe, it, expect, beforeAll, beforeEach } from 'vitest';
 
 import {
@@ -18,34 +11,36 @@ import {
 
 // Mocks
 vi.mock('@aws-sdk/client-s3', () => {
-  const S3Client = vi.fn();
+  const S3Client = vi.fn(() => ({
+    send: vi.fn(() => {
+      return;
+    }),
+  }));
   const PutObjectCommand = vi.fn();
   const GetObjectCommand = vi.fn();
   const DeleteObjectCommand = vi.fn();
-
-  S3Client.send = vi.fn(() => {
-    return;
-  })
 
   return {
     S3Client,
     PutObjectCommand,
     GetObjectCommand,
-    DeleteObjectCommand
-  }
+    DeleteObjectCommand,
+  };
 });
 vi.mock('@aws-sdk/s3-request-presigner', () => {
   const getSignedUrl = vi.fn();
 
   return {
-    getSignedUrl
-  }
+    getSignedUrl,
+  };
 });
 vi.mock('crypto', () => {
   return {
     default: {
-      randomBytes: vi.fn(() => 'name-crypto-random-data')
-    }
+      randomBytes: vi.fn(() => {
+        return 'name-crypto-random-data';
+      }),
+    },
   };
 });
 
@@ -57,12 +52,16 @@ vi.mock('../../configs/config.js', () => {
       accessKey: 'testAccesKey',
       secretAccessKey: 'secretAccessKey',
     },
-  }
+  };
 });
+
+// Spies
+const expected = 'name-crypto-random-data';
+// vi.spyOn(crypto, 'randomBytes').mockReturnValue(expected);
 
 describe('s3', () => {
   describe('addObjectS3Bucket', () => {
-    const buffer = Buffer.from('image_something');
+    const buffer = Buffer.from('image_data');
     const file = {
       mimetype: 'image/jpeg',
     };
@@ -74,26 +73,28 @@ describe('s3', () => {
     it('should add an object to s3', async () => {
       const imageName = await addObjectS3Bucket(buffer, file);
 
-      expect(imageName).toEqual('name-crypto-random-data');
+      expect(imageName).toEqual(expected);
     });
 
-    // it('should execute the crypto.randomBytes', async () => {
-    //     await addObjectS3Bucket(buffer, file);
+    it('should execute the crypto.randomBytes', async () => {
+      await addObjectS3Bucket(buffer, file);
 
-    //     expect(crypto.randomBytes).toBeCalled();
-    // });
+      expect(crypto.randomBytes).toBeCalled();
+    });
 
-    // it('should execute PutObjectCommand method', async () => {
-    //     // const PutObjectCommandSpy = vi.spyOn(PutObjectCommand, 'constructor');
+    it('should execute PutObjectCommand method', async () => {
+      await addObjectS3Bucket(buffer, file);
 
-    //     await addObjectS3Bucket(buffer, file);
+      expect(PutObjectCommand).toBeCalled();
+    });
 
-    //     expect(PutObjectCommand).toBeCalled();
+    // it('should execute s3.send method', async () => {
+    //   await addObjectS3Bucket(buffer, file);
+
+    //   expect(S3Client).toBeCalled();
     // });
   });
 });
-
-
 
 // 1) Crear prueba de funcion
 // 2) Look what needs to be mocked (step by step)
