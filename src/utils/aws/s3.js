@@ -38,7 +38,7 @@ const addObjectS3Bucket = async (buffer, file) => {
     // we set the type
     ContentType: file.mimetype,
   };
-  
+
   // this tells S3 how to upload the object 
   const command = new PutObjectCommand(params);
 
@@ -46,7 +46,7 @@ const addObjectS3Bucket = async (buffer, file) => {
     await s3.send(command);
     return imageName;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 
@@ -78,9 +78,13 @@ const updateS3ObjectBucket = async (image_name, file, buffer) => {
 
   const command = new PutObjectCommand(params);
 
-  await s3.send(command);
-
-  return
+  try {
+    await s3.send(command);
+  } catch (error) {
+    throw new Error('failed update image');
+  }
+  
+  return {msg: 'updated!', status: '200'};
 };
 
 const deleteObjectS3Bucket = async (objectKey) => {
@@ -90,9 +94,15 @@ const deleteObjectS3Bucket = async (objectKey) => {
   };
 
   const command = new DeleteObjectCommand(params);
-  await s3.send(command);
+  
+  try {
+    await s3.send(command);
+  } catch (error) {
+    throw new Error('could not delete image');
+  }
+  
 
-  return
+  return {msg: 'deleted correctly', status: 200};
 }
 
 export {
