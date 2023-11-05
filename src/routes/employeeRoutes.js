@@ -4,8 +4,6 @@ import express from 'express';
 const router = express.Router();
 import {
   authenticateUser,
-  validateCreateParamsEmployee,
-  validateUpdateParamsEmployee,
   middlewareUploadImage,
 } from '../middlewares/index.js';
 
@@ -15,14 +13,13 @@ import {
   getSingleEmployee,
   updateEmployee,
   deleteEmployee,
-} from '../controllers/employeeController.js';
+} from '../controllers/employee/employeeController.js';
 
 router
   .route("/")
   .post(
     authenticateUser,
     middlewareUploadImage,
-    validateCreateParamsEmployee,
     createEmployee
   )
   .get(authenticateUser, getAllEmployee);
@@ -30,7 +27,7 @@ router
 router
   .route("/:id")
   .get(authenticateUser, getSingleEmployee)
-  .put(authenticateUser, middlewareUploadImage, validateUpdateParamsEmployee, updateEmployee)
+  .put(authenticateUser, middlewareUploadImage, updateEmployee)
   .delete(authenticateUser, deleteEmployee);
 
 export default router;

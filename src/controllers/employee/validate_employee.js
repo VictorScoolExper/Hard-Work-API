@@ -2,7 +2,7 @@
 
 import validator from 'validator';
 
-const validateCreateParamsEmployee = async (req, res, next) =>{
+const validateParamsEmployee = async (req, res, next) =>{
   const params = req.body;
   const errors = {};
 
@@ -67,6 +67,7 @@ const validateCreateParamsEmployee = async (req, res, next) =>{
   }
 }
 
+// TODO: FIX update image function
 const validateUpdateParamsEmployee = async (req, res, next) =>{
   const params = req.body;
   const errors = {};
@@ -142,6 +143,6 @@ const validateUpdateParamsEmployee = async (req, res, next) =>{
 
 
 export {
-  validateCreateParamsEmployee,
+  validateParamsEmployee,
   validateUpdateParamsEmployee
 }

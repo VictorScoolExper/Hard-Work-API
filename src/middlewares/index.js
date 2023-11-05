@@ -10,11 +10,6 @@ import {
   validateCompanyParams,
 } from './validate_params.js';
 
-import {
-  validateCreateParamsEmployee,
-  validateUpdateParamsEmployee,
-} from './validate_employee.js';
-
 import {validateAuthParams, validateRegisterParams} from './validate_auth.js';
 
 import { validateClientParams } from './validate_client.js';
@@ -37,8 +32,6 @@ export {
   notFound,
   validateAddressParams,
   validateId,
-  validateCreateParamsEmployee,
-  validateUpdateParamsEmployee,
   validateClientParams,
   validateSingleAddress,
   validateCompanyParams,

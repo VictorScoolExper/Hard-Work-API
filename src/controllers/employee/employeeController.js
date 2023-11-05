@@ -1,8 +1,8 @@
 /* Green Work ERP by Victor Martinez */
 
 import { StatusCodes } from 'http-status-codes';
-import * as CustomError from '../errors/index.js';
-import Employee from '../models/employee.js';
+import * as CustomError from '../../errors/index.js';
+import Employee from '../../models/employee.js';
 
 import sharp from 'sharp';
 import {
@@ -10,9 +10,12 @@ import {
   createSignedUrls,
   updateS3ObjectBucket,
   deleteObjectS3Bucket,
-} from '../utils/aws/index.js';
+} from '../../utils/aws/index.js';
+import {validateParamsEmployee} from './validate_employee.js';
 
 const createEmployee = async (req, res) => {
+  await validateParamsEmployee();
+
   const {
     name,
     last_name,
@@ -41,21 +44,22 @@ const createEmployee = async (req, res) => {
     imageName = await addObjectS3Bucket(buffer, req.file);
   }
 
-  const employee = {
-    name: name.toLowerCase(),
-    last_name: last_name.toLowerCase(),
+  const employee = new Employee(
+    null,
+    name.toLowerCase(),
+    last_name.toLowerCase(),
     cell_number,
-    role: role.toLowerCase(),
+    role.toLowerCase(),
     birth_date,
     email,
-    job_title: job_title.toLowerCase(),
-    department: department.toLowerCase(),
+    null,
+    imageName,
+    job_title.toLowerCase(),
+    department.toLowerCase(),
     driver_license,
     start_date,
-    wage_per_hour: Number(wage_per_hour),
-    created_by: Number(created_by),
-    imageName,
-  };
+    Number(wage_per_hour)
+  )
 
   await Employee.createEmployeeUser(employee);
 
