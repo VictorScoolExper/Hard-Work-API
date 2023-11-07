@@ -3,7 +3,7 @@
 import mysql from 'mysql';
 import dbconfig from '../configs/mysql.config.js';
 
-const connection = mysql.createConnection(dbconfig);
+export const connection = mysql.createConnection(dbconfig);
 
 const connectDB = () => {
   connection.connect((err) => {
@@ -28,6 +28,5 @@ const connectDB = () => {
 }
 
 export {
-  connectDB,
-  connection
+  connectDB
 };

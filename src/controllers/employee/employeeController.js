@@ -12,6 +12,7 @@ import {
   deleteObjectS3Bucket,
 } from "../../utils/aws/index.js";
 import { validateParamsEmployee } from "./validate_employee.js";
+import { convert_role_id_to_string } from "./utils/converter_role.js";
 
 const createEmployee = async (req, res) => {
   await validateParamsEmployee(req.body);
@@ -76,12 +77,13 @@ const createEmployee = async (req, res) => {
 const getAllEmployee = async (req, res) => {
   const employee = new Employee();
 
-  const allEmployees = await employee.getAllEmployee();
-  const allEmployeeWithUrls = await createSignedUrls(allEmployees);
+  const employees = await employee.getAllEmployee();
+  const employeesIdConverted = await convert_role_id_to_string(employees);
+  const employeesWithURLs = await createSignedUrls(employeesIdConverted);
 
   res.status(StatusCodes.OK).json({
-    employees: allEmployeeWithUrls,
-    total_employees: allEmployees.length,
+    employees: employeesWithURLs,
+    total_employees: employees.length,
   });
 };
 

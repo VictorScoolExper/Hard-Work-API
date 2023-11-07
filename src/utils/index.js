@@ -4,6 +4,9 @@ import {createJWT, isTokenValid, attachCookiesToResponse } from './jwt.js';
 import createTokenUser from './createTokenUser.js';
 import checkPermissions from './checkPermissions.js';
 import { connectDB, connection } from './mysql.js';
+import getRole from './getRole.js';
+import getDepartment from './getDepartment.js';
+import getJobTitle from './getJobTitle.js';
 
 export {
     createJWT,
@@ -12,5 +15,8 @@ export {
     createTokenUser,
     checkPermissions,
     connectDB, 
-    connection
+    connection,
+    getRole,
+    getDepartment,
+    getJobTitle
 }
