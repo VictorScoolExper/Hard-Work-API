@@ -4,7 +4,7 @@ import { connection } from "../utils/index.js";
 // TODO: utilize class or delete constructor
 // function constructor
 class User {
-  constuctor(user_id, name, last_name, cell_number, role, birth_date, email) {
+  constructor(user_id, name, last_name, cell_number, role, birth_date, email) {
     this.user_id = user_id;
     this.name = name;
     this.last_name = last_name;
@@ -23,7 +23,7 @@ class User {
    */
   static getUserInfo = (email) => {
     return new Promise((resolve, reject) => {
-      connection.query("CALL sp_get_user_auth(?);", email, (error, result) => {
+      connection.query("CALL sp_select_user_auth(?);", email, (error, result) => {
         return error ? reject(error) : resolve(result[0][0]);
       });
     });

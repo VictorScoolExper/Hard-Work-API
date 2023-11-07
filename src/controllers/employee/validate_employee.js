@@ -1,9 +1,10 @@
 /* Green Work ERP by Victor Martinez */
 
 import validator from 'validator';
+import * as CustomError from "../../errors/index.js";
 
-const validateParamsEmployee = async (req, res, next) =>{
-  const params = req.body;
+const validateParamsEmployee = async (body) =>{
+  const params = body;
   const errors = {};
 
   const convertedCreatedBy = parseInt(params.created_by);
@@ -36,11 +37,11 @@ const validateParamsEmployee = async (req, res, next) =>{
     errors.email = "Email is required and must be a valid email address.";
   }
 
-  if(!params.job_title || !validator.isAlpha(params.job_title)){
+  if(!params.job_title || !validator.isInteger(params.job_title)){
     errors.job_title = "Job title is required and must contain letters only."
   }
 
-  if(!params.department || !validator.isAlpha(params.department)){
+  if(!params.department || !validator.isInteger(params.department)){
     errors.department = "Department is required and must contain letters only."
   }
 
@@ -61,9 +62,9 @@ const validateParamsEmployee = async (req, res, next) =>{
   }
 
   if (Object.keys(errors).length > 0) {
-    res.status(400).json({ errors });
+    throw new CustomError.BadRequestError(JSON.stringify(errors));
   } else {
-    next();
+    return;
   }
 }
 

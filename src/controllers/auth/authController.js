@@ -1,10 +1,10 @@
 /* Green Work ERP by Victor Martinez */
 
-import User from '../models/user.js';
+import User from '../../models/user.js';
 import bcrypt from 'bcrypt';
 import { StatusCodes } from 'http-status-codes';
-import * as CustomError from '../errors/index.js';
-import { attachCookiesToResponse, createTokenUser } from '../utils/index.js';
+import * as CustomError from '../../errors/index.js';
+import { attachCookiesToResponse, createTokenUser } from '../../utils/index.js';
 
 /**
  * Handles user login by validating credentials, generating tokens and sending a response
@@ -38,7 +38,7 @@ const login = async (req, res) => {
   }
 
   // Create a token for the user
-  const tokenUser = createTokenUser(user);
+  const tokenUser = await createTokenUser(user);
   // Attach cookies to the response 
   attachCookiesToResponse({ res, user: tokenUser });
 

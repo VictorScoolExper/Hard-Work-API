@@ -45,7 +45,7 @@ import serviceScheduleRoutes from './routes/serviceScheduleRoutes.js';
 // middleware
 import notFoundMiddleware from './middlewares/not-found.js';
 import errorHandleMiddleware from './middlewares/error-handler.js';
-import { checkPermission } from './controllers/authController.js';
+// import { checkPermission } from './controllers/authController.js';
 
 app.set("trust proxy", 1);
 app.use(

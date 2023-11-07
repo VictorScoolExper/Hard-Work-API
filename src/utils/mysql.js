@@ -27,7 +27,7 @@ const connectDB = () => {
   return connection;
 }
 
-export  {
+export {
   connectDB,
   connection
 };

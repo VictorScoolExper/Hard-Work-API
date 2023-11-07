@@ -1,20 +1,20 @@
 /* Green Work ERP by Victor Martinez */
 
-import { StatusCodes } from 'http-status-codes';
-import * as CustomError from '../../errors/index.js';
-import Employee from '../../models/employee.js';
+import { StatusCodes } from "http-status-codes";
+import * as CustomError from "../../errors/index.js";
+import Employee from "../../models/employee.js";
 
-import sharp from 'sharp';
+import sharp from "sharp";
 import {
   addObjectS3Bucket,
   createSignedUrls,
   updateS3ObjectBucket,
   deleteObjectS3Bucket,
-} from '../../utils/aws/index.js';
-import {validateParamsEmployee} from './validate_employee.js';
+} from "../../utils/aws/index.js";
+import { validateParamsEmployee } from "./validate_employee.js";
 
 const createEmployee = async (req, res) => {
-  await validateParamsEmployee();
+  await validateParamsEmployee(req.body);
 
   const {
     name,
@@ -28,7 +28,7 @@ const createEmployee = async (req, res) => {
     driver_license,
     start_date,
     wage_per_hour,
-    created_by,
+    created_by
   } = req.body;
 
   let imageName;
@@ -59,25 +59,30 @@ const createEmployee = async (req, res) => {
     driver_license,
     start_date,
     Number(wage_per_hour)
-  )
+  );
 
-  await Employee.createEmployeeUser(employee);
-
-  res.status(StatusCodes.CREATED).json({ msg: "created user successfully" });
+  console.log(employee.name);
+  res.status(400).json({status: 'bad'});
+  // await employee.createEmployeeUser(created_by)
+  // .then(() => {
+  //   res.status(StatusCodes.CREATED).json({ msg: "created user successfully!" });
+  // })
+  // .catch(error => {
+  //   throw new CustomError.BadRequestError(error);
+  // });
 };
 
 // TODO: return with ids
 const getAllEmployee = async (req, res) => {
-  const allEmployees = await Employee.getAllEmployee();
+  const employee = new Employee();
 
+  const allEmployees = await employee.getAllEmployee();
   const allEmployeeWithUrls = await createSignedUrls(allEmployees);
 
-  res
-    .status(StatusCodes.OK)
-    .json({
-      employees: allEmployeeWithUrls,
-      total_employees: allEmployees.length,
-    });
+  res.status(StatusCodes.OK).json({
+    employees: allEmployeeWithUrls,
+    total_employees: allEmployees.length,
+  });
 };
 
 const getSingleEmployee = async (req, res) => {
@@ -138,7 +143,7 @@ const updateEmployee = async (req, res) => {
     email: email.toLowerCase(),
     image_name,
   });
-  
+
   await Employee.employeeUpdated(employee);
 
   res
@@ -149,7 +154,7 @@ const updateEmployee = async (req, res) => {
 //  for now this will not be used
 const deleteEmployee = async (req, res) => {
   const { id: employeeId } = req.params;
-  const convertedId = parseInt(employeeId)
+  const convertedId = parseInt(employeeId);
 
   if (!Number.isInteger(convertedId)) {
     throw new CustomError.BadRequestError("The employee id is invalid");
@@ -162,7 +167,7 @@ const deleteEmployee = async (req, res) => {
   }
 
   // if the employee image exists
-  const imageName = employee["@p_image_name"]
+  const imageName = employee["@p_image_name"];
   if (imageName) {
     // delete it from the bucket
     await deleteObjectS3Bucket(imageName);

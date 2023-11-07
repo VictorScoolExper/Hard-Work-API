@@ -31,7 +31,7 @@ class Employee extends User {
     this.wage_per_hour = wage_per_hour;
   }
   // TODO apply the Employee class
-  createEmployeeUser() {
+  createEmployeeUser(created_by) {
     return new Promise((resolve, reject) => {
       connection.query(
         "CALL sp_insert_employee(?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -47,11 +47,15 @@ class Employee extends User {
           this.driver_license,
           this.start_date,
           this.wage_per_hour,
-          this.created_by,
+          created_by,
           this.email,
         ],
         (error, result) => {
-          return error ? reject(error) : resolve(result);
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
         }
       );
     });
@@ -65,7 +69,7 @@ class Employee extends User {
     });
   }
 
-  static getSingleEmployee(employee_id) {
+  getSingleEmployee(employee_id) {
     return new Promise((resolve, reject) => {
       // TODO: optimize sp and this function
       connection.query(
