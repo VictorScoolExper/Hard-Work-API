@@ -5,7 +5,6 @@ import createTokenUser from './createTokenUser.js';
 import checkPermissions from './checkPermissions.js';
 import { connectDB, connection } from './mysql.js';
 import getRole from './getRole.js';
-import getDepartment from './getDepartment.js';
 import getJobTitle from './getJobTitle.js';
 
 export {
@@ -17,6 +16,5 @@ export {
     connectDB, 
     connection,
     getRole,
-    getDepartment,
     getJobTitle
 }
