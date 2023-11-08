@@ -2,7 +2,7 @@
 
 import { connection } from "../utils/index.js";
 
-class Company_Department {
+class CompanyDepartment {
   constructor(company_department) {
     this.department_id = company_department.department_id;
     this.name = company_department.name;
@@ -71,6 +71,22 @@ class Company_Department {
         )
     })
   };
+
+  deleteDepartment(){
+    return new Promise((resolve, reject) => {
+        connection.query(
+            "CALL sp_delete_department_except_admin(?)",
+            this.department_id,
+            (error, reject) => {
+                if (error) {
+                    reject("failed to delete department");
+                  } else {
+                    resolve(result);
+                  }
+            }
+        )
+    })
+  }
 }
 
-export default Company_Department;
+export default CompanyDepartment;

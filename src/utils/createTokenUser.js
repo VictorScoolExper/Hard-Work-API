@@ -1,9 +1,9 @@
 /* Green Work ERP by Victor Martinez */
-import getRole from "./getRole.js";
+import CompanyRole from "../models/company_roles.js";
 
 const createTokenUser = async (user) =>{
     if(user != null){
-        const role = await getRole(user.role_id);
+        const role = await CompanyRole.selectCompanyRoleName(user.role_id);
 
         return {
             name: user.name, 
