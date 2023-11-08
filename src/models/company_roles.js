@@ -16,7 +16,7 @@ class CompanyRole {
         [this.name, this.description],
         (error, result) => {
           if (error) {
-            reject("failed company role insert");
+            reject("failed to create company role");
           } else {
             resolve(result);
           }
@@ -45,7 +45,7 @@ class CompanyRole {
         role_id,
         (error, result) => {
           if (error) {
-            reject("failed to get role");
+            reject("failed to get role name");
           } else {
             resolve(result[0][0].name);
           }
@@ -61,7 +61,7 @@ class CompanyRole {
           [this.role_id, this.name, this.description],
           (error, result) => {
             if (error) {
-              reject("failed to delete role");
+              reject("failed to update role");
             } else {
               resolve(result);
             }

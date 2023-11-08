@@ -1,8 +1,8 @@
 /* Green Works ERP by Victor Martinez */
 
-import { getJobTitle } from "../../../utils/index.js";
 import CompanyDepartment from "../../../models/company_department.js";
 import CompanyRole from "../../../models/company_roles.js";
+import JobTitle from "../../../models/job_title.js";
 
 export const convert_role_id_to_string = async (usersArr) => {
   const users = [];
@@ -13,7 +13,7 @@ export const convert_role_id_to_string = async (usersArr) => {
       : (user.role = "N/A");
 
     user.job_title_id
-      ? (user.job_title = await getJobTitle(user.job_title_id))
+      ? (user.job_title = await JobTitle.selectJobTitleName(user.job_title_id))
       : (user.job_title = "N/A");
 
     user.company_department_id

@@ -16,7 +16,7 @@ class CompanyDepartment {
         [this.name.toLowerCase(), this.description.toLowerCase()],
         (error, result) => {
           if (error) {
-            reject("failed insert");
+            reject("failed create department");
           } else {
             resolve(result);
           }
@@ -31,7 +31,7 @@ class CompanyDepartment {
         "CALL sp_select_company_departments()",
         (error, result) => {
           if (error) {
-            reject("failed to select departments");
+            reject("failed to get departments");
           } else {
             resolve(result[0]);
           }
@@ -47,7 +47,7 @@ class CompanyDepartment {
         department_id,
         (error, result) => {
           if (error) {
-            reject("failed to get role");
+            reject("failed to get department name");
           } else {
             resolve(result[0][0].name);
           }
