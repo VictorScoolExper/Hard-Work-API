@@ -11,7 +11,7 @@ import {
   updateS3ObjectBucket,
   deleteObjectS3Bucket,
 } from "../../utils/aws/index.js";
-import { validateParamsEmployee } from "./validate_employee.js";
+import { validateParamsEmployee } from "./utils/validate_employee.js";
 import { convert_role_id_to_string } from "./utils/converter_role.js";
 
 const createEmployee = async (req, res) => {

@@ -1,7 +1,7 @@
 /* Green Work ERP by Victor Martinez */
 
 import validator from 'validator';
-import * as CustomError from "../../errors/index.js";
+import * as CustomError from "../../../errors/index.js";
 
 const validateParamsEmployee = async (body) =>{
   const params = body;
