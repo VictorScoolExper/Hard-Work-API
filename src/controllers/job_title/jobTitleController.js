@@ -6,7 +6,7 @@ import JobTitle from "../../models/job_title.js";
 
 import { validateCompanyDepartment } from "../company_department/utils/validate_department.js";
 
-const createCompanyDepartment = async (req, res) => {
+const createJobTitle = async (req, res) => {
   validateCompanyDepartment(req.body);
 
   const { name, description } = req.body;
@@ -22,7 +22,7 @@ const createCompanyDepartment = async (req, res) => {
     });
 };
 
-const getAllCompanyDepartments = async (req, res) => {
+const getAllJobTitles = async (req, res) => {
   await JobTitle.selectJobTitles()
     .then((job_titles) => {
       res.status(StatusCodes.OK).json({
@@ -35,7 +35,7 @@ const getAllCompanyDepartments = async (req, res) => {
     });
 };
 
-const updateCompanyDepartment = async (req, res) => {
+const updateJobTitle = async (req, res) => {
   // TODO: validate JSON object
 
   const { department_id } = req.params;
@@ -72,8 +72,8 @@ const deleteJobTitle = async (req, res) => {
 }
 
 export {
-  createCompanyDepartment,
-  getAllCompanyDepartments,
-  updateCompanyDepartment,
+  createJobTitle,
+  getAllJobTitles,
+  updateJobTitle,
   deleteJobTitle
 };

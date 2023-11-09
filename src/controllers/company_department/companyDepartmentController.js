@@ -72,5 +72,6 @@ const deleteCompanyDepartment = async (req, res) => {
 export { 
     createCompanyDepartment, 
     getAllCompanyDepartment, 
-    updateCompanyDepartment 
+    updateCompanyDepartment,
+    deleteCompanyDepartment
 };

@@ -41,6 +41,10 @@ import serviceRoutes from './routes/serviceRoutes.js';
 import materialRoutes from './routes/materialRoutes.js';
 import appSettingRoutes from './routes/appSettingRoutes.js';
 import serviceScheduleRoutes from './routes/serviceScheduleRoutes.js';
+import companyDepartmentRoutes from './routes/companyDepartmentRoute.js';
+import companyRoleRoutes from './routes/companyRoleRoute.js';
+import jobTitleRoutes from './routes/jobTitleRoute.js';
+
 
 // middleware
 import notFoundMiddleware from './middlewares/not-found.js';
@@ -82,6 +86,9 @@ app.use("/api/v1/service", serviceRoutes);
 app.use("/api/v1/material", materialRoutes);
 app.use("/api/v1/app-setting", appSettingRoutes);
 app.use("/api/v1/service-schedule", serviceScheduleRoutes);
+app.use("/api/v1/company-department", companyDepartmentRoutes);
+app.use("/api/v1/company-role", companyRoleRoutes);
+app.use("/api/v1/job-title", jobTitleRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandleMiddleware);
