@@ -15,7 +15,7 @@ const createCompanyDepartment = async (req, res) => {
   await companyDepartment
     .createDepartment()
     .then(() => {
-      res.status(StatusCodes.CREATED).json({ msg: "created company role!" });
+      res.status(StatusCodes.CREATED).json({ msg: "created company department!" });
     })
     .catch((error) => {
       throw new CustomError.BadRequestError(error);
@@ -26,8 +26,8 @@ const getAllCompanyDepartment = async (req, res) => {
   const company_department = await CompanyDepartment.selectDepartmentName();
 
   res.status(StatusCodes.OK).json({
-    company_roles: company_department,
-    total_roles: company_department.length,
+    company_department: company_department,
+    total_department: company_department.length,
   });
 };
 
@@ -47,7 +47,7 @@ const updateCompanyDepartment = async (req, res) => {
     .then(() => {
       res
         .status(StatusCodes.OK)
-        .json({ msg: "The company role was updated successfully" });
+        .json({ msg: "The company department was updated successfully" });
     })
     .catch((error) => {
       throw new CustomError.BadRequestError(error);

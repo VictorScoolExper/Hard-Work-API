@@ -4,10 +4,10 @@ import { StatusCodes } from "http-status-codes";
 import * as CustomError from "../../errors/index.js";
 import JobTitle from "../../models/job_title.js";
 
-import { validateCompanyDepartment } from "../company_department/utils/validate_department.js";
+import { validateJobTitle } from "./utils/validateJobTitle.js";
 
 const createJobTitle = async (req, res) => {
-  validateCompanyDepartment(req.body);
+  validateJobTitle(req.body);
 
   const { name, description } = req.body;
 
@@ -26,8 +26,8 @@ const getAllJobTitles = async (req, res) => {
   await JobTitle.selectJobTitles()
     .then((job_titles) => {
       res.status(StatusCodes.OK).json({
-        company_roles: job_titles,
-        total_roles: job_titles.length,
+        job_titles: job_titles,
+        total_jobs: job_titles.length,
       });
     })
     .catch((error) => {
@@ -38,16 +38,16 @@ const getAllJobTitles = async (req, res) => {
 const updateJobTitle = async (req, res) => {
   // TODO: validate JSON object
 
-  const { department_id } = req.params;
+  const { job_title_id } = req.params;
   const { name, description } = req.body;
 
-  const jobTitle = new JobTitle(department_id, name, description);
+  const jobTitle = new JobTitle(job_title_id, name, description);
   await jobTitle
     .updateJobTitle()
     .then(() => {
       res
         .status(StatusCodes.OK)
-        .json({ msg: "The company department was updated successfully" });
+        .json({ msg: "The job title was updated successfully" });
     })
     .catch((error) => {
       throw new CustomError.BadRequestError(error);
@@ -57,9 +57,9 @@ const updateJobTitle = async (req, res) => {
 const deleteJobTitle = async (req, res) => {
     // TODO: validate id
 
-    const {department_id} = req.params;
+    const {job_title_id} = req.params;
 
-    const jobTitle = new JobTitle({department_id});
+    const jobTitle = new JobTitle({job_title_id});
     await jobTitle.deleteJobTitle()
     .then(() => {
         res
