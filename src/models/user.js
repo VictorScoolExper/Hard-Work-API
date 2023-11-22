@@ -62,11 +62,10 @@ class User {
   /**
    * Checks if a specific authentication-related table is empty by calling a stored procedure.
    *
-   * @param {string} table - The name of the table to check for emptiness.
    * @returns {Promise<boolean>} A Promise that resolves to true if the table is empty,
    *                            or false if it contains data.
    */
-  static isUserEmpty = (table) => {
+  static isUserEmpty = () => {
     return new Promise((resolve, reject) => {
       connection.query(
         "CALL sp_check_auth_empty(@is_empty);",
