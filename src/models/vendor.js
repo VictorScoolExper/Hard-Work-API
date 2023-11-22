@@ -1,15 +1,14 @@
 /* Green Work ERP by Victor Martinez */
 
 import { connection } from '../utils/index.js';
+import User from './user.js';
+
 // TODO: utilize class or delete constructor
-class Vendor {
+class Vendor extends User {
   constructor(vendor) {
-    this.vendor_id = vendor.vendor_id;
-    this.name = vendor.name;
-    this.last_name = vendor.last_name;
+    super(vendor);
     this.company_id = vendor.company_id;
     this.email = vendor.email;
-    this.cell_number = vendor.cell_number;
   }
 
   static insertVendor(vendor) {
