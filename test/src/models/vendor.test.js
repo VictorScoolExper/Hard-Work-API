@@ -88,5 +88,5 @@ describe('vendor class', () => {
         await Vendor.modifyAddressVendor(modAddress);
 
         expect(Vendor.modifyAddressVendor).toBeCalled();
-    })
+    });
  })
