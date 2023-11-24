@@ -4,9 +4,10 @@ import {vi, it, describe, beforeEach, expect} from 'vitest';
 
 import Vendor from '../../../src/models/vendor';
 
+vi.mock("../../../src/models/vendor");
+vi.mock("../../../src/utils");
+
 describe('vendor class', () => { 
-    vi.mock("../../../src/models/vendor");
-    vi.mock("../../../src/utils");
 
     it('should execute the method insertVendor', async () => {
         const vendor = {
@@ -23,13 +24,13 @@ describe('vendor class', () => {
 
         await Vendor.insertVendor(vendor);
 
-        expect(Vendor.insertVendor).toBeCalled();
+        expect(Vendor.insertVendor).toBeCalledTimes(1);
     });
 
     it('should execute the getAllVendor method', async () => {
         await Vendor.getAllVendors();
 
-        expect(Vendor.getAllVendors).toBeCalled();
+        expect(Vendor.getAllVendors).toBeCalledTimes(1);
     });
 
     it('should execute the getSingleVendor method', async () => {
@@ -37,7 +38,7 @@ describe('vendor class', () => {
         
         await Vendor.getSingleVendor(vendorId);
 
-        expect(Vendor.getSingleVendor).toBeCalled();
+        expect(Vendor.getSingleVendor).toBeCalledTimes(1);
     });
 
     it('should execute the getAddressVendor method', async () => {
@@ -45,7 +46,7 @@ describe('vendor class', () => {
 
         await Vendor.getAddressVendor(vendorId);
 
-        expect(Vendor.getAddressVendor).toBeCalled();
+        expect(Vendor.getAddressVendor).toBeCalledTimes(1);
     });
 
     it('should execute the updateVendor', async () => {
@@ -63,7 +64,7 @@ describe('vendor class', () => {
 
         await Vendor.updateVendor(updateVendor);
 
-        expect(Vendor.updateVendor).toBeCalled()
+        expect(Vendor.updateVendor).toBeCalledTimes(1);
     });
 
     it('should execute the deleteAddressVendor', async () => {
@@ -71,7 +72,7 @@ describe('vendor class', () => {
 
         await Vendor.deleteAddressVendor(addressId);
 
-        expect(Vendor.deleteAddressVendor).toBeCalled();
+        expect(Vendor.deleteAddressVendor).toBeCalledTimes(1);
     });
 
     it('should execute the modifyAddressVendor', async () => {
@@ -87,6 +88,6 @@ describe('vendor class', () => {
 
         await Vendor.modifyAddressVendor(modAddress);
 
-        expect(Vendor.modifyAddressVendor).toBeCalled();
+        expect(Vendor.modifyAddressVendor).toBeCalledTimes(1);
     });
  })
