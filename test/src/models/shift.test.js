@@ -4,8 +4,7 @@ import {vi, it, describe, beforeEach, expect} from 'vitest';
 import Shift from '../../../src/models/shift';
 
 vi.mock('../../../src/utils');
-// vi.mock('../../../src/models/employee');
-vi.mock('../../../src/models/shift')
+vi.mock('../../../src/models/shift');
 
 describe('Shift Class', () => { 
     it('should execute addShift method', async () => {
