@@ -1,3 +1,5 @@
+/* Green Work ERP by Victor Martinez */
+
 import {vi, it, describe, beforeEach, expect, beforeAll} from 'vitest';
 import Attendance from '../../../src/models/attend';
 
